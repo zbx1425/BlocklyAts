@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>BlocklyATS</title>
+  
+  <link rel="stylesheet" href="css/alertify.min.css" />
+  <link rel="stylesheet" href="css/default.min.css" />
+  <script src="js/nanoajax.min.js"></script>
+  <script src="js/blockly_compressed.js"></script>
+  <script src="js/blocks_compressed.js"></script>
+  <script src="js/blocks_bve.js"></script>
+  <script src="js/msg/zh-hans.js"></script>
+  <script src="js/msg_bats/zh-hans.js"></script>
+  <script src="js/alertify.min.js"></script>
+  <script src="js/bats_code.js"></script>
+  
+  <style>
+    table { position: absolute; top: 0; bottom: 0; left: 0; right: 0; height:100%; width: 100%; }
+    #blocklyArea { height: 100%; }
+    #blocklyDiv { position: absolute; }
+    .toolBar { background: #006468; padding: 0.3em 0.4em; font-family: sans-serif; }
+    .btn { background: #4DB7BB; display: inline-block; height: 1.8em; line-height: 1.8em; padding: 0 0.5em; color: white; text-decoration: none; }
+    .btn:hover { background: #FFFFFF; color: #006468; }
+    .btn:active { background: #3DA7AB; }
+    .btn-rounded { border-radius: 1em; }
+  </style>
+</head>
+<body style="background: white;">
+  <table cellspacing="0">
+    <tr><td>
+      <div class="toolBar">
+        <a class="btn btn-rounded" href="#" onclick="javascript:batsInterop('build')">Build</a>
+        <a class="btn btn-rounded" href="#" onclick="javascript:batsInterop('debug')">Debug</a>
+        <a style="margin-left: 1em" class="btn" href="#" onclick="">New</a>
+        <a class="btn" href="#" onclick="">Open</a>
+        <a class="btn" href="#" onclick="">Save</a>
+        <a class="btn" href="#" onclick="">Save As</a>
+        <div style="float: right" class="showInEmbedBrowser">
+          <a class="btn" href="#" onclick="javascript:batsInterop('summonbrowser')">Open in Browser</a>
+          <a class="btn" href="#" onclick="javascript:batsInterop('exit')">Exit</a>
+        </div>
+      </div>
+    </td></tr>
+    <tr id="blocklyArea"><td><div id="blocklyDiv"></div></td></tr>
+  </table>
+</body>
+</html>
