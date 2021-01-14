@@ -13,10 +13,20 @@ var themeWithHat = Blockly.Theme.defineTheme('themeWithHat', {
   }
 });
 
-function batsInterop(cmdName) {
-  const xhr = new XMLHttpRequest();
-  xhr.open("GET", "/interop/"+cmdName);
-  xhr.send();
+function getQueryVariable(variable) {
+  var query = window.location.search.substring(1);
+  var vars = query.split('&');
+  for (var i = 0; i < vars.length; i++) {
+      var pair = vars[i].split('=');
+      if (decodeURIComponent(pair[0]) == variable) {
+          return decodeURIComponent(pair[1]);
+      }
+  }
+  return null;
+}
+
+function onWkspChange(e) {
+  
 }
 
 function batsInit(toolboxNode) {
@@ -24,45 +34,48 @@ function batsInit(toolboxNode) {
     alertify.prompt(msg, defaultValue, function(evt, value){callback(value)});
   }
   
-  var blocklyArea = document.getElementById('blocklyArea');
   var blocklyDiv = document.getElementById('blocklyDiv');
   window.workspace = Blockly.inject(blocklyDiv, {
     toolbox: toolboxNode,
     media: "media/",
-    grid: {spacing: 40, length: 3, colour: '#ccc', snap: true}
+    grid: {spacing: 40, length: 3, colour: '#ccc', snap: true},
+    maxInstances: {
+      "bve_hat_elapse": 1,
+      "bve_hat_initialize": 1,
+      "bve_hat_keydown_any": 1,
+      "bve_hat_keyup_any": 1,
+      "bve_hat_horn_blow": 1,
+      "bve_hat_door_change": 1,
+      "bve_hat_set_signal": 1,
+      "bve_hat_set_beacon": 1,
+      "bve_hat_load": 1,
+      "bve_hat_dispose": 1,
+    },
   });
   workspace.setTheme(themeWithHat);
-  var onresize = function(e) {
-    // Compute the absolute coordinates and dimensions of blocklyArea.
-    var element = blocklyArea;
-    var x = 0;
-    var y = 0;
-    do {
-      x += element.offsetLeft;
-      y += element.offsetTop;
-      element = element.offsetParent;
-    } while (element);
-    // Position blocklyDiv over blocklyArea.
-    blocklyDiv.style.left = x + 'px';
-    blocklyDiv.style.top = y + 'px';
-    blocklyDiv.style.width = blocklyArea.offsetWidth + 'px';
-    blocklyDiv.style.height = blocklyArea.offsetHeight + 'px';
-    Blockly.svgResize(workspace);
-  };
+  workspace.addChangeListener(onWkspChange);
+  var onresize = function(e) { Blockly.svgResize(workspace); };
   window.addEventListener('resize', onresize, false);
-  onresize();
   Blockly.svgResize(workspace);
-  
-  if (typeof afterBatsInit === undefined) { afterBatsInit(); }
 }
 
 window.addEventListener('load', function() {
   batsInit(document.getElementById("toolbox"));
-  return;
-  
-  const xhr2 = new XMLHttpRequest();
-  xhr2.onload = function(){batsInit(xhr2.responseXML.documentElement);};
-  xhr2.open("GET", "toolbox.xml");
-  xhr2.responseType = "document";
-  xhr2.send();
 });
+
+function batsWkspReset() {
+  workspace.clear();
+}
+
+function batsWkspSave() {
+  return Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(workspace));
+}
+
+function batsWkspLoad(xmlstr) {
+  workspace.clear();
+  Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xmlstr),workspace);
+}
+
+function batsWkspExportLua() {
+  return batsExportLua(workspace);
+}

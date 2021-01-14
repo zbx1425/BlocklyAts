@@ -23,18 +23,28 @@
   </script>
   <link rel="stylesheet" href="css/alertify.min.css" />
   <link rel="stylesheet" href="css/default.min.css" />
-  <script src="js/nanoajax.min.js"></script>
+
   <script src="js/blockly.min.js"></script>
-  <script src="js/blocks_bve.js"></script>
+  <script src="js/lua_compressed.js"></script>
   <script src="js/msg/zh-hans.js"></script>
+
+  <script src="js/blocks_bve.js"></script>
+  <script src="js/lua_generator_bve.js"></script>
   <script src="js/msg_bats/zh-hans.js"></script>
+
   <script src="js/alertify.min.js"></script>
   <script src="js/bats_code.js"></script>
   
   <style>
-    #blocklyArea { position: absolute; top: 0; bottom: 0; left: 0; right: 0; height:100%; width: 100%; }
-    #blocklyDiv { position: absolute; }
-    #overlay { background-color: #EEEEEE; position: absolute; z-index:100; right: 1em; font-family: sans-serif; }
+    body, html { margin: 0; padding: 0; }
+    #blocklyArea { width: 100%; height: 100vh; }
+    #blocklyDiv { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
+    #overlay { 
+      position: absolute; z-index:60; right: 1em; top: 1em; 
+      text-align: right; font-family: sans-serif; 
+      text-shadow: -1px -1px 0 #FFF, 1px -1px 0 #FFF, -1px 1px 0 #FFF, 1px 1px 0 #FFF;
+      pointer-events:none;
+    }
   </style>
 </head>
 <body style="background: white;">
@@ -45,24 +55,98 @@
         "<b>Please download the CEFSharp component as an alternative</b>, <br>" +
         "or install Internet Explorer 11 (not recommended though).</p>");
     } else {
-      document.write('<div id="overlay">' + (ie>10000 ? "Webkit" : "IE"+ie) + '</div>');
+      var ver = getQueryVariable("ver");
+      document.write(
+        '<div id="overlay">BlocklyATS &copy; zbx1425<br>' + 
+        ((ver != null) ? ('v' + ver + ", ") : "") +
+        (ie>10000 ? "Modern" : "IE"+ie) + 
+        '</div>'
+      );
     }
   </script>
   <xml id="toolbox" style="display: none">
     <category id="catBveEvent" colour="240" name="%{BKY_BVE_CAT_EVENT}">
-      <block type="bve_elapse"></block>
+      <label text="%{BKY_BVE_MSG_HAT_SINGLETON}"></label>
+      <sep gap="8"></sep>
+      <block type="bve_hat_elapse"></block>
+      <block type="bve_hat_initialize"></block>
+      <block type="bve_hat_keydown_any"></block>
+      <block type="bve_hat_keyup_any"></block>
+      <block type="bve_hat_horn_blow"></block>
+      <block type="bve_hat_door_change"></block>
+      <block type="bve_hat_set_signal"></block>
+      <block type="bve_hat_set_beacon"></block>
+      <block type="bve_hat_load"></block>
+      <block type="bve_hat_dispose"></block>
     </category>
-    <category id="catBveFunction" colour="240" name="%{BKY_BVE_CAT_FUNCTION}">
+    <category id="catBveCommon" colour="240" name="%{BKY_BVE_CAT_COMMON}">
+      <label text="%{BKY_BVE_MSG_NULL_LOAD}"></label>
+      <sep gap="8"></sep>
       <block type="bve_vehicle_spec"></block>
+      <label text="%{BKY_BVE_MSG_NULL_LOAD_INIT}"></label>
+      <sep gap="8"></sep>
       <block type="bve_location"></block>
       <block type="bve_speed"></block>
       <block type="bve_time"></block>
       <block type="bve_vehicle_state"></block>
       <block type="bve_get_handle"></block>
+      <block type="bve_get_key">
+        <value name="KEY_TYPE">
+          <shadow type="bve_key"></shadow>
+        </value>
+      </block>
+      <block type="bve_get_door"></block>
+      <sep gap="40"></sep>
+      <label text="%{BKY_BVE_MSG_ELAPSE_ONLY}"></label>
+      <sep gap="8"></sep>
       <block type="bve_set_handle"></block>
+      <block type="bve_set_panel"></block>
+      <block type="bve_get_panel"></block>
+      <block type="bve_sound_stop"></block>
+      <block type="bve_sound_play_once"></block>
+      <block type="bve_sound_play_loop">
+        <value name="VOLUME">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="bve_set_sound_internal"></block>
+      <block type="bve_get_sound_internal"></block>
+    </category>
+    <category id="catBveSpecialize" colour="240" name="%{BKY_BVE_CAT_SPECIALIZE}">
+      <label text="%{BKY_BVE_MSG_INIT_ONLY}"></label>
+      <sep gap="8"></sep>
+      <block type="bve_init_mode"></block>
+      <sep gap="40"></sep>
+      <label text="%{BKY_BVE_MSG_KEY_ANY_ONLY}"></label>
+      <sep gap="8"></sep>
+      <block type="bve_updown_key"></block>
+      <block type="bve_key"></block>
+      <sep gap="40"></sep>
+      <label text="%{BKY_BVE_MSG_BLOW_HORN_ONLY}"></label>
+      <sep gap="8"></sep>
+      <block type="bve_horn_blew"></block>
+      <block type="bve_horn"></block>
+      <sep gap="40"></sep>
+      <label text="%{BKY_BVE_MSG_SET_SIGNAL_ONLY}"></label>
+      <sep gap="8"></sep>
+      <block type="bve_signal_aspect"></block>
+      <sep gap="40"></sep>
+      <label text="%{BKY_BVE_MSG_SET_BEACON_ONLY}"></label>
+      <sep gap="8"></sep>
+      <block type="bve_get_beacon"></block>
+      <sep gap="40"></sep>
+      <label text="%{BKY_BVE_MSG_NO_LIMIT}"></label>
+      <sep gap="8"></sep>
+      <block type="bve_config_load"></block>
+      <block type="bve_get_config"></block>
+      <block type="bve_get_config_default"></block>
+      <block type="bve_set_config"></block>
+      <block type="bve_config_save"></block>
     </category>
     <sep></sep>
-    <category id="catLogic" colour="210" name="Logic">
+    <category id="catLogic" colour="210" name="%{BKY_CAT_LOGIC}">
       <block type="controls_if"></block>
       <block type="logic_compare"></block>
       <block type="logic_operation"></block>
@@ -71,7 +155,7 @@
       <block type="logic_null"></block>
       <block type="logic_ternary"></block>
     </category>
-    <category id="catLoops" colour="120" name="Loops">
+    <category id="catLoops" colour="120" name="%{BKY_CAT_LOOP}">
       <block type="controls_repeat_ext">
         <value name="TIMES">
           <shadow type="math_number">
@@ -100,7 +184,7 @@
       <block type="controls_forEach"></block>
       <block type="controls_flow_statements"></block>
     </category>
-    <category id="catMath" colour="230" name="Math">
+    <category id="catMath" colour="230" name="%{BKY_CAT_MATH}">
       <block type="math_number"></block>
       <block type="math_arithmetic">
         <value name="A">
@@ -194,7 +278,7 @@
       </block>
       <block type="math_random_float"></block>
     </category>
-    <category id="catText" colour="160" name="Text">
+    <category id="catText" colour="160" name="%{BKY_CAT_TEXT}">
       <block type="text"></block>
       <block type="text_join"></block>
       <block type="text_append">
@@ -256,22 +340,8 @@
           </shadow>
         </value>
       </block>
-      <block type="text_print">
-        <value name="TEXT">
-          <shadow type="text">
-            <field name="TEXT">abc</field>
-          </shadow>
-        </value>
-      </block>
-      <block type="text_prompt_ext">
-        <value name="TEXT">
-          <shadow type="text">
-            <field name="TEXT">abc</field>
-          </shadow>
-        </value>
-      </block>
     </category>
-    <category id="catLists" colour="260" name="Lists">
+    <category id="catLists" colour="260" name="%{BKY_CAT_LIST}">
       <block type="lists_create_with">
         <mutation items="0"></mutation>
       </block>
@@ -322,47 +392,9 @@
       </block>
       <block type="lists_sort"></block>
     </category>
-    <category id="catColour" colour="20" name="Color">
-      <block type="colour_picker"></block>
-      <block type="colour_random"></block>
-      <block type="colour_rgb">
-        <value name="RED">
-          <shadow type="math_number">
-            <field name="NUM">100</field>
-          </shadow>
-        </value>
-        <value name="GREEN">
-          <shadow type="math_number">
-            <field name="NUM">50</field>
-          </shadow>
-        </value>
-        <value name="BLUE">
-          <shadow type="math_number">
-            <field name="NUM">0</field>
-          </shadow>
-        </value>
-      </block>
-      <block type="colour_blend">
-        <value name="COLOUR1">
-          <shadow type="colour_picker">
-            <field name="COLOUR">#ff0000</field>
-          </shadow>
-        </value>
-        <value name="COLOUR2">
-          <shadow type="colour_picker">
-            <field name="COLOUR">#3333ff</field>
-          </shadow>
-        </value>
-        <value name="RATIO">
-          <shadow type="math_number">
-            <field name="NUM">0.5</field>
-          </shadow>
-        </value>
-      </block>
-    </category>
     <sep></sep>
-    <category id="catVariables" colour="330" custom="VARIABLE" name="Variables"></category>
-    <category id="catFunctions" colour="290" custom="PROCEDURE" name="Functions"></category>
+    <category id="catVariables" colour="330" custom="VARIABLE" name="%{BKY_CAT_VARIABLE}"></category>
+    <category id="catFunctions" colour="290" custom="PROCEDURE" name="%{BKY_CAT_FUNCTION}"></category>
   </xml>
   <div id="blocklyArea"><td><div id="blocklyDiv"></div></div>
 </body>
