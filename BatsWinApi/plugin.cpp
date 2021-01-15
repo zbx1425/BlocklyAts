@@ -2,18 +2,7 @@
 #include "framework.h"
 #include "plugin.h"
 
-#pragma comment(lib, "delayimp")
-
-#if defined(_WIN64)
-#pragma comment (lib, "lua64/lua54.lib")
-#elif defined(_WIN32)
-#pragma comment (lib, "lua32/lua54.lib")
-#endif
-
 lua_State *L = NULL;
-
-char selfPath[MAX_PATH];
-char programPath[MAX_PATH];
 
 ATS_VEHICLESPEC vSpec;
 int phPower, phBrake, phReverser;
@@ -73,6 +62,16 @@ static int l_sound_getset(lua_State *L) {
 	}
 }
 
+static int l_msgbox(lua_State *L) {
+	const char* msg = luaL_checkstring(L, 1);
+	MessageBoxA(NULL, msg, "BlocklyATS Message", MB_ICONINFORMATION);
+	return 0;
+}
+
+
+char dllPath[2048], programPath[2048], buffer[4096];
+DWORD read; char* luaCode;
+
 ATS_API void WINAPI Load() {
 	HMODULE hm = NULL;
 
@@ -81,21 +80,67 @@ ATS_API void WINAPI Load() {
 		MessageBoxA(NULL, "GetModuleHandle failed, ATS plugin cannot load", "BlocklyATS Error", MB_ICONERROR);
 		return;
 	}
-	if (GetModuleFileNameA(hm, selfPath, sizeof(selfPath)) == 0) {
+	if (GetModuleFileNameA(hm, dllPath, sizeof(dllPath)) == 0) {
 		MessageBoxA(NULL, "GetModuleFileName failed, ATS plugin cannot load", "BlocklyATS Error", MB_ICONERROR);
 		return;
 	}
+
+	HANDLE hFile = CreateFileA(dllPath, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	if (INVALID_HANDLE_VALUE == hFile) {
+		MessageBoxA(NULL, "CreateFileA failed, ATS plugin cannot load", "BlocklyATS Error", MB_ICONERROR);
+		return;
+	}
+	ReadFile(hFile, buffer, sizeof(buffer), &read, NULL);
+	IMAGE_DOS_HEADER* dosheader = (IMAGE_DOS_HEADER*)buffer;
+	IMAGE_NT_HEADERS32* header = (IMAGE_NT_HEADERS32*)(buffer + dosheader->e_lfanew);
+	if (dosheader->e_magic != IMAGE_DOS_SIGNATURE || header->Signature != IMAGE_NT_SIGNATURE) {
+		CloseHandle(hFile);
+		MessageBoxA(NULL, "PE header malformed, ATS plugin cannot load", "BlocklyATS Error", MB_ICONERROR);
+		return;
+	}
+
+	IMAGE_SECTION_HEADER* sectiontable = (IMAGE_SECTION_HEADER*)((BYTE*)header + sizeof(IMAGE_NT_HEADERS32));
+	DWORD maxpointer = 0, exesize = 0;
+	for (int i = 0; i < header->FileHeader.NumberOfSections; i++) {
+		if (sectiontable->PointerToRawData > maxpointer) {
+			maxpointer = sectiontable->PointerToRawData;
+			exesize = sectiontable->PointerToRawData + sectiontable->SizeOfRawData;
+		}
+		sectiontable++;
+	}
+
+	DWORD filesize = GetFileSize(hFile, NULL);
+	if (filesize - exesize <= 0) {
+		CloseHandle(hFile);
+		MessageBoxA(NULL, "Cannot locate PE terminal offset, ATS plugin cannot load", "BlocklyATS Error", MB_ICONERROR);
+		return;
+	}
+	SetFilePointer(hFile, exesize, NULL, FILE_BEGIN);
+	luaCode = new char[filesize - exesize + 1];
+	ReadFile(hFile, luaCode, filesize - exesize, &read, NULL);
+	CloseHandle(hFile);
+
+	// I knew I should've used bytecode, but then
+	// 1. it'll be more difficult to compile on Mono, because you'll need to ship luac with different arch
+	// 2. I couldn't get it to work, don't know exactly why
+	// So there is an very easy xor obfuscation, to prevent retarded people from stealing code
+	char confusion[] = { 0x11, 0x45, 0x14, 0x19, 0x19, 0x81, 0x14, 0x25 };
+	for (int i = 0; i < filesize - exesize; i++) luaCode[i] ^= confusion[i%8];
 
 	L = luaL_newstate();
 	luaL_openlibs(L);
 
 	l_setglobalF("__atsfnc_panel", l_panel_getset);
 	l_setglobalF("__atsfnc_sound", l_sound_getset);
+	l_setglobalF("__atsfnc_msgbox", l_msgbox);
 
-	*(strrchr(selfPath, '\\') + 1) = 0;
-	sprintf_s(programPath, "%s\\program.lua", selfPath);
+	*(strrchr(dllPath, '\\') + 1) = 0;
+	l_setglobalS("__atsval_dlldir", dllPath);
+	//sprintf_s(programPath, "%s\\program.lua", dllPath);
 
-	if (luaL_dofile(L, programPath) != 0) {
+	int error = luaL_loadbuffer(L, luaCode, filesize - exesize, "bats") || lua_pcall(L, 0, LUA_MULTRET, 0);
+
+	if (error) {
 		l_printerr();
 	} else {
 		lua_getglobal(L, "__atsapi_load");
@@ -151,7 +196,9 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	lua_pushinteger(L, 2);
 	if (lua_pcall(L, 4, 4, 0) != 0) {
 		l_printerr();
-		return { phBrake, phPower, phReverser, 2 };
+		// Apply emergency brake
+		// Lt's hope it'll get the plugin out of the error state by chance
+		return { vSpec.BrakeNotches + 1, 0, 1, 2 };
 	} else {
 		ATS_HANDLES result;
 		result.Power = lua_tointeger(L, -4);

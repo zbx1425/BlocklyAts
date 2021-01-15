@@ -41,6 +41,9 @@ Blockly.Lua.addReservedWords([
   "__atsarg_type",
   "__atsfnc_panel",
   "__atsfnc_sound",
+  "__atsfnc_msgbox",
+  "__atsval_config",
+  "__atsval_dlldir",
   "__bve_edBcPressure",
   "__bve_edBpPressure",
   "__bve_edCurrent",
@@ -58,6 +61,7 @@ Blockly.Lua.addReservedWords([
   "__bve_vsBrakeNotches",
   "__bve_vsCars",
   "__bve_vsPowerNotches",
+  "LIP",
 ].join(","));
 
 function batsExportLua(workspace) {
@@ -65,7 +69,9 @@ function batsExportLua(workspace) {
 
   var allHats = ["bve_hat_elapse", "bve_hat_initialize", "bve_hat_keydown_any", "bve_hat_keyup_any", "bve_hat_horn_blow", 
     "bve_hat_door_change", "bve_hat_set_signal", "bve_hat_set_beacon", "bve_hat_load", "bve_hat_dispose"];
-  var code = "__bve_keystate={false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false}\n__bve_doorstate=0\n";
+  var code = "local LIP={}function LIP.load(b)assert(type(b)=='string','Parameter \"fileName\" must be a string.')local c=assert(io.open(b,'r'),'Error loading file : '..b)local d={}local e;for f in c:lines()do local g=f:match('^%[([^%[%]]+)%]$')if g then e=tonumber(g)and tonumber(g)or g;d[e]=d[e]or{}end;local h,i=f:match('^([%w|_]+)%s-=%s-(.+)$')if h and i~=nil then if tonumber(i)then i=tonumber(i)elseif i=='true'then i=true elseif i=='false'then i=false end;if tonumber(h)then h=tonumber(h)end;d[e][h]=i end end;c:close()return d end;function LIP.save(b,d)assert(type(b)=='string','Parameter \"fileName\" must be a string.')assert(type(d)=='table','Parameter \"data\" must be a table.')local c=assert(io.open(b,'w+b'),'Error loading file :'..b)local j=''for e,h in pairs(d)do j=j..('[%s]\\n'):format(e)for k,i in pairs(h)do j=j..('%s=%s\\n'):format(k,tostring(i))end;j=j..'\\n'end;c:write(j)c:close()end\n" + 
+    "__bve_keystate={false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false}\n" + 
+    "__bve_doorstate=0\n";
   var blocks = workspace.getTopBlocks(false);
   for (var i = 0, block; block = blocks[i]; i++) {
     if (block.type.startsWith("bve_hat")) {
@@ -195,17 +201,34 @@ Blockly.Lua.bve_get_beacon=function(block){
   return ["__atsarg_" + block.getFieldValue("FIELD_SEL").toLowerCase(), Blockly.Lua.ORDER_ATOMIC];
 }
 Blockly.Lua.bve_config_load=function(block){
-
+  return "__atsval_config = LIP.load(__atsval_dlldir .. " + Blockly.Lua.quote_("\\" + block.getFieldValue("PATH")) + ")\n";
 }
 Blockly.Lua.bve_config_save=function(block){
-
+  return "LIP.save(__atsval_dlldir .. " + Blockly.Lua.quote_("\\" + block.getFieldValue("PATH")) + ", __atsval_config)\n";
 }
 Blockly.Lua.bve_get_config=function(block){
-
+  return ["__atsval_config." + block.getFieldValue("PART") + "." + block.getFieldValue("KEY"), Blockly.Lua.ORDER_ATOMIC];
 }
-Blockly.Lua.bve_get_config_default=function(block){
-
+Blockly.Lua.bve_get_config_default_num=function(block){
+  return [
+    "((__atsval_config." + block.getFieldValue("PART") + "." + block.getFieldValue("KEY") + " ~= nil) and {"
+    + "__atsval_config." + block.getFieldValue("PART") + "." + block.getFieldValue("KEY") + "} or {"
+    + block.getFieldValue("DEFAULT_VAL") + "})[1]",
+    Blockly.Lua.ORDER_ATOMIC
+  ];
+}
+Blockly.Lua.bve_get_config_default_text=function(block){
+  return [
+    "((__atsval_config." + block.getFieldValue("PART") + "." + block.getFieldValue("KEY") + " ~= nil) and {"
+    + "__atsval_config." + block.getFieldValue("PART") + "." + block.getFieldValue("KEY") + "} or {"
+    + Blockly.Lua.quote_("\\" + block.getFieldValue("PATH")) + "})[1]",
+    Blockly.Lua.ORDER_ATOMIC
+  ];
 }
 Blockly.Lua.bve_set_config=function(block){
-
+  return "__atsval_config." + block.getFieldValue("PART") + "." + block.getFieldValue("KEY") + " = "
+    + (Blockly.Lua.valueToCode(block, "VALUE", Blockly.Lua.ORDER_NONE) || "\"\"") + "\n";;
+}
+Blockly.Lua.bve_msgbox=function(block){
+  return "__atsfnc_msgbox(" + (Blockly.Lua.valueToCode(block, "MSG", Blockly.Lua.ORDER_NONE) || "\"\"") + ")\n";;
 }

@@ -26,11 +26,11 @@
 
   <script src="js/blockly.min.js"></script>
   <script src="js/lua_compressed.js"></script>
-  <script src="js/msg/zh-hans.js"></script>
+  <script src="js/msg/en.js"></script>
 
   <script src="js/blocks_bve.js"></script>
   <script src="js/lua_generator_bve.js"></script>
-  <script src="js/msg_bats/zh-hans.js"></script>
+  <script src="js/msg_bats/en.js"></script>
 
   <script src="js/alertify.min.js"></script>
   <script src="js/bats_code.js"></script>
@@ -141,9 +141,20 @@
       <sep gap="8"></sep>
       <block type="bve_config_load"></block>
       <block type="bve_get_config"></block>
-      <block type="bve_get_config_default"></block>
+      <!-- Implementing default value is trickier than I thought.
+      <block type="bve_get_config_default_num"></block>
+      <block type="bve_get_config_default_text"></block>
+      -->
       <block type="bve_set_config"></block>
       <block type="bve_config_save"></block>
+      <sep gap="40"></sep>
+      <block type="bve_msgbox">
+        <value name="MSG">
+          <shadow type="text">
+            <field name="TEXT">Hello World!</field>
+          </shadow>
+        </value>
+      </block>
     </category>
     <sep></sep>
     <category id="catLogic" colour="210" name="%{BKY_CAT_LOGIC}">

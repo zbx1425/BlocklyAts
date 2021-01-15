@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CefBrowser.cs" />
+    <Compile Include="CompilerFunction.cs" />
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>

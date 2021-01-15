@@ -94,12 +94,15 @@ Blockly.Msg["BVE_MSG_SET_BEACON_ONLY"]="以下只可在'收到应答器'时使�
 
 Blockly.Msg["BVE_CONFIG_LOAD"]="读取配置文件 %1";
 Blockly.Msg["BVE_GET_CONFIG"]="配置项 [%1]%2";
-Blockly.Msg["BVE_GET_CONFIG_DEFAULT"]="配置项 [%1]%2 默认值 %3";
+Blockly.Msg["BVE_GET_CONFIG_DEFAULT_NUM"]="配置项 [%1]%2 默认数值 %3";
+Blockly.Msg["BVE_GET_CONFIG_DEFAULT_TEXT"]="配置项 [%1]%2 默认文字 %3";
 Blockly.Msg["BVE_SET_CONFIG"]="设定配置项 [%1]%2 为 %3";
 Blockly.Msg["BVE_CONFIG_SAVE"]="保存配置到文件 %1";
 Blockly.Msg["BVE_PLACEHOLDER_PATH"]="自己起个名字.ini";
 Blockly.Msg["BVE_PLACEHOLDER_PART"]="部分名称";
 Blockly.Msg["BVE_PLACEHOLDER_KEY"]="键值名称";
+
+Blockly.Msg["BVE_MSGBOX"]="弹窗 %1";
 
 Blockly.Msg["CAT_LOGIC"]="逻辑";
 Blockly.Msg["CAT_LOOP"]="循环";
