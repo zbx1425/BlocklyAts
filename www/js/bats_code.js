@@ -79,3 +79,7 @@ function batsWkspLoad(xmlstr) {
 function batsWkspExportLua() {
   return batsExportLua(workspace);
 }
+
+function batsWkspExportCSharp() {
+  return batsExportCSharp(workspace);
+}

@@ -27,13 +27,14 @@ namespace BlocklyATS {
             this.mainToolStrip = new System.Windows.Forms.ToolStrip();
             this.tsbtnNew = new System.Windows.Forms.ToolStripButton();
             this.tsbtnOpen = new System.Windows.Forms.ToolStripButton();
+            this.tsbtnSave = new System.Windows.Forms.ToolStripButton();
             this.tsbtnSaveAs = new System.Windows.Forms.ToolStripButton();
             this.tss1 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbtnDebugWindow = new System.Windows.Forms.ToolStripButton();
             this.tsbtnCompile = new System.Windows.Forms.ToolStripButton();
             this.tsbtnCompileRun = new System.Windows.Forms.ToolStripButton();
             this.tsbtnCompileSetting = new System.Windows.Forms.ToolStripButton();
-            this.tsbtnSave = new System.Windows.Forms.ToolStripButton();
+            this.tsbtnAbout = new System.Windows.Forms.ToolStripButton();
+            this.tsbtnDebugWindow = new System.Windows.Forms.ToolStripButton();
             this.mainToolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -50,6 +51,7 @@ namespace BlocklyATS {
             this.tsbtnCompile,
             this.tsbtnCompileRun,
             this.tsbtnCompileSetting,
+            this.tsbtnAbout,
             this.tsbtnDebugWindow});
             this.mainToolStrip.Location = new System.Drawing.Point(0, 0);
             this.mainToolStrip.Name = "mainToolStrip";
@@ -80,6 +82,17 @@ namespace BlocklyATS {
             this.tsbtnOpen.Text = "Open";
             this.tsbtnOpen.Click += new System.EventHandler(this.tsbtnOpen_Click);
             // 
+            // tsbtnSave
+            // 
+            this.tsbtnSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbtnSave.Image = ((System.Drawing.Image)(resources.GetObject("tsbtnSave.Image")));
+            this.tsbtnSave.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.tsbtnSave.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbtnSave.Name = "tsbtnSave";
+            this.tsbtnSave.Size = new System.Drawing.Size(23, 22);
+            this.tsbtnSave.Text = "Save";
+            this.tsbtnSave.Click += new System.EventHandler(this.tsbtnSave_Click);
+            // 
             // tsbtnSaveAs
             // 
             this.tsbtnSaveAs.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -96,17 +109,6 @@ namespace BlocklyATS {
             this.tss1.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.tss1.Name = "tss1";
             this.tss1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // tsbtnDebugWindow
-            // 
-            this.tsbtnDebugWindow.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.tsbtnDebugWindow.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbtnDebugWindow.Image = ((System.Drawing.Image)(resources.GetObject("tsbtnDebugWindow.Image")));
-            this.tsbtnDebugWindow.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbtnDebugWindow.Margin = new System.Windows.Forms.Padding(0, 1, 10, 2);
-            this.tsbtnDebugWindow.Name = "tsbtnDebugWindow";
-            this.tsbtnDebugWindow.Size = new System.Drawing.Size(23, 22);
-            this.tsbtnDebugWindow.Text = "Debug Window";
             // 
             // tsbtnCompile
             // 
@@ -126,6 +128,7 @@ namespace BlocklyATS {
             this.tsbtnCompileRun.Name = "tsbtnCompileRun";
             this.tsbtnCompileRun.Size = new System.Drawing.Size(23, 22);
             this.tsbtnCompileRun.Text = "Compile and Run";
+            this.tsbtnCompileRun.Click += new System.EventHandler(this.tsbtnCompileRun_Click);
             // 
             // tsbtnCompileSetting
             // 
@@ -135,17 +138,31 @@ namespace BlocklyATS {
             this.tsbtnCompileSetting.Name = "tsbtnCompileSetting";
             this.tsbtnCompileSetting.Size = new System.Drawing.Size(23, 22);
             this.tsbtnCompileSetting.Text = "Compile Settings";
+            this.tsbtnCompileSetting.Click += new System.EventHandler(this.tsbtnCompileSetting_Click);
             // 
-            // tsbtnSave
+            // tsbtnAbout
             // 
-            this.tsbtnSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbtnSave.Image = ((System.Drawing.Image)(resources.GetObject("tsbtnSave.Image")));
-            this.tsbtnSave.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.tsbtnSave.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbtnSave.Name = "tsbtnSave";
-            this.tsbtnSave.Size = new System.Drawing.Size(23, 22);
-            this.tsbtnSave.Text = "Save";
-            this.tsbtnSave.Click += new System.EventHandler(this.tsbtnSave_Click);
+            this.tsbtnAbout.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tsbtnAbout.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbtnAbout.Image = ((System.Drawing.Image)(resources.GetObject("tsbtnAbout.Image")));
+            this.tsbtnAbout.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbtnAbout.Margin = new System.Windows.Forms.Padding(0, 1, 10, 2);
+            this.tsbtnAbout.Name = "tsbtnAbout";
+            this.tsbtnAbout.Size = new System.Drawing.Size(23, 22);
+            this.tsbtnAbout.Text = "About BlocklyATS";
+            this.tsbtnAbout.Click += new System.EventHandler(this.tsbtnAbout_Click);
+            // 
+            // tsbtnDebugWindow
+            // 
+            this.tsbtnDebugWindow.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tsbtnDebugWindow.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbtnDebugWindow.Image = ((System.Drawing.Image)(resources.GetObject("tsbtnDebugWindow.Image")));
+            this.tsbtnDebugWindow.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbtnDebugWindow.Margin = new System.Windows.Forms.Padding(0, 1, 4, 2);
+            this.tsbtnDebugWindow.Name = "tsbtnDebugWindow";
+            this.tsbtnDebugWindow.Size = new System.Drawing.Size(23, 22);
+            this.tsbtnDebugWindow.Text = "Debug Window";
+            this.tsbtnDebugWindow.Click += new System.EventHandler(this.tsbtnDebugWindow_Click);
             // 
             // FormMain
             // 
@@ -177,6 +194,7 @@ namespace BlocklyATS {
         private System.Windows.Forms.ToolStripButton tsbtnCompileRun;
         private System.Windows.Forms.ToolStripButton tsbtnCompileSetting;
         private System.Windows.Forms.ToolStripButton tsbtnSave;
+        private System.Windows.Forms.ToolStripButton tsbtnAbout;
     }
 }
 

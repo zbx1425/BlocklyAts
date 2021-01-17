@@ -1,0 +1,24 @@
+Built on Blockly
+Blockly is a library from Google for building beginner-friendly block-based programming languages.
+Licensed under the Apache License, Version 2.0.
+https://developers.google.com/blockly
+
+C# code generator: blockly-generator-csharp
+Generate C# code from Blockly blocks.
+Copyright © 2013-2014 City Index Ltd. Licensed under the Apache License, Version 2.0.
+https://github.com/cityindex/blockly-generator-csharp
+
+Win32 dll script interpreter: Lua
+Lua is a powerful, efficient, lightweight, embeddable scripting language.
+Copyright © 1994–2019 Lua.org. Distributed under the terms of the MIT license.
+https://www.lua.org/
+
+INI file parsing: LIP - Lua INI Parser
+Lua INI Parser is a tiny Lua library allowing to handle .ini files.
+Copyright © Carreras Nicolas. This project is under MIT Licence.
+https://github.com/Dynodzzo/Lua_INI_Parser
+
+Webpage dialog: AlertifyJS
+AlertifyJS is a javascript framework for developing pretty browser dialogs and notifications.
+Licensed under GPL 3.0.
+https://alertifyjs.com/

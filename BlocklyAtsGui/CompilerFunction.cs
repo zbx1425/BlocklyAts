@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.CodeDom.Compiler;
+using Microsoft.CSharp;
 
 namespace BlocklyATS {
 
@@ -15,7 +17,7 @@ namespace BlocklyATS {
 
         public static string appDir = Path.GetDirectoryName(Application.ExecutablePath);
 
-        private static Task WaitForExitAsync(this Process process, CancellationToken cancellationToken = default(CancellationToken)) {
+        public static Task WaitForExitAsync(this Process process, CancellationToken cancellationToken = default(CancellationToken)) {
             if (process.HasExited) return Task.CompletedTask;
 
             var tcs = new TaskCompletionSource<object>();
@@ -27,7 +29,7 @@ namespace BlocklyATS {
             return process.HasExited ? Task.CompletedTask : tcs.Task;
         }
 
-        public static async Task CompileLua(string luaScript, string outputPath, string arch) {
+        public static async Task CompileLua(string script, string outputPath, string arch) {
             /*var proc = new Process {
                 StartInfo = new ProcessStartInfo {
                     FileName = Path.Combine(appDir, "bin", "luac" + arch + ".exe"),
@@ -57,7 +59,7 @@ namespace BlocklyATS {
             await boilerplateStream.CopyToAsync(outStream);
             //await proc.StandardOutput.BaseStream.CopyToAsync(outStream);
             byte[] confusion = { 0x11, 0x45, 0x14, 0x19, 0x19, 0x81, 0x14, 0x25 };
-            byte[] srcCode = Encoding.UTF8.GetBytes(luaScript);
+            byte[] srcCode = Encoding.UTF8.GetBytes(script);
             for (int i = 0; i < srcCode.Length; i++) srcCode[i] ^= confusion[i % 8];
             await outStream.WriteAsync(srcCode, 0, srcCode.Length);
             boilerplateStream.Close();
@@ -73,6 +75,32 @@ namespace BlocklyATS {
             } else if (File.Exists(Path.Combine(Path.GetDirectoryName(outputPath), luabin))) {
                 File.Delete(Path.Combine(Path.GetDirectoryName(outputPath), luabin));
             }*/
+        }
+
+        public static void CompileCSharp(string script, string outputPath) {
+            CSharpCodeProvider codeProvider = new CSharpCodeProvider();
+            CompilerParameters parameters = new CompilerParameters() {
+                IncludeDebugInformation = false,
+                GenerateExecutable = false,
+                OutputAssembly = outputPath
+            };
+            string[] assemblies = {
+                "System", "System.Core", "System.Data", "mscorlib",
+                "Microsoft.CSharp", "System.Windows.Forms",
+                Path.Combine(appDir, "bin", "OpenBveApi")
+            };
+
+            foreach (string a in assemblies) {
+                parameters.ReferencedAssemblies.Add(a + ".dll");
+            }
+            CompilerResults results = codeProvider.CompileAssemblyFromSource(parameters, script);
+            if (results.Errors.HasErrors) {
+                StringBuilder sb = new StringBuilder();
+                foreach (CompilerError error in results.Errors) {
+                    sb.AppendLine(error.ToString());
+                }
+                throw new Exception(sb.ToString());
+            }
         }
     }
 }

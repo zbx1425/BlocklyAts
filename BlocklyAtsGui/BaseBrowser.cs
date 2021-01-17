@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace BlocklyATS {
 
@@ -26,6 +27,9 @@ namespace BlocklyATS {
         }
 
         public static BaseBrowser AcquireInstance(string url = "about:blank") {
+#if MONO
+            return new WinformBrowser(url);
+#else
             var CEFAvailable = File.Exists(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath),
                 "x86", "CefSharp.dll"));
             if (CEFAvailable) {
@@ -33,6 +37,7 @@ namespace BlocklyATS {
             } else {
                 return new WinformBrowser(url);
             }
+#endif
         }
 
         public static string EscapeJsString(string s) {
@@ -77,16 +82,23 @@ namespace BlocklyATS {
             InvokeScript("batsWkspReset();");
         }
 
-        public string BkySaveWorkspace() {
-            return InvokeScript("batsWkspSave();").ToString();
+        public XElement BkySaveWorkspace() {
+            var element = XElement.Parse(InvokeScript("batsWkspSave();").ToString());
+            element.RemoveAttributes();
+            return element;
         }
 
-        public void BkyLoadWorkspace(string bkyxml) {
-            InvokeScript(string.Format("batsWkspLoad('{0}');", EscapeJsString(bkyxml)));
+        public void BkyLoadWorkspace(XElement bkyxml) {
+            var arg = EscapeJsString(bkyxml.ToString(SaveOptions.DisableFormatting));
+            InvokeScript(string.Format("batsWkspLoad('{0}');", arg));
         }
 
         public string BkyExportLua() {
             return InvokeScript("batsWkspExportLua();").ToString();
+        }
+
+        public string BkyExportCSharp() {
+            return InvokeScript("batsWkspExportCSharp();").ToString();
         }
     }
 }

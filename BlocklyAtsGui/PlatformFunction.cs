@@ -14,7 +14,21 @@ namespace BlocklyATS {
 
         static readonly string featureControlRegKey = @"Software\Microsoft\Internet Explorer\Main\FeatureControl\";
 
+        public static bool IsWindows() {
+            switch (Environment.OSVersion.Platform) {
+                case PlatformID.Win32NT:
+                case PlatformID.Win32S:
+                case PlatformID.Win32Windows:
+                case PlatformID.WinCE:
+                case PlatformID.Xbox:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
         public static void SetWebBrowserFeatures() {
+            if (!IsWindows()) return;
             // don't change the registry if running in-proc inside Visual Studio
             if (LicenseManager.UsageMode != LicenseUsageMode.Runtime) return;
 
@@ -35,6 +49,7 @@ namespace BlocklyATS {
         }
 
         public static void UnsetWebBrowserFeatures() {
+            if (!IsWindows()) return;
             // don't change the registry if running in-proc inside Visual Studio
             if (LicenseManager.UsageMode != LicenseUsageMode.Runtime) return;
 
@@ -55,6 +70,7 @@ namespace BlocklyATS {
         }
 
         private static UInt32 GetBrowserEmulationMode() {
+            if (!IsWindows()) return 11000;
             int browserVersion = 0;
             using (var ieKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Internet Explorer",
                 RegistryKeyPermissionCheck.ReadSubTree,

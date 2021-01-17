@@ -1,0 +1,99 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace BlocklyATS {
+    public partial class FormCompilerConfig : Form {
+
+        public CompilerConfig Config {
+            get {
+                return new CompilerConfig {
+                    ShouldCompilex86 = cbShouldx86.Checked,
+                    ShouldCompilex64 = cbShouldx64.Checked,
+                    ShouldCompileAnyCpu = cbShouldAny.Checked,
+                    CompilePathx86 = cbCustomx86.Checked ? tbx86.Text : null,
+                    CompilePathx64 = cbCustomx64.Checked ? tbx64.Text : null,
+                    CompilePathAnyCpu = cbCustomAny.Checked ? tbAny.Text : null,
+                    GamePath = cbCustomGamePath.Checked ? tbGamePath.Text : null,
+                    GameArgs = !string.IsNullOrEmpty(tbGameArgs.Text) ? tbGameArgs.Text : null
+                };
+            }
+            set {
+                cbShouldx86.Checked = value.ShouldCompilex86;
+                cbShouldx64.Checked = value.ShouldCompilex64;
+                cbShouldAny.Checked = value.ShouldCompileAnyCpu;
+                cbCustomx86.Checked = !string.IsNullOrEmpty(value.CompilePathx86);
+                cbCustomx64.Checked = !string.IsNullOrEmpty(value.CompilePathx64);
+                cbCustomAny.Checked = !string.IsNullOrEmpty(value.CompilePathAnyCpu);
+                cbCustomGamePath.Checked = !string.IsNullOrEmpty(value.GamePath);
+                tbx86.Text = value.CompilePathx86;
+                tbx64.Text = value.CompilePathx64;
+                tbAny.Text = value.CompilePathAnyCpu;
+                tbGamePath.Text = value.GamePath;
+                tbGameArgs.Text = value.GameArgs;
+                cbShould_CheckedChanged(cbShouldx86, null);
+                cbShould_CheckedChanged(cbShouldx64, null);
+                cbShould_CheckedChanged(cbShouldAny, null);
+                cbCustom_CheckedChanged(cbCustomx86, null);
+                cbCustom_CheckedChanged(cbCustomx64, null);
+                cbCustom_CheckedChanged(cbCustomAny, null);
+                cbCustom_CheckedChanged(cbCustomGamePath, null);
+            }
+        }
+
+        public FormCompilerConfig() {
+            InitializeComponent();
+        }
+
+        private void cbCustom_CheckedChanged(object sender, EventArgs e) {
+            var sendercb = sender as CheckBox;
+            var arch = sendercb.Name.Replace("cbCustom", "");
+            tlpMain.Controls["btnBrowse" + arch].Enabled = sendercb.Checked;
+            tlpMain.Controls["tb" + arch].Enabled = sendercb.Checked;
+            if (sendercb.Checked) {
+                if (tlpMain.Controls["tb" + arch].Text == "(Auto-detect)") {
+                    tlpMain.Controls["tb" + arch].Text = "";
+                }
+            } else {
+                tlpMain.Controls["tb" + arch].Text = "(Auto-detect)";
+            }
+        }
+
+        private void cbShould_CheckedChanged(object sender, EventArgs e) {
+            var sendercb = sender as CheckBox;
+            var arch = sendercb.Name.Replace("cbShould", "");
+            tlpMain.Controls["cbCustom" + arch].Enabled = sendercb.Checked;
+            if (!sendercb.Checked) {
+                (tlpMain.Controls["cbCustom" + arch] as CheckBox).Checked = false;
+                cbCustom_CheckedChanged(tlpMain.Controls["cbCustom" + arch], null);
+            }
+        }
+
+        private void btnBrowse_Click(object sender, EventArgs e) {
+            var senderbtn = sender as Button;
+            var arch = senderbtn.Name.Replace("btnBrowse", "");
+            var sfd = new SaveFileDialog {
+                Title = "Select DLL Path",
+                Filter = sender.Equals(btnBrowseGamePath) ? "Executable|*.exe" : "Dynamic-link library|*.dll"
+            };
+            if (sfd.ShowDialog() != DialogResult.OK) return;
+            tlpMain.Controls["tb" + arch].Text = sfd.FileName;
+        }
+
+        private void btnOK_Click(object sender, EventArgs e) {
+            this.DialogResult = DialogResult.OK;
+            this.Close();
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e) {
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
+        }
+    }
+}

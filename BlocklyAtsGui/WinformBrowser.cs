@@ -25,11 +25,13 @@ namespace BlocklyATS {
         static extern int CoInternetSetFeatureEnabled(int FeatureEntry, [MarshalAs(UnmanagedType.U4)] int dwFlags, bool fEnable);
 
         public WinformBrowser(string url = "about:blank") {
-            try {
-                PlatformFunction.SetWebBrowserFeatures();
-                CoInternetSetFeatureEnabled(FEATURE_LOCALMACHINE_LOCKDOWN, SET_FEATURE_ON_PROCESS, false);
-            } catch {
-                // No need to handle registry errors
+            if (PlatformFunction.IsWindows()) {
+                try {
+                    PlatformFunction.SetWebBrowserFeatures();
+                    CoInternetSetFeatureEnabled(FEATURE_LOCALMACHINE_LOCKDOWN, SET_FEATURE_ON_PROCESS, false);
+                } catch {
+                    // No need to handle registry errors
+                }
             }
             browser = new WebBrowser {
                 IsWebBrowserContextMenuEnabled = false,

@@ -37,7 +37,6 @@ Blockly.Lua.addReservedWords([
   "__atsarg_power",
   "__atsarg_reverser",
   "__atsarg_signal",
-  "__atsarg_signal",
   "__atsarg_type",
   "__atsfnc_panel",
   "__atsfnc_sound",

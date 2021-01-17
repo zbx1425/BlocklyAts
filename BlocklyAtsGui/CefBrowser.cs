@@ -1,3 +1,4 @@
+#if !MONO
 using CefSharp;
 using CefSharp.WinForms;
 using System;
@@ -28,7 +29,7 @@ namespace BlocklyATS {
 
             public bool OnKeyEvent(IWebBrowser chromiumWebBrowser, CefSharp.IBrowser browser, KeyType type, int windowsKeyCode, int nativeKeyCode, CefEventFlags modifiers, bool isSystemKey) {
                 if (type == KeyType.KeyUp && Enum.IsDefined(typeof(Keys), windowsKeyCode)) {
-                    parent.KeyDown?.Invoke(browser, new PreviewKeyDownEventArgs((Keys)windowsKeyCode));
+                    parent.browser.BeginInvoke((Action)(() => parent.KeyDown?.Invoke(browser, new PreviewKeyDownEventArgs((Keys)windowsKeyCode))));
                 }
                 return false;
             }
@@ -94,3 +95,4 @@ namespace BlocklyATS {
         }
     }
 }
+#endif
