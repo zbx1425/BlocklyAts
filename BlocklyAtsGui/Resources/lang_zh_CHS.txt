@@ -1,0 +1,31 @@
+Name = 简体中文
+BlocklyName = zh-hans
+
+FormMain.tsbtnNew = 新建工程 (Ctrl+N)
+FormMain.tsbtnOpen = 打开工程 (Ctrl+O)
+FormMain.tsbtnSave = 保存工程 (Ctrl+S)
+FormMain.tsbtnSaveAs = 工程另存为 (Ctrl+Shift+S)
+FormMain.tsbtnCompile = 编译 (Ctrl+Shift+B)
+FormMain.tsbtnCompileRun = 编译并运行 (F5)
+FormMain.tsbtnCompileSetting = 编译设置
+FormMain.tsbtnDebugWindow = 调试窗口
+FormMain.tsbtnAbout = 关于 BlocklyAts
+
+FormCompilerConfig.cbShouldx86 = 32位 Windows DLL\n用于 BVE4/5、OpenBVE
+FormCompilerConfig.cbShouldx64 = 64位 Windows DLL\n用于 BVE6
+FormCompilerConfig.cbShouldAny = AnyCpu .NET 程序集\n用于 OpenBVE
+FormCompilerConfig.lblGamePath = 游戏程序路径
+FormCompilerConfig.lblGameArgs = 游戏程序参数
+FormCompilerConfig.cbCustom = 自设\n路径
+FormCompilerConfig.btnBrowse = 浏览
+FormCompilerConfig.btnOK = 确定
+FormCompilerConfig.btnCancel = 取消
+
+Msg.CompileNotSaved = 请先保存工程，然后才可编译。
+Msg.CompileNoTarget = 未选择编译目标。请检查编译设置！
+Msg.CompileFinish = 编译完成。结果已存储至：
+Msg.CompileFail = 编译失败：\n
+Msg.NoGameProgram = 请先在 "编译设置" 中指定游戏程序路径。
+Msg.NotSaved = 尚未保存
+Msg.DiscardChange = 未保存的更改将被放弃。确认？
+Msg.LanguageChange = 重新启动程序以应用语言更改。 

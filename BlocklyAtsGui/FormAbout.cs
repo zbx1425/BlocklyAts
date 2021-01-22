@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BlocklyATS {
+namespace BlocklyAts {
     partial class FormAbout : Form {
         public FormAbout() {
             InitializeComponent();

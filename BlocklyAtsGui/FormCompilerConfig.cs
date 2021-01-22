@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BlocklyATS {
+namespace BlocklyAts {
     public partial class FormCompilerConfig : Form {
 
         public CompilerConfig Config {
@@ -49,6 +49,7 @@ namespace BlocklyATS {
 
         public FormCompilerConfig() {
             InitializeComponent();
+            tbGameArgs.Width = 0;
         }
 
         private void cbCustom_CheckedChanged(object sender, EventArgs e) {
@@ -94,6 +95,23 @@ namespace BlocklyATS {
         private void btnCancel_Click(object sender, EventArgs e) {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
+        }
+
+        private void FormCompilerConfig_Load(object sender, EventArgs e) {
+            foreach (Control ctrl in tlpMain.Controls) {
+                if (ctrl.Name.StartsWith("cbCustom")) {
+                    ctrl.Text = I18n.Translate("FormCompilerConfig.cbCustom");
+                } else if (ctrl.Name.StartsWith("btnBrowse")) {
+                    ctrl.Text = I18n.Translate("FormCompilerConfig.btnBrowse");
+                } else if (I18n.CanTranslate("FormCompilerConfig." + ctrl.Name)) {
+                    ctrl.Text = I18n.Translate("FormCompilerConfig." + ctrl.Name);
+                }
+            }
+            foreach (Control ctrl in flp.Controls) {
+                if (I18n.CanTranslate("FormCompilerConfig." + ctrl.Name)) {
+                    ctrl.Text = I18n.Translate("FormCompilerConfig." + ctrl.Name);
+                }
+            }
         }
     }
 }

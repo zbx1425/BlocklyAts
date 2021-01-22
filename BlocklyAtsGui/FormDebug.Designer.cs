@@ -1,4 +1,4 @@
-namespace BlocklyATS {
+namespace BlocklyAts {
     partial class FormDebug {
         /// <summary>
         /// Required designer variable.
@@ -76,7 +76,7 @@ namespace BlocklyATS {
             this.Controls.Add(this.rbCSharp);
             this.Controls.Add(this.rbLua);
             this.Name = "FormDebug";
-            this.Text = "BlocklyATS Code Generator Debug Information";
+            this.Text = "BlocklyAts Code Generator Debug Information";
             this.Load += new System.EventHandler(this.FormDebug_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

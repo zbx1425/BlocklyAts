@@ -3,39 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <title>BlocklyATS</title>
+
+  <script src="js/uai.js"></script>
   
-  <script>
-    var ie = (function (){
-      if (window.ActiveXObject === undefined) return 114514; //Not IE
-      if (!window.XMLHttpRequest) return 6;
-      if (!document.querySelector) return 7;
-      if (!document.addEventListener) return 8;
-      if (!window.atob) return 9;
-      if (!document.__proto__) return 10;
-      return 11;
-    })();
-    if (ie < 11) {
-      window.onerror = function(message, url, line) {
-        // It'll definitely fail, so ignore them
-        return true;
-      };
-    }
-  </script>
   <link rel="stylesheet" href="css/alertify.min.css" />
   <link rel="stylesheet" href="css/default.min.css" />
 
   <script src="js/blockly.min.js"></script>
   <script src="js/lua_compressed.js"></script>
   <script src="js/csharp_compressed.js"></script>
-  <script src="js/msg/en.js"></script>
 
   <script src="js/blocks_bve.js"></script>
   <script src="js/lua_generator_bve.js"></script>
   <script src="js/csharp_generator_bve.js"></script>
-  <script src="js/msg_bats/en.js"></script>
 
   <script src="js/alertify.min.js"></script>
   <script src="js/bats_code.js"></script>
+
+  <script>
+    var language = getQueryVariable("lang");
+    if (language == null) language = "en";
+    var script = document.createElement('script'); script.src = "js/msg/" + language + ".js"; document.head.appendChild(script);
+    script = document.createElement('script'); script.src = "js/msg_bats/" + language + ".js"; document.head.appendChild(script);
+  </script>
   
   <style>
     body, html { margin: 0; padding: 0; }
@@ -51,7 +41,7 @@
 </head>
 <body style="background: white;">
   <script>
-    if (ie < 11) {
+    if (ieVersion < 11) {
       document.write("<h1>System browser too old</h1>" + 
         "<p>Your Internet Explorer " + ie + " is not modern enough for BlocklyATS to run.<br>" +
         "<b>Please download the CEFSharp component as an alternative</b>, <br>" +
@@ -59,15 +49,15 @@
     } else {
       var ver = getQueryVariable("ver");
       document.write(
-        '<div id="overlay">BlocklyATS &copy; zbx1425<br>' + 
+        '<div id="overlay">BlocklyAts &copy; zbx1425<br>' + 
         ((ver != null) ? ('v' + ver + ", ") : "") +
-        (ie>10000 ? "Modern" : "IE"+ie) + 
+        uaString + 
         '</div>'
       );
     }
   </script>
   <xml id="toolbox" style="display: none">
-    <category id="catBveEvent" colour="240" name="%{BKY_BVE_CAT_EVENT}">
+    <category id="catBveEvent" colour="200" name="%{BKY_BVE_CAT_EVENT}">
       <label text="%{BKY_BVE_MSG_HAT_SINGLETON}"></label>
       <sep gap="8"></sep>
       <block type="bve_hat_elapse"></block>
@@ -116,7 +106,7 @@
       <block type="bve_set_sound_internal"></block>
       <block type="bve_get_sound_internal"></block>
     </category>
-    <category id="catBveSpecialize" colour="240" name="%{BKY_BVE_CAT_SPECIALIZE}">
+    <category id="catBveSpecialize" colour="260" name="%{BKY_BVE_CAT_SPECIALIZE}">
       <label text="%{BKY_BVE_MSG_INIT_ONLY}"></label>
       <sep gap="8"></sep>
       <block type="bve_init_mode"></block>
@@ -157,6 +147,9 @@
           </shadow>
         </value>
       </block>
+    </category>
+    <category id="catOpenBve" colour="20" name="OpenBVE">
+      <label text="Work in Progress"></label>
     </category>
     <sep></sep>
     <category id="catLogic" colour="210" name="%{BKY_CAT_LOGIC}">
@@ -407,7 +400,8 @@
     </category>
     <sep></sep>
     <category id="catVariables" colour="330" custom="VARIABLE" name="%{BKY_CAT_VARIABLE}"></category>
-    <category id="catFunctions" colour="290" custom="PROCEDURE" name="%{BKY_CAT_FUNCTION}"></category>
+    <!-- Functions are a bit broken. -->
+    <!-- <category id="catFunctions" colour="290" custom="PROCEDURE" name="%{BKY_CAT_FUNCTION}"></category> -->
   </xml>
   <div id="blocklyArea"><td><div id="blocklyDiv"></div></div>
 </body>

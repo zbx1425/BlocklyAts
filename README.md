@@ -6,6 +6,9 @@ Create [BVE](http://www.bvets.net) [ATS](http://bvets.net/en/edit/formats/vehicl
 ![Thumbnail Image](https://s3.ax1x.com/2021/01/17/ssW6e0.png)
 ![Build Config Thumbnail Image](https://s3.ax1x.com/2021/01/17/ssWRFU.png)
 
+## Download
+Download the [latest release](https://github.com/zbx1425/BlocklyAts/releases/latest)!
+
 ## License
 This project is licensed under the MIT License.
 
@@ -19,11 +22,6 @@ https://developers.google.com/blockly
 Generate C# code from Blockly blocks.  
 Copyright © 2013-2014 City Index Ltd. Licensed under the Apache License, Version 2.0.
 https://github.com/cityindex/blockly-generator-csharp
-
-- Optional browser interface: CefSharp  
-Full Web Browser in your .Net App.  
-Licensed under the 3-Clause BSD License.
-https://cefsharp.github.io/
 
 - Win32 dll script interpreter: Lua  
 Lua is a powerful, efficient, lightweight, embeddable scripting language.  
@@ -39,3 +37,8 @@ https://github.com/Dynodzzo/Lua_INI_Parser
 AlertifyJS is a javascript framework for developing pretty browser dialogs and notifications.  
 Licensed under GPL 3.0.
 https://alertifyjs.com/
+
+- Optional browser interface: CefSharp  
+Full Web Browser in your .Net App.  
+Licensed under the 3-Clause BSD License.
+https://cefsharp.github.io/

@@ -6,20 +6,23 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BlocklyATS {
+namespace BlocklyAts {
     static class Program {
         /// <summary>
         /// 应用程序的主入口点。
         /// </summary>
         [STAThread]
         static void Main() {
-            AppDomain.CurrentDomain.AssemblyResolve += OnAssemblyResolve;
+            //AppDomain.CurrentDomain.AssemblyResolve += OnAssemblyResolve;
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormMain());
+
+            I18n.SavePreference();
         }
 
+        /*
         private static Assembly OnAssemblyResolve(object sender, ResolveEventArgs args) {
             if (args.Name.StartsWith("CefSharp")) {
                 string assemblyName = args.Name.Split(new[] { ',' }, 2)[0] + ".dll";
@@ -34,5 +37,6 @@ namespace BlocklyATS {
 
             return null;
         }
+        */
     }
 }

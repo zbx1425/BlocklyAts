@@ -1,0 +1,31 @@
+Name = English
+BlocklyName = en
+
+FormMain.tsbtnNew = New Project (Ctrl+N)
+FormMain.tsbtnOpen = Open Project (Ctrl+O)
+FormMain.tsbtnSave = Save Project (Ctrl+S)
+FormMain.tsbtnSaveAs = Save Project As (Ctrl+Shift+S)
+FormMain.tsbtnCompile = Compile (Ctrl+Shift+B)
+FormMain.tsbtnCompileRun = Compile and Run (F5)
+FormMain.tsbtnCompileSetting = Compiler Configuration
+FormMain.tsbtnDebugWindow = Debug Window
+FormMain.tsbtnAbout = About BlocklyAts
+
+FormCompilerConfig.cbShouldx86 = 32-bit Windows DLL\nFor BVE4/5、OpenBVE
+FormCompilerConfig.cbShouldx64 = 64-bit Windows DLL\nFor BVE6
+FormCompilerConfig.cbShouldAny = AnyCpu .NET Assembly\nFor OpenBVE
+FormCompilerConfig.lblGamePath = Game Program Path
+FormCompilerConfig.lblGameArgs = Game Program Arguments
+FormCompilerConfig.cbCustom = Custom\nPath
+FormCompilerConfig.btnBrowse = Browse
+FormCompilerConfig.btnOK = OK
+FormCompilerConfig.btnCancel = Cancel
+
+Msg.CompileNotSaved = Please save the project before compiling.
+Msg.CompileNoTarget = No build target was selected. Check your build configuration!
+Msg.CompileFinish = Compilation finished. Saved to: 
+Msg.CompileFail = Compilation failed:\n
+Msg.NoGameProgram = Please specify game installation path in "Compiler Configuration".
+Msg.NotSaved = Not yet saved
+Msg.DiscardChange = All unsaved change will be discarded. Confirm?
+Msg.LanguageChange = Restart the program to apply language change.

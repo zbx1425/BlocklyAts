@@ -1,6 +1,6 @@
-Blockly.Msg["BVE_CAT_EVENT"]="BVE 事件";
-Blockly.Msg["BVE_CAT_COMMON"]="BVE 常用";
-Blockly.Msg["BVE_CAT_SPECIALIZE"]="BVE 杂项";
+Blockly.Msg["BVE_CAT_EVENT"]="BVE事件";
+Blockly.Msg["BVE_CAT_COMMON"]="BVE常用";
+Blockly.Msg["BVE_CAT_SPECIALIZE"]="BVE杂项";
 
 Blockly.Msg["BVE_ELAPSE"]="当状态更新 (每帧一次)";
 Blockly.Msg["BVE_INITIALIZE"]="当游戏开始 (载入/跳站)";
@@ -98,7 +98,7 @@ Blockly.Msg["BVE_GET_CONFIG_DEFAULT_NUM"]="配置项 [%1]%2 默认数值 %3";
 Blockly.Msg["BVE_GET_CONFIG_DEFAULT_TEXT"]="配置项 [%1]%2 默认文字 %3";
 Blockly.Msg["BVE_SET_CONFIG"]="设定配置项 [%1]%2 为 %3";
 Blockly.Msg["BVE_CONFIG_SAVE"]="保存配置到文件 %1";
-Blockly.Msg["BVE_PLACEHOLDER_PATH"]="自己起个名字.ini";
+Blockly.Msg["BVE_PLACEHOLDER_PATH"]="自己起名只可英文.ini";
 Blockly.Msg["BVE_PLACEHOLDER_PART"]="部分名称";
 Blockly.Msg["BVE_PLACEHOLDER_KEY"]="键值名称";
 

@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using System.CodeDom.Compiler;
 using Microsoft.CSharp;
 
-namespace BlocklyATS {
+namespace BlocklyAts {
 
     static class CompilerFunction {
 
@@ -78,10 +78,14 @@ namespace BlocklyATS {
         }
 
         public static void CompileCSharp(string script, string outputPath) {
-            CSharpCodeProvider codeProvider = new CSharpCodeProvider();
+            var settings = new Dictionary<string, string>() {
+                { "CompilerVersion", "v4.0" }
+            };
+            CSharpCodeProvider codeProvider = new CSharpCodeProvider(settings);
             CompilerParameters parameters = new CompilerParameters() {
                 IncludeDebugInformation = false,
                 GenerateExecutable = false,
+                CompilerOptions = "/optimize",
                 OutputAssembly = outputPath
             };
             string[] assemblies = {

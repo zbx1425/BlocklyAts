@@ -9,9 +9,9 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
-namespace BlocklyATS {
+namespace BlocklyAts {
 
-    [XmlRoot(ElementName = "blocklyats")]
+    [XmlRoot(ElementName = "BlocklyAts")]
     public class Workspace {
 
         [XmlIgnore()]

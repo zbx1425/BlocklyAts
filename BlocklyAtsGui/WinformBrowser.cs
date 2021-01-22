@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BlocklyATS {
+namespace BlocklyAts {
 
     public class WinformBrowser : BaseBrowser {
 
@@ -56,7 +56,8 @@ namespace BlocklyATS {
             return browser;
         }
 
-        public override object InvokeScript(string script) {
+# pragma warning disable 1998 // WebBrowser API calls has to be synchronous.
+        public override async Task<object> InvokeScript(string script) {
             return browser.Document.InvokeScript("eval", new object[] { script });
         }
 
@@ -70,6 +71,10 @@ namespace BlocklyATS {
 
         public override void Dispose() {
             ((IDisposable)browser).Dispose();
+        }
+
+        public override void ShowDevTools() {
+            // MSHTML does not provide dev tools
         }
     }
 }

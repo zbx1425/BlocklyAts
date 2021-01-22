@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("BlocklyATS")]
+[assembly: AssemblyTitle("BlocklyAts")]
 [assembly: AssemblyDescription("Create BVE ATS Plugins with Blockly")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Zbx1425")]
-[assembly: AssemblyProduct("BlocklyATS")]
-[assembly: AssemblyCopyright("Copyright © Zbx1425 2021")]
+[assembly: AssemblyProduct("BlocklyAts")]
+[assembly: AssemblyCopyright("Copyright © Zbx1425 2021, MIT License")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,4 +32,4 @@ using System.Runtime.InteropServices;
 // 可以指定所有值，也可以使用以下所示的 "*" 预置版本号和修订号
 // 方法是按如下所示使用“*”: :
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.4.0")]
+[assembly: AssemblyVersion("1.0.5.0")]

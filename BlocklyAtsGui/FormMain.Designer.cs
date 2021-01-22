@@ -1,4 +1,4 @@
-namespace BlocklyATS {
+namespace BlocklyAts {
     partial class FormMain {
         /// <summary>
         /// 必需的设计器变量。
@@ -35,6 +35,8 @@ namespace BlocklyATS {
             this.tsbtnCompileSetting = new System.Windows.Forms.ToolStripButton();
             this.tsbtnAbout = new System.Windows.Forms.ToolStripButton();
             this.tsbtnDebugWindow = new System.Windows.Forms.ToolStripButton();
+            this.tscbLanguage = new System.Windows.Forms.ToolStripComboBox();
+            this.tss2 = new System.Windows.Forms.ToolStripSeparator();
             this.mainToolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -52,7 +54,9 @@ namespace BlocklyATS {
             this.tsbtnCompileRun,
             this.tsbtnCompileSetting,
             this.tsbtnAbout,
-            this.tsbtnDebugWindow});
+            this.tsbtnDebugWindow,
+            this.tss2,
+            this.tscbLanguage});
             this.mainToolStrip.Location = new System.Drawing.Point(0, 0);
             this.mainToolStrip.Name = "mainToolStrip";
             this.mainToolStrip.Size = new System.Drawing.Size(784, 25);
@@ -149,7 +153,7 @@ namespace BlocklyATS {
             this.tsbtnAbout.Margin = new System.Windows.Forms.Padding(0, 1, 10, 2);
             this.tsbtnAbout.Name = "tsbtnAbout";
             this.tsbtnAbout.Size = new System.Drawing.Size(23, 22);
-            this.tsbtnAbout.Text = "About BlocklyATS";
+            this.tsbtnAbout.Text = "About BlocklyAts";
             this.tsbtnAbout.Click += new System.EventHandler(this.tsbtnAbout_Click);
             // 
             // tsbtnDebugWindow
@@ -164,6 +168,23 @@ namespace BlocklyATS {
             this.tsbtnDebugWindow.Text = "Debug Window";
             this.tsbtnDebugWindow.Click += new System.EventHandler(this.tsbtnDebugWindow_Click);
             // 
+            // tscbLanguage
+            // 
+            this.tscbLanguage.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tscbLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.tscbLanguage.DropDownWidth = 121;
+            this.tscbLanguage.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.tscbLanguage.Name = "tscbLanguage";
+            this.tscbLanguage.Size = new System.Drawing.Size(121, 25);
+            this.tscbLanguage.SelectedIndexChanged += new System.EventHandler(this.tscbLanguage_SelectedIndexChanged);
+            // 
+            // tss2
+            // 
+            this.tss2.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tss2.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
+            this.tss2.Name = "tss2";
+            this.tss2.Size = new System.Drawing.Size(6, 25);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -172,7 +193,7 @@ namespace BlocklyATS {
             this.Controls.Add(this.mainToolStrip);
             this.MinimumSize = new System.Drawing.Size(800, 480);
             this.Name = "FormMain";
-            this.Text = "BlocklyATS";
+            this.Text = "BlocklyAts";
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.mainWebBrowser_PreviewKeyDown);
             this.mainToolStrip.ResumeLayout(false);
@@ -195,6 +216,8 @@ namespace BlocklyATS {
         private System.Windows.Forms.ToolStripButton tsbtnCompileSetting;
         private System.Windows.Forms.ToolStripButton tsbtnSave;
         private System.Windows.Forms.ToolStripButton tsbtnAbout;
+        private System.Windows.Forms.ToolStripSeparator tss2;
+        private System.Windows.Forms.ToolStripComboBox tscbLanguage;
     }
 }
 

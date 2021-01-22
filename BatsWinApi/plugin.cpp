@@ -10,7 +10,7 @@ int *bvePanel, *bveSound;
 
 void l_printerr() {
 	const char * err = lua_tostring(L, -1);
-	if (MessageBoxA(NULL, err, "BlocklyATS Lua Script Error", MB_RETRYCANCEL | MB_ICONERROR) == IDCANCEL) {
+	if (MessageBoxA(NULL, err, "BlocklyAts Lua Script Error", MB_RETRYCANCEL | MB_ICONERROR) == IDCANCEL) {
 		lua_close(L);
 		L = NULL;
 	}
@@ -64,7 +64,7 @@ static int l_sound_getset(lua_State *L) {
 
 static int l_msgbox(lua_State *L) {
 	const char* msg = luaL_checkstring(L, 1);
-	MessageBoxA(NULL, msg, "BlocklyATS Message", MB_ICONINFORMATION);
+	MessageBoxA(NULL, msg, "BlocklyAts Message", MB_ICONINFORMATION);
 	return 0;
 }
 
@@ -77,17 +77,17 @@ ATS_API void WINAPI Load() {
 
 	if (GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
 		(LPCSTR)&Dispose, &hm) == 0) {
-		MessageBoxA(NULL, "GetModuleHandle failed, ATS plugin cannot load", "BlocklyATS Error", MB_ICONERROR);
+		MessageBoxA(NULL, "GetModuleHandle failed, ATS plugin cannot load", "BlocklyAts Error", MB_ICONERROR);
 		return;
 	}
 	if (GetModuleFileNameA(hm, dllPath, sizeof(dllPath)) == 0) {
-		MessageBoxA(NULL, "GetModuleFileName failed, ATS plugin cannot load", "BlocklyATS Error", MB_ICONERROR);
+		MessageBoxA(NULL, "GetModuleFileName failed, ATS plugin cannot load", "BlocklyAts Error", MB_ICONERROR);
 		return;
 	}
 
 	HANDLE hFile = CreateFileA(dllPath, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (INVALID_HANDLE_VALUE == hFile) {
-		MessageBoxA(NULL, "CreateFileA failed, ATS plugin cannot load", "BlocklyATS Error", MB_ICONERROR);
+		MessageBoxA(NULL, "CreateFileA failed, ATS plugin cannot load", "BlocklyAts Error", MB_ICONERROR);
 		return;
 	}
 	ReadFile(hFile, buffer, sizeof(buffer), &read, NULL);
@@ -95,7 +95,7 @@ ATS_API void WINAPI Load() {
 	IMAGE_NT_HEADERS32* header = (IMAGE_NT_HEADERS32*)(buffer + dosheader->e_lfanew);
 	if (dosheader->e_magic != IMAGE_DOS_SIGNATURE || header->Signature != IMAGE_NT_SIGNATURE) {
 		CloseHandle(hFile);
-		MessageBoxA(NULL, "PE header malformed, ATS plugin cannot load", "BlocklyATS Error", MB_ICONERROR);
+		MessageBoxA(NULL, "PE header malformed, ATS plugin cannot load", "BlocklyAts Error", MB_ICONERROR);
 		return;
 	}
 
@@ -112,7 +112,7 @@ ATS_API void WINAPI Load() {
 	DWORD filesize = GetFileSize(hFile, NULL);
 	if (filesize - exesize <= 0) {
 		CloseHandle(hFile);
-		MessageBoxA(NULL, "Cannot locate PE terminal offset, ATS plugin cannot load", "BlocklyATS Error", MB_ICONERROR);
+		MessageBoxA(NULL, "Cannot locate PE terminal offset, ATS plugin cannot load", "BlocklyAts Error", MB_ICONERROR);
 		return;
 	}
 	SetFilePointer(hFile, exesize, NULL, FILE_BEGIN);

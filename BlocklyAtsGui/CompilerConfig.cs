@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace BlocklyATS {
+namespace BlocklyAts {
     
     public class CompilerConfig {
 
@@ -54,7 +54,7 @@ namespace BlocklyATS {
                 }
             }
             if (string.IsNullOrEmpty(path) || !File.Exists(path)) {
-                throw new FileNotFoundException(null, path);
+                return null;
             }
             return new Process() {
                 StartInfo = new ProcessStartInfo {

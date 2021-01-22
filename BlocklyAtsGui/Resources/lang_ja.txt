@@ -1,0 +1,31 @@
+Name = 日本語
+BlocklyName = ja
+
+FormMain.tsbtnNew = 新規プロジェクト (Ctrl+N)
+FormMain.tsbtnOpen = プロジェクトを開く (Ctrl+O)
+FormMain.tsbtnSave = プロジェクトを保存 (Ctrl+S)
+FormMain.tsbtnSaveAs = 名前を付けて保存 (Ctrl+Shift+S)
+FormMain.tsbtnCompile = コンパイル (Ctrl+Shift+B)
+FormMain.tsbtnCompileRun = コンパイルして実行する (F5)
+FormMain.tsbtnCompileSetting = コンパイラ設定
+FormMain.tsbtnDebugWindow = デバッグウィンドウ
+FormMain.tsbtnAbout = BlocklyAts 関連情報
+
+FormCompilerConfig.cbShouldx86 = 32ビット Windows DLL\nBVE4/5、OpenBVE用
+FormCompilerConfig.cbShouldx64 = 64ビット Windows DLL\nBVE6用
+FormCompilerConfig.cbShouldAny = AnyCpu .NET アセンブリ\nOpenBVE用
+FormCompilerConfig.lblGamePath = ゲームのパス
+FormCompilerConfig.lblGameArgs = ゲームの引数
+FormCompilerConfig.cbCustom = カスタム\nパス
+FormCompilerConfig.btnBrowse = ブラウズ
+FormCompilerConfig.btnOK = 確認
+FormCompilerConfig.btnCancel = 取消
+
+Msg.CompileNotSaved = コンパイルする前にプロジェクトを保存してください。
+Msg.CompileNoTarget = ビルドターゲットが選択されていません。コンパイラ設定を確認してください！
+Msg.CompileFinish = コンパイルが終了しました。保存先：
+Msg.CompileFail = コンパイルに失敗しました：\n
+Msg.NoGameProgram = 「コンパイラ設定」でゲームのパスを指定してください。
+Msg.NotSaved = 保存されていません
+Msg.DiscardChange = 保存されていない変更はすべて破棄されます。よろしいですか?
+Msg.LanguageChange = プログラムを再起動して、言語の変更を適用します。

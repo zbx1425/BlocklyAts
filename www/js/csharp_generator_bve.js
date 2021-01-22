@@ -72,7 +72,7 @@ function batsExportCSharp(workspace) {
   + "private string __atsval_dlldir;\n"
   + "private int __atsfnc_sound(int id,int state=int.MaxValue,double volume=double.NaN){if(state==0&&double.IsNaN(volume)){if(volume<=0){state=-10000;}else if(volume>=100){state=0;}else{state=(int)(volume*100)-10000;}}if(state==-10000){if(__bve_soundhandle[id]!=null&&__bve_soundhandle[id].Playing){__bve_soundhandle[id].Stop();__bve_soundhandle[id]=null;}__atsval_sound_emulated[id]=state;}else if(state>-10000&&state<=0){if(__bve_soundhandle[id]!=null&&__bve_soundhandle[id].Playing){__bve_soundhandle[id].Volume=(state+10000)/10000;}else{__bve_soundhandle[id]=__bve_playsound(id,(state+10000)/10000,1,true);}__atsval_sound_emulated[id]=state;}else if(state==1){if(__bve_soundhandle[id]!=null&&__bve_soundhandle[id].Playing){__bve_soundhandle[id].Stop();}__bve_soundhandle[id]=__bve_playsound(id,1,1,false);__atsval_sound_emulated[id]=2;}else if(state==2){__atsval_sound_emulated[id]=state;}else if(state>10000){return __atsval_sound_emulated[id];}else{throw new System.ArgumentOutOfRangeException();}return 0;}\n"
   + "private Dictionary<string,Dictionary<string,dynamic>>__atsfnc_iniload(string path){var data=new Dictionary<string,Dictionary<string,dynamic>>();var section=\"\";foreach(var line in System.IO.File.ReadAllLines(path)){var tline=line.Trim();if(tline.StartsWith(\"[\")&&tline.EndsWith(\"]\")){section=tline.Substring(1,tline.Length-2);if(!data.ContainsKey(section))data[section]=new Dictionary<string,dynamic>();}if(!tline.StartsWith(\"#\")&&tline.Contains(\"=\")){var parts=tline.Split(new []{'='},2);double td;if(double.TryParse(parts[1],out td))data[section][parts[0]]=td;else if(parts[1].ToLowerInvariant()==\"true\")data[section][parts[0]]=true;else if(parts[1].ToLowerInvariant()==\"false\")data[section][parts[0]]=false;else data[section][parts[0]]=parts[1];}}	return data;}\n"
-  + "private void __atsfnc_inisave(string path,Dictionary<string,Dictionary<string,dynamic>>data){var sb=new System.Text.StringBuilder();foreach(var section in data){sb.AppendLine(section.Key);foreach(var pair in section.Value){sb.AppendFormat(\"{0}={1}\\n\",pair.Key,pair.Value);}sb.AppendLine();}System.IO.File.WriteAllText(path,sb.ToString());}\n"
+  + "private void __atsfnc_inisave(string path,Dictionary<string,Dictionary<string,dynamic>>data){var sb=new System.Text.StringBuilder();foreach(var section in data){sb.AppendFormat(\"[{0}]\",section.Key);foreach(var pair in section.Value){sb.AppendFormat(\"{0}={1}\\n\",pair.Key,pair.Value);}sb.AppendLine();}System.IO.File.WriteAllText(path,sb.ToString());}\n"
   + "public void SetVehicleSpecs(VehicleSpecs __zbx_1) { __bve_vs = __zbx_1; }\n"
   + "public void SetReverser(int __zbx_1) { if (__bve_ed != null) __bve_ed.Handles.Reverser = __zbx_1; }\n"
   + "public void SetPower(int __zbx_1) { if (__bve_ed != null) __bve_ed.Handles.PowerNotch = __zbx_1; }\n"
@@ -99,7 +99,7 @@ function batsExportCSharp(workspace) {
   }
 
   code = Blockly.CSharp.finish(code).trim();
-  return "using OpenBveApi.Runtime;\nusing System.Windows.Forms;\nusing System.Collections.Generic;\n"
+  return "using OpenBveApi.Runtime;\nusing System;\nusing System.Windows.Forms;\nusing System.Collections.Generic;\n"
   + "public class BlocklyAtsPlugin : IRuntime {\n" + code + "}";
 }
 
@@ -180,7 +180,7 @@ Blockly.CSharp.bve_set_sound_internal=function(block){
 }
 Blockly.CSharp.bve_set_panel=function(block){
   return "__bve_panel[" + block.getFieldValue("ID") + "] = " + 
-    Blockly.CSharp.valueToCode(block, "VALUE", Blockly.CSharp.ORDER_NONE) + ");\n";
+    Blockly.CSharp.valueToCode(block, "VALUE", Blockly.CSharp.ORDER_NONE) + ";\n";
 }
 Blockly.CSharp.bve_get_panel=function(block){
   return ["__bve_panel[" + block.getFieldValue("ID") + "]", Blockly.CSharp.ORDER_MEMBER];
@@ -245,7 +245,7 @@ Blockly.CSharp.bve_get_config_default_text=function(block){ // TODO
 Blockly.CSharp.bve_set_config=function(block){
   return "__atsval_config[" + Blockly.CSharp.quote_(block.getFieldValue("PART")) + "][" 
     + Blockly.CSharp.quote_(block.getFieldValue("KEY")) + "] = "
-    + (Blockly.CSharp.valueToCode(block, "VALUE", Blockly.CSharp.ORDER_NONE) || "\"\"") + "\n";;
+    + (Blockly.CSharp.valueToCode(block, "VALUE", Blockly.CSharp.ORDER_NONE) || "\"\"") + ";\n";;
 }
 Blockly.CSharp.bve_msgbox=function(block){
   return "MessageBox.Show(" + (Blockly.CSharp.valueToCode(block, "MSG", Blockly.CSharp.ORDER_NONE) || "\"\"") 

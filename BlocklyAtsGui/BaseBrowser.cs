@@ -1,13 +1,16 @@
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
-namespace BlocklyATS {
+namespace BlocklyAts {
 
     public abstract class BaseBrowser : IDisposable {
         public abstract Control GetControl();
@@ -15,7 +18,8 @@ namespace BlocklyATS {
         public abstract void Navigate(string url);
         public abstract event EventHandler PageFinished;
         public abstract event PreviewKeyDownEventHandler KeyDown;
-        public abstract object InvokeScript(string script);
+        public abstract Task<object> InvokeScript(string script);
+        public abstract void ShowDevTools();
         public abstract void Dispose();
 
         public virtual void BindTo(Control parent) {
@@ -30,18 +34,29 @@ namespace BlocklyATS {
 #if MONO
             return new WinformBrowser(url);
 #else
-            var CEFAvailable = File.Exists(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath),
-                "x86", "CefSharp.dll"));
-            if (CEFAvailable) {
-                return new CefBrowser(url);
+            if (PlatformFunction.IsWindows()) {
+                var CEFAvailable = File.Exists(Path.Combine(CompilerFunction.appDir, @"x86\CefSharp.dll"));
+                const string EdgeKeyName = @"SOFTWARE\WOW6432Node\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}";
+                var WebView2Available = Registry.LocalMachine.OpenSubKey(EdgeKeyName)?.GetValue("pv", null) != null;
+                if (CEFAvailable) {
+                    return new CefBrowser(url);
+                } else if (WebView2Available) {
+                    return new WebView2Browser(url);
+                } else {
+                    return new WinformBrowser(url);
+                }
             } else {
                 return new WinformBrowser(url);
             }
 #endif
         }
 
+        private static JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
+
         public static string EscapeJsString(string s) {
-            StringBuilder sb = new StringBuilder();
+            return jsSerializer.Serialize(s);
+
+            /* StringBuilder sb = new StringBuilder();
             foreach (char c in s) {
                 switch (c) {
                     case '\"':
@@ -75,30 +90,34 @@ namespace BlocklyATS {
                         break;
                 }
             }
-            return sb.ToString();
+            return "\"" + sb.ToString() + "\""; */
         }
 
-        public void BkyResetWorkspace() {
-            InvokeScript("batsWkspReset();");
+        public static string UnescapeJsString(string s) {
+            return (string)jsSerializer.Deserialize(s, typeof(string));
         }
 
-        public XElement BkySaveWorkspace() {
-            var element = XElement.Parse(InvokeScript("batsWkspSave();").ToString());
+        public async Task BkyResetWorkspace() {
+            await InvokeScript("batsWkspReset();");
+        }
+
+        public async Task<XElement> BkySaveWorkspace() {
+            var element = XElement.Parse((await InvokeScript("batsWkspSave();")).ToString());
             element.RemoveAttributes();
             return element;
         }
 
-        public void BkyLoadWorkspace(XElement bkyxml) {
+        public async Task BkyLoadWorkspace(XElement bkyxml) {
             var arg = EscapeJsString(bkyxml.ToString(SaveOptions.DisableFormatting));
-            InvokeScript(string.Format("batsWkspLoad('{0}');", arg));
+            await InvokeScript(string.Format("batsWkspLoad({0});", arg));
         }
 
-        public string BkyExportLua() {
-            return InvokeScript("batsWkspExportLua();").ToString();
+        public async Task<string> BkyExportLua() {
+            return (await InvokeScript("batsWkspExportLua();")).ToString();
         }
 
-        public string BkyExportCSharp() {
-            return InvokeScript("batsWkspExportCSharp();").ToString();
+        public async Task<string> BkyExportCSharp() {
+            return (await InvokeScript("batsWkspExportCSharp();")).ToString();
         }
     }
 }

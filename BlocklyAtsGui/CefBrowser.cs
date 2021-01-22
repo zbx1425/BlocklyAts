@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BlocklyATS {
+namespace BlocklyAts {
 
     public class CefBrowser : BaseBrowser {
 
@@ -42,9 +42,9 @@ namespace BlocklyATS {
         public CefBrowser(string url = "about:blank") {
             if (!Cef.IsInitialized) {
                 var cefSettings = new CefSettings() {
-                    BrowserSubprocessPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase,
-                        Environment.Is64BitProcess ? "x64" : "x86", "CefSharp.BrowserSubprocess.exe"),
                     CefCommandLineArgs = { ["disable-gpu-shader-disk-cache"] = "1" },
+                    BrowserSubprocessPath = Path.Combine(CompilerFunction.appDir, @"x86\CefSharp.BrowserSubprocess.exe"),
+                    Locale = "en-US",
                     LogSeverity = LogSeverity.Disable
                 };
                 Cef.Initialize(cefSettings);
@@ -67,13 +67,12 @@ namespace BlocklyATS {
             return browser;
         }
 
-        public override object InvokeScript(string script) {
-            var task = browser.GetBrowser().MainFrame.EvaluateScriptAsync(script);
-            task.Wait();
-            if (task.Result.Success) {
-                return task.Result.Result;
+        public override async Task<object> InvokeScript(string script) {
+            var result = await browser.GetBrowser().MainFrame.EvaluateScriptAsync(script);
+            if (result.Success) {
+                return result.Result;
             } else {
-                throw new Exception(task.Result.Message);
+                throw new Exception(result.Message);
             }
         }
 
@@ -90,7 +89,7 @@ namespace BlocklyATS {
             Cef.Shutdown();
         }
         
-        public void ShowDevTools() {
+        public override void ShowDevTools() {
             browser.ShowDevTools();
         }
     }

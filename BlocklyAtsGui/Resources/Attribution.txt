@@ -1,3 +1,7 @@
+BlocklyAts is an open-source software under the MIT license.
+Source code is available at https://github.com/zbx1425/BlocklyAts .
+Thanks Mr.Ginga81 ( http://midnightexpginga81.web.fc2.com ) for helping with Japanese translation.
+
 - Built on Blockly  
 Blockly is a library from Google for building beginner-friendly block-based programming languages.  
 Licensed under the Apache License, Version 2.0.
@@ -7,11 +11,6 @@ https://developers.google.com/blockly
 Generate C# code from Blockly blocks.  
 Copyright © 2013-2014 City Index Ltd. Licensed under the Apache License, Version 2.0.
 https://github.com/cityindex/blockly-generator-csharp
-
-- Optional browser interface: CefSharp  
-Full Web Browser in your .Net App.  
-Licensed under the 3-Clause BSD License.
-https://cefsharp.github.io/
 
 - Win32 dll script interpreter: Lua  
 Lua is a powerful, efficient, lightweight, embeddable scripting language.  
@@ -27,3 +26,8 @@ https://github.com/Dynodzzo/Lua_INI_Parser
 AlertifyJS is a javascript framework for developing pretty browser dialogs and notifications.  
 Licensed under GPL 3.0.
 https://alertifyjs.com/
+
+- Optional browser interface: CefSharp  
+Full Web Browser in your .Net App.  
+Licensed under the 3-Clause BSD License.
+https://cefsharp.github.io/

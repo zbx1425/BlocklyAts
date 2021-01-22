@@ -57,6 +57,14 @@ function batsInit(toolboxNode) {
   var onresize = function(e) { Blockly.svgResize(workspace); };
   window.addEventListener('resize', onresize, false);
   Blockly.svgResize(workspace);
+
+  var toolboxMap = [11,0,1,2,3,5,6,7,8,9];
+  var onkeydown = function(e) {
+    if (e.shiftKey && e.code[5] >= '0' && e.code[5] <= '9') {
+      workspace.getToolbox().selectItemByPosition(toolboxMap[parseInt(e.code[5])]);
+    }
+  }
+  document.addEventListener('keydown', onkeydown, false);
 }
 
 window.addEventListener('load', function() {

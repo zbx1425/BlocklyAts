@@ -200,10 +200,10 @@ Blockly.Lua.bve_get_beacon=function(block){
   return ["__atsarg_" + block.getFieldValue("FIELD_SEL").toLowerCase(), Blockly.Lua.ORDER_ATOMIC];
 }
 Blockly.Lua.bve_config_load=function(block){
-  return "__atsval_config = LIP.load(__atsval_dlldir .. " + Blockly.Lua.quote_("\\" + block.getFieldValue("PATH")) + ")\n";
+  return "__atsval_config = LIP.load(__atsval_dlldir .. " + Blockly.Lua.quote_(block.getFieldValue("PATH")) + ")\n";
 }
 Blockly.Lua.bve_config_save=function(block){
-  return "LIP.save(__atsval_dlldir .. " + Blockly.Lua.quote_("\\" + block.getFieldValue("PATH")) + ", __atsval_config)\n";
+  return "LIP.save(__atsval_dlldir .. " + Blockly.Lua.quote_(block.getFieldValue("PATH")) + ", __atsval_config)\n";
 }
 Blockly.Lua.bve_get_config=function(block){
   return ["__atsval_config." + block.getFieldValue("PART") + "." + block.getFieldValue("KEY"), Blockly.Lua.ORDER_ATOMIC];

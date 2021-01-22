@@ -1,4 +1,4 @@
-namespace BlocklyATS {
+namespace BlocklyAts {
     partial class FormCompilerConfig {
         /// <summary>
         /// Required designer variable.
@@ -325,6 +325,7 @@ namespace BlocklyATS {
             this.MinimizeBox = false;
             this.Name = "FormCompilerConfig";
             this.Text = "Compiler Configuration";
+            this.Load += new System.EventHandler(this.FormCompilerConfig_Load);
             this.tlpMain.ResumeLayout(false);
             this.tlpMain.PerformLayout();
             this.flp.ResumeLayout(false);
