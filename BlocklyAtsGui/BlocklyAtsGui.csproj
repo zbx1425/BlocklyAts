@@ -174,12 +174,18 @@
   <PropertyGroup>
     <PostBuildEvent>XCOPY "$(SolutionDir)www" "$(TargetDir)\www\" /E /Y
 XCOPY "$(SolutionDir)assets" "$(TargetDir)\" /E /Y
+COPY /Y "$(SolutionDir)BatsWinApi\Release\batswinapi_x86.dll" "$(TargetDir)\lib"
+COPY /Y "$(SolutionDir)BatsWinApi\Release\batswinapi_x64.dll" "$(TargetDir)\lib"
 IF $(ConfigurationName)==Release (
-RMDIR "$(TargetDir)\swiftshader"
-RMDIR "$(TargetDir)\locales"
-ERASE "$(TargetDir)\*.xml" "$(TargetDir)\*.pdb" "$(TargetDir)\*.txt"
-ERASE "$(TargetDir)\cef_100_percent.pak" "$(TargetDir)\cef_200_percent.pak"  "$(TargetDir)\cef_extensions.pak" "$(TargetDir)\devtools_resources.pak"
-ERASE "$(TargetDir)\d3dcompiler_47.dll" "$(TargetDir)\libEGL.dll" "$(TargetDir)\libGLESv2.dll"
+COPY /Y "$(TargetDir)\x86\WebView2Loader.dll" "$(TargetDir)"
+RMDIR /S /Q "$(TargetDir)\x86"
+MKDIR "$(TargetDir)\x86"
+MOVE "$(TargetDir)\WebView2Loader.dll" "$(TargetDir)\x86\WebView2Loader.dll"
+COPY /Y "$(TargetDir)\x64\WebView2Loader.dll" "$(TargetDir)"
+RMDIR /S /Q "$(TargetDir)\x64"
+MKDIR "$(TargetDir)\x64"
+MOVE "$(TargetDir)\WebView2Loader.dll" "$(TargetDir)\x64\WebView2Loader.dll"
+DEL "$(TargetDir)\*.xml"
 )</PostBuildEvent>
   </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

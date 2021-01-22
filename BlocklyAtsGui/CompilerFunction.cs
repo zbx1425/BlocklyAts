@@ -52,7 +52,7 @@ namespace BlocklyAts {
             var luaByteStream = new MemoryStream();*/
 
             var boilerplateStream = new FileStream(
-                Path.Combine(appDir, "bin", "batswinapi_" + arch + ".dll"), 
+                Path.Combine(appDir, "lib", "batswinapi_" + arch + ".dll"), 
                 FileMode.Open, FileAccess.Read
             );
             var outStream = new FileStream(outputPath, FileMode.Create, FileAccess.Write);
@@ -91,7 +91,7 @@ namespace BlocklyAts {
             string[] assemblies = {
                 "System", "System.Core", "System.Data", "mscorlib",
                 "Microsoft.CSharp", "System.Windows.Forms",
-                Path.Combine(appDir, "bin", "OpenBveApi")
+                Path.Combine(appDir, "lib", "OpenBveApi")
             };
 
             foreach (string a in assemblies) {

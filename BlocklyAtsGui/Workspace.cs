@@ -11,7 +11,8 @@ using System.Xml.Serialization;
 
 namespace BlocklyAts {
 
-    [XmlRoot(ElementName = "BlocklyAts")]
+    // For backward-compatibility of my stupid temporary idea
+    [XmlRoot(ElementName = "blocklyats")]
     public class Workspace {
 
         [XmlIgnore()]
