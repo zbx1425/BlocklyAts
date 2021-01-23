@@ -55,8 +55,8 @@ Blockly.Msg["BVE_VSTATE_AMP"]="traction current/A";
 
 Blockly.Msg["BVE_GET_HANDLE"]="%1 lever pos";
 Blockly.Msg["BVE_SET_HANDLE"]="move %1 lever to %2";
-Blockly.Msg["BVE_HND_BRAKE"]="power";
-Blockly.Msg["BVE_HND_POWER"]="brake";
+Blockly.Msg["BVE_HND_BRAKE"]="brake";
+Blockly.Msg["BVE_HND_POWER"]="power";
 Blockly.Msg["BVE_HND_REVERSER"]="reverser";
 Blockly.Msg["BVE_HND_CONSTSPD"]="constspeed";
 
@@ -98,7 +98,7 @@ Blockly.Msg["BVE_GET_CONFIG_DEFAULT_NUM"]="config [%1]%2 default num %3";
 Blockly.Msg["BVE_GET_CONFIG_DEFAULT_TEXT"]="config [%1]%2 default text %3";
 Blockly.Msg["BVE_SET_CONFIG"]="set config [%1]%2 to %3";
 Blockly.Msg["BVE_CONFIG_SAVE"]="save config to file %1";
-Blockly.Msg["BVE_PLACEHOLDER_PATH"]="nameyourown.ini";
+Blockly.Msg["BVE_PLACEHOLDER_PATH"]="englishnameonly.ini";
 Blockly.Msg["BVE_PLACEHOLDER_PART"]="part name";
 Blockly.Msg["BVE_PLACEHOLDER_KEY"]="key name";
 

@@ -29,3 +29,4 @@ Msg.NoGameProgram = 「コンパイラ設定」でゲームのパスを指定し
 Msg.NotSaved = 保存されていません
 Msg.DiscardChange = 保存されていない変更はすべて破棄されます。よろしいですか?
 Msg.LanguageChange = プログラムを再起動して、言語の変更を適用します。
+Msg.UpgradeAvailable = 新しいバージョン {0} がリリースされました。\nバグを減らすために、最新バージョンを使用することをお勧めします。\nダウンロードリンク: {1} (「OK」を押して開きます)\n\n{2}

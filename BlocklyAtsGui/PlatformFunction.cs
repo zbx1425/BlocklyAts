@@ -27,6 +27,14 @@ namespace BlocklyAts {
             }
         }
 
+        public static void CallBrowser(string url) {
+            try {
+                System.Diagnostics.Process.Start(url);
+            } catch {
+
+            }
+        }
+
         public static void SetWebBrowserFeatures() {
             if (!IsWindows()) return;
             // don't change the registry if running in-proc inside Visual Studio

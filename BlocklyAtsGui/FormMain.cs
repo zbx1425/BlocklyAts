@@ -52,6 +52,18 @@ namespace BlocklyAts {
                     tscbLanguage.Text = I18n.LanguageDisplayList[i].Value;
                 }
             }
+
+            Task.Run(async () => {
+                var info = await UpgradeInfo.FetchOnline(
+                    "https://www.zbx1425.cn/nautilus/projectmeta.xml",
+                    "BlocklyAts"
+                );
+                if (info != null) {
+                    this.Invoke((Action)(() => {
+                        info.ShowPromptAsRequired();
+                    }));
+                }
+            });
         }
 
         private async void mainWebBrowser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e) {

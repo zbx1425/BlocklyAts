@@ -29,3 +29,4 @@ Msg.NoGameProgram = 请先在 "编译设置" 中指定游戏程序路径。
 Msg.NotSaved = 尚未保存
 Msg.DiscardChange = 未保存的更改将被放弃。确认？
 Msg.LanguageChange = 重新启动程序以应用语言更改。 
+Msg.UpgradeAvailable = 新版本 {0} 已推出。\n建议您使用新版本，以避免问题。\n下载链接: {1} (按确认键打开)\n\n{2}

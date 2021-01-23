@@ -60,8 +60,13 @@ function batsInit(toolboxNode) {
 
   var toolboxMap = [11,0,1,2,3,5,6,7,8,9];
   var onkeydown = function(e) {
-    if (e.shiftKey && e.code[5] >= '0' && e.code[5] <= '9') {
-      workspace.getToolbox().selectItemByPosition(toolboxMap[parseInt(e.code[5])]);
+    if (e.shiftKey) {
+      if (e.code && (e.code[5] >= '0' && e.code[5] <= '9')) {
+        workspace.getToolbox().selectItemByPosition(toolboxMap[parseInt(e.code[5])]);
+      } else if (e.keyCode && (e.keyCode >= 0x30 && e.keyCode <= 0x39)) {
+        // Damn Microsoft!
+        workspace.getToolbox().selectItemByPosition(toolboxMap[e.keyCode - 0x30]);
+      }
     }
   }
   document.addEventListener('keydown', onkeydown, false);

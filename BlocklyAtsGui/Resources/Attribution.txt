@@ -27,6 +27,11 @@ AlertifyJS is a javascript framework for developing pretty browser dialogs and n
 Licensed under GPL 3.0.
 https://alertifyjs.com/
 
+- User agent identify: UAIdentifier
+JavaScript を実行しているブラウザの種類およびそのレンダリングエンジン・ オペレーティングシステムの種類を判別します。© 2006-2020 Magicant 
+uai.js は自由に使用していただいて構いません。 
+http://magicant.github.io/sjavascript/uai-spec.html
+
 - Optional browser interface: CefSharp  
 Full Web Browser in your .Net App.  
 Licensed under the 3-Clause BSD License.

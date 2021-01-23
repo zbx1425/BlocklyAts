@@ -64,7 +64,7 @@ static int l_sound_getset(lua_State *L) {
 
 static int l_msgbox(lua_State *L) {
 	const char* msg = luaL_checkstring(L, 1);
-	MessageBoxA(NULL, msg, "BlocklyAts Message", MB_ICONINFORMATION);
+	MessageBoxA(NULL, msg, "BlocklyAts Message", 0);
 	return 0;
 }
 
@@ -176,8 +176,13 @@ ATS_API void WINAPI Initialize(int initIndex) {
 	if (lua_pcall(L, 1, 0, 0) != 0) l_printerr();
 }
 
+bool firstElapse = true;
+bool schdSetSignal = false, schdSetBeacon = false, schdDoorChange = false;
+int sdatSignal; bool sdatDoor; ATS_BEACONDATA sdatBeacon;
+
 ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int *sound) {
-	if (L == NULL) return { phBrake, phPower, phReverser, 2 };
+	ATS_HANDLES result = { phBrake, phPower, phReverser, 2 };
+	if (L == NULL) return result;
 	bvePanel = panel;
 	bveSound = sound;
 	l_setglobalN("__bve_edLocation", vehicleState.Location);
@@ -189,6 +194,37 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	l_setglobalN("__bve_edBpPressure", vehicleState.BpPressure);
 	l_setglobalN("__bve_edSapPressure", vehicleState.SapPressure);
 	l_setglobalN("__bve_edCurrent", vehicleState.Current);
+	if (firstElapse) {
+		// Let the internal LastSound inside BVE to be -10000
+		// So that new sounds can start from the first plugin Elapse
+		for (int i = 0; i < 256; i++) bveSound[i] = -10000;
+		firstElapse = false;
+		return result;
+	}
+	if (schdDoorChange) {
+		schdDoorChange = false;
+		lua_getglobal(L, "__atsapi_doorchange");
+		lua_pushboolean(L, sdatDoor);
+		if (lua_pcall(L, 1, 0, 0) != 0) l_printerr();
+		if (L == NULL) return result;
+	}
+	if (schdSetSignal) {
+		schdSetSignal = false;
+		lua_getglobal(L, "__atsapi_setsignal");
+		lua_pushinteger(L, sdatSignal);
+		if (lua_pcall(L, 1, 0, 0) != 0) l_printerr();
+		if (L == NULL) return result;
+	}
+	if (schdSetBeacon) {
+		schdSetBeacon = false;
+		lua_getglobal(L, "__atsapi_setbeacondata");
+		lua_pushnumber(L, sdatBeacon.Distance);
+		lua_pushinteger(L, sdatBeacon.Optional);
+		lua_pushinteger(L, sdatBeacon.Signal);
+		lua_pushinteger(L, sdatBeacon.Type);
+		if (lua_pcall(L, 4, 0, 0) != 0) l_printerr();
+		if (L == NULL) return result;
+	}
 	lua_getglobal(L, "__atsapi_elapse");
 	lua_pushinteger(L, phPower);
 	lua_pushinteger(L, phBrake);
@@ -200,7 +236,6 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 		// Lt's hope it'll get the plugin out of the error state by chance
 		return { vSpec.BrakeNotches + 1, 0, 1, 2 };
 	} else {
-		ATS_HANDLES result;
 		result.Power = lua_tointeger(L, -4);
 		result.Brake = lua_tointeger(L, -3);
 		result.Reverser = lua_tointeger(L, -2);
@@ -251,31 +286,24 @@ ATS_API void WINAPI HornBlow(int atsHornBlowIndex) {
 
 ATS_API void WINAPI DoorOpen() {
 	if (L == NULL) return;
-	lua_getglobal(L, "__atsapi_doorchange");
-	lua_pushinteger(L, 1);
-	if (lua_pcall(L, 1, 0, 0) != 0) l_printerr();
+	schdDoorChange = true;
+	sdatDoor = true;
 }
 
 ATS_API void WINAPI DoorClose() {
 	if (L == NULL) return;
-	lua_getglobal(L, "__atsapi_doorchange");
-	lua_pushinteger(L, 0);
-	if (lua_pcall(L, 1, 0, 0) != 0) l_printerr();
+	schdDoorChange = true;
+	sdatDoor = false;
 }
 
 ATS_API void WINAPI SetSignal(int signal) {
 	if (L == NULL) return;
-	lua_getglobal(L, "__atsapi_setsignal");
-	lua_pushinteger(L, signal);
-	if (lua_pcall(L, 1, 0, 0) != 0) l_printerr();
+	schdSetSignal = true;
+	sdatSignal = signal;
 }
 
 ATS_API void WINAPI SetBeaconData(ATS_BEACONDATA beaconData) {
 	if (L == NULL) return;
-	lua_getglobal(L, "__atsapi_setbeacondata");
-	lua_pushnumber(L, beaconData.Distance);
-	lua_pushinteger(L, beaconData.Optional);
-	lua_pushinteger(L, beaconData.Signal);
-	lua_pushinteger(L, beaconData.Type);
-	if (lua_pcall(L, 4, 0, 0) != 0) l_printerr();
+	schdSetBeacon = true;
+	sdatBeacon = beaconData;
 }

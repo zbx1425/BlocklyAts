@@ -29,3 +29,4 @@ Msg.NoGameProgram = Please specify game installation path in "Compiler Configura
 Msg.NotSaved = Not yet saved
 Msg.DiscardChange = All unsaved change will be discarded. Confirm?
 Msg.LanguageChange = Restart the program to apply language change.
+Msg.UpgradeAvailable = New version {0} has been released.\nUsing the latest version is recommended, to avoid bugs.\nDownload link: {1} (Press "OK" to open)\n\n{2}

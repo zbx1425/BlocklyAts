@@ -119,6 +119,7 @@
     <Compile Include="PlatformFunction.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UpgradeInfo.cs" />
     <Compile Include="WebView2Browser.cs" />
     <Compile Include="WinformBrowser.cs" />
     <Compile Include="Workspace.cs" />
