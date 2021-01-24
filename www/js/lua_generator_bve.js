@@ -68,9 +68,7 @@ function batsExportLua(workspace) {
 
   var allHats = ["bve_hat_elapse", "bve_hat_initialize", "bve_hat_keydown_any", "bve_hat_keyup_any", "bve_hat_horn_blow", 
     "bve_hat_door_change", "bve_hat_set_signal", "bve_hat_set_beacon", "bve_hat_load", "bve_hat_dispose"];
-  var code = "local LIP={}function LIP.load(b)assert(type(b)=='string','Parameter \"fileName\" must be a string.')local c=assert(io.open(b,'r'),'Error loading file : '..b)local d={}local e;for f in c:lines()do local g=f:match('^%[([^%[%]]+)%]$')if g then e=tonumber(g)and tonumber(g)or g;d[e]=d[e]or{}end;local h,i=f:match('^([%w|_]+)%s-=%s-(.+)$')if h and i~=nil then if tonumber(i)then i=tonumber(i)elseif i=='true'then i=true elseif i=='false'then i=false end;if tonumber(h)then h=tonumber(h)end;d[e][h]=i end end;c:close()return d end;function LIP.save(b,d)assert(type(b)=='string','Parameter \"fileName\" must be a string.')assert(type(d)=='table','Parameter \"data\" must be a table.')local c=assert(io.open(b,'w+b'),'Error loading file :'..b)local j=''for e,h in pairs(d)do j=j..('[%s]\\n'):format(e)for k,i in pairs(h)do j=j..('%s=%s\\n'):format(k,tostring(i))end;j=j..'\\n'end;c:write(j)c:close()end\n" + 
-    "__bve_keystate={false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false}\n" + 
-    "__bve_doorstate=false\n";
+  var code = "";
   var blocks = workspace.getTopBlocks(false);
   for (var i = 0, block; block = blocks[i]; i++) {
     if (block.type.startsWith("bve_hat")) {
@@ -116,7 +114,7 @@ Blockly.Lua.bve_hat_set_signal=function(block){
   return "function __atsapi_setsignal(__atsarg_signal)\n";
 }
 Blockly.Lua.bve_hat_set_beacon=function(block){
-  return "function __atsapi_setbeacondata(__atsarg_type, __atsarg_signal, __atsarg_distance, __atsarg_optional)\n";
+  return "function __atsapi_setbeacondata(__atsarg_distance, __atsarg_optional, __atsarg_signal, __atsarg_type)\n";
 }
 Blockly.Lua.bve_hat_load=function(block){
   return "function __atsapi_load()\n";
@@ -164,7 +162,7 @@ Blockly.Lua.bve_set_sound_internal=function(block){
     Blockly.Lua.valueToCode(block, "INTERNAL_VAL", Blockly.Lua.ORDER_NONE) + ")\n";
 }
 Blockly.Lua.bve_set_panel=function(block){
-  return "__atsfnc_sound(" + block.getFieldValue("ID") + ", " + 
+  return "__atsfnc_panel(" + block.getFieldValue("ID") + ", " + 
     Blockly.Lua.valueToCode(block, "VALUE", Blockly.Lua.ORDER_NONE) + ")\n";
 }
 Blockly.Lua.bve_get_panel=function(block){

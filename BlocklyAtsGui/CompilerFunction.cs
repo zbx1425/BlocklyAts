@@ -51,6 +51,8 @@ namespace BlocklyAts {
             }
             var luaByteStream = new MemoryStream();*/
 
+            var sourceCode = File.ReadAllText(Path.Combine(appDir, "lib", "boilerplate.lua")) + script;
+
             var boilerplateStream = new FileStream(
                 Path.Combine(appDir, "lib", "batswinapi_" + arch + ".dll"), 
                 FileMode.Open, FileAccess.Read
@@ -59,7 +61,7 @@ namespace BlocklyAts {
             await boilerplateStream.CopyToAsync(outStream);
             //await proc.StandardOutput.BaseStream.CopyToAsync(outStream);
             byte[] confusion = { 0x11, 0x45, 0x14, 0x19, 0x19, 0x81, 0x14, 0x25 };
-            byte[] srcCode = Encoding.UTF8.GetBytes(script);
+            byte[] srcCode = Encoding.UTF8.GetBytes(sourceCode);
             for (int i = 0; i < srcCode.Length; i++) srcCode[i] ^= confusion[i % 8];
             await outStream.WriteAsync(srcCode, 0, srcCode.Length);
             boilerplateStream.Close();
@@ -78,6 +80,7 @@ namespace BlocklyAts {
         }
 
         public static void CompileCSharp(string script, string outputPath) {
+            var sourceCode = File.ReadAllText(Path.Combine(appDir, "lib", "boilerplate.cs")) + script;
             var settings = new Dictionary<string, string>() {
                 { "CompilerVersion", "v4.0" }
             };
@@ -90,14 +93,14 @@ namespace BlocklyAts {
             };
             string[] assemblies = {
                 "System", "System.Core", "System.Data", "mscorlib",
-                "Microsoft.CSharp", "System.Windows.Forms",
+                "System.IO", "Microsoft.CSharp", "System.Windows.Forms",
                 Path.Combine(appDir, "lib", "OpenBveApi")
             };
 
             foreach (string a in assemblies) {
                 parameters.ReferencedAssemblies.Add(a + ".dll");
             }
-            CompilerResults results = codeProvider.CompileAssemblyFromSource(parameters, script);
+            CompilerResults results = codeProvider.CompileAssemblyFromSource(parameters, sourceCode);
             if (results.Errors.HasErrors) {
                 StringBuilder sb = new StringBuilder();
                 foreach (CompilerError error in results.Errors) {

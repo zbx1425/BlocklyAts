@@ -79,5 +79,9 @@ namespace BlocklyAts {
             }
         }
         #endregion
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+            PlatformFunction.CallBrowser("https://www.zbx1425.cn");
+        }
     }
 }

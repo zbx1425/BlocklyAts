@@ -18,6 +18,8 @@ namespace BlocklyAts {
         [XmlIgnore()]
         public string SaveFilePath { get; set; }
 
+        public string EditorVersion { get; set; }
+
         [XmlElement("config")]
         public CompilerConfig Config { get; set; }
 
@@ -32,6 +34,7 @@ namespace BlocklyAts {
         }
 
         public void SaveToFile(string path = null) {
+            EditorVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             if (string.IsNullOrEmpty(path)) {
                 path = this.SaveFilePath;
             } else {

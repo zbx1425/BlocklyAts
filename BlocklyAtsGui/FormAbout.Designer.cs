@@ -147,6 +147,7 @@ namespace BlocklyAts {
             this.linkLabel1.Text = "zbx1425@outlook.com; www.zbx1425.cn";
             this.linkLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.linkLabel1.UseCompatibleTextRendering = true;
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // FormAbout
             // 
