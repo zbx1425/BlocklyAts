@@ -29,6 +29,9 @@ namespace BlocklyAts {
             return process.HasExited ? Task.CompletedTask : tcs.Task;
         }
 
+        public static string BoilerplateLua = File.ReadAllText(Path.Combine(appDir, "lib", "boilerplate.lua"));
+        public static string BoilerplateCSharp = File.ReadAllText(Path.Combine(appDir, "lib", "boilerplate.cs"));
+
         public static async Task CompileLua(string script, string outputPath, string arch) {
             /*var proc = new Process {
                 StartInfo = new ProcessStartInfo {
@@ -51,7 +54,7 @@ namespace BlocklyAts {
             }
             var luaByteStream = new MemoryStream();*/
 
-            var sourceCode = File.ReadAllText(Path.Combine(appDir, "lib", "boilerplate.lua")) + script;
+            var sourceCode = BoilerplateLua + script;
 
             var boilerplateStream = new FileStream(
                 Path.Combine(appDir, "lib", "batswinapi_" + arch + ".dll"), 
@@ -80,7 +83,7 @@ namespace BlocklyAts {
         }
 
         public static void CompileCSharp(string script, string outputPath) {
-            var sourceCode = File.ReadAllText(Path.Combine(appDir, "lib", "boilerplate.cs")) + script;
+            var sourceCode = BoilerplateCSharp + script;
             var settings = new Dictionary<string, string>() {
                 { "CompilerVersion", "v4.0" }
             };

@@ -94,8 +94,7 @@ Blockly.Msg["BVE_MSG_SET_BEACON_ONLY"]="Only use when 'beacon update':";
 
 Blockly.Msg["BVE_CONFIG_LOAD"]="read config from file %1";
 Blockly.Msg["BVE_GET_CONFIG"]="config [%1]%2";
-Blockly.Msg["BVE_GET_CONFIG_DEFAULT_NUM"]="config [%1]%2 default num %3";
-Blockly.Msg["BVE_GET_CONFIG_DEFAULT_TEXT"]="config [%1]%2 default text %3";
+Blockly.Msg["BVE_GET_CONFIG_DEFAULT"]="config [%1]%2 default %3";
 Blockly.Msg["BVE_SET_CONFIG"]="set config [%1]%2 to %3";
 Blockly.Msg["BVE_CONFIG_SAVE"]="save config to file %1";
 Blockly.Msg["BVE_PLACEHOLDER_PATH"]="englishnameonly.ini";

@@ -9,6 +9,7 @@ FormMain.tsbtnCompile = コンパイル (Ctrl+Shift+B)
 FormMain.tsbtnCompileRun = コンパイルして実行する (F5)
 FormMain.tsbtnCompileSetting = コンパイラ設定
 FormMain.tsbtnDebugWindow = デバッグウィンドウ
+FormMain.tsbtnHelp = 説明書
 FormMain.tsbtnAbout = BlocklyAts 関連情報
 
 FormCompilerConfig.cbShouldx86 = 32ビット Windows DLL\nBVE4/5、OpenBVE用

@@ -9,6 +9,7 @@ FormMain.tsbtnCompile = 编译 (Ctrl+Shift+B)
 FormMain.tsbtnCompileRun = 编译并运行 (F5)
 FormMain.tsbtnCompileSetting = 编译设置
 FormMain.tsbtnDebugWindow = 调试窗口
+FormMain.tsbtnHelp = 帮助
 FormMain.tsbtnAbout = 关于 BlocklyAts
 
 FormCompilerConfig.cbShouldx86 = 32位 Windows DLL\n用于 BVE4/5、OpenBVE

@@ -1,5 +1,4 @@
-var Code = {};
-var workspace = {};
+var workspace = null;
 
 var themeWithHat = Blockly.Theme.defineTheme('themeWithHat', {
   'base': Blockly.Themes.Classic,
@@ -70,6 +69,10 @@ function batsInit(toolboxNode) {
     }
   }
   document.addEventListener('keydown', onkeydown, false);
+
+  if (typeof onBlocklyLoad != 'undefined' && onBlocklyLoad != null) {
+    onBlocklyLoad();
+  }
 }
 
 window.addEventListener('load', function() {

@@ -39,6 +39,7 @@ Blockly.CSharp.addReservedWords([
   "__atsarg_initindex",
   "__atsarg_key",
   "__atsarg_signal",
+  "__c",
   "__zbx_1",
   "__zbx_2",
 ].join(","));
@@ -201,19 +202,11 @@ Blockly.CSharp.bve_get_config=function(block){
   return ["__c.GetConfig(" + Blockly.CSharp.quote_(block.getFieldValue("PART")) + ", " 
     + Blockly.CSharp.quote_(block.getFieldValue("KEY")) + ")", Blockly.CSharp.ORDER_ATOMIC];
 }
-Blockly.CSharp.bve_get_config_default_num=function(block){ // TODO
+Blockly.CSharp.bve_get_config_default=function(block){ // TODO
   return [
     "__c.GetConfig(" + Blockly.CSharp.quote_(block.getFieldValue("PART")) + ", " 
-    + Blockly.CSharp.quote_(block.getFieldValue("KEY")) + ", "
-    + block.getFieldValue("DEFAULT_VAL") +")",
-    Blockly.CSharp.ORDER_ATOMIC
-  ];
-}
-Blockly.CSharp.bve_get_config_default_text=function(block){ // TODO
-  return [
-    "__c.GetConfig(" + Blockly.CSharp.quote_(block.getFieldValue("PART")) + ", " 
-    + Blockly.CSharp.quote_(block.getFieldValue("KEY")) + ", "
-    + Blockly.CSharp.quote_(block.getFieldValue("DEFAULT_VAL")) +")",
+    + Blockly.CSharp.quote_(block.getFieldValue("KEY")) + ", ("
+    + Blockly.Lua.valueToCode(block, "DEFAULT_VAL", Blockly.CSharp.ORDER_NONE) +"))",
     Blockly.CSharp.ORDER_ATOMIC
   ];
 }

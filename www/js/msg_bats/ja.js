@@ -94,8 +94,7 @@ Blockly.Msg["BVE_MSG_SET_BEACON_ONLY"]="'地上子を越えた'の場合にの�
 
 Blockly.Msg["BVE_CONFIG_LOAD"]="設定ファイル %1 をロード";
 Blockly.Msg["BVE_GET_CONFIG"]="設定項目 [%1]%2";
-Blockly.Msg["BVE_GET_CONFIG_DEFAULT_NUM"]="設定項目 [%1]%2 默认数值 %3";
-Blockly.Msg["BVE_GET_CONFIG_DEFAULT_TEXT"]="設定項目 [%1]%2 默认文字 %3";
+Blockly.Msg["BVE_GET_CONFIG_DEFAULT"]="設定項目 [%1]%2 省略時 %3";
 Blockly.Msg["BVE_SET_CONFIG"]="設定項目 [%1]%2 を %3 に設定";
 Blockly.Msg["BVE_CONFIG_SAVE"]="設定をファイル %1 に保存";
 Blockly.Msg["BVE_PLACEHOLDER_PATH"]="英語のみの名前を付ける.ini";

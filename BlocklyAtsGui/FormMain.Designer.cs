@@ -35,8 +35,9 @@ namespace BlocklyAts {
             this.tsbtnCompileSetting = new System.Windows.Forms.ToolStripButton();
             this.tsbtnAbout = new System.Windows.Forms.ToolStripButton();
             this.tsbtnDebugWindow = new System.Windows.Forms.ToolStripButton();
-            this.tscbLanguage = new System.Windows.Forms.ToolStripComboBox();
             this.tss2 = new System.Windows.Forms.ToolStripSeparator();
+            this.tscbLanguage = new System.Windows.Forms.ToolStripComboBox();
+            this.tsbtnHelp = new System.Windows.Forms.ToolStripButton();
             this.mainToolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -54,6 +55,7 @@ namespace BlocklyAts {
             this.tsbtnCompileRun,
             this.tsbtnCompileSetting,
             this.tsbtnAbout,
+            this.tsbtnHelp,
             this.tsbtnDebugWindow,
             this.tss2,
             this.tscbLanguage});
@@ -168,6 +170,13 @@ namespace BlocklyAts {
             this.tsbtnDebugWindow.Text = "Debug Window";
             this.tsbtnDebugWindow.Click += new System.EventHandler(this.tsbtnDebugWindow_Click);
             // 
+            // tss2
+            // 
+            this.tss2.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tss2.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
+            this.tss2.Name = "tss2";
+            this.tss2.Size = new System.Drawing.Size(6, 25);
+            // 
             // tscbLanguage
             // 
             this.tscbLanguage.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
@@ -178,12 +187,17 @@ namespace BlocklyAts {
             this.tscbLanguage.Size = new System.Drawing.Size(121, 25);
             this.tscbLanguage.SelectedIndexChanged += new System.EventHandler(this.tscbLanguage_SelectedIndexChanged);
             // 
-            // tss2
+            // tsbtnHelp
             // 
-            this.tss2.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.tss2.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
-            this.tss2.Name = "tss2";
-            this.tss2.Size = new System.Drawing.Size(6, 25);
+            this.tsbtnHelp.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tsbtnHelp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbtnHelp.Image = ((System.Drawing.Image)(resources.GetObject("tsbtnHelp.Image")));
+            this.tsbtnHelp.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbtnHelp.Margin = new System.Windows.Forms.Padding(0, 1, 4, 2);
+            this.tsbtnHelp.Name = "tsbtnHelp";
+            this.tsbtnHelp.Size = new System.Drawing.Size(23, 22);
+            this.tsbtnHelp.Text = "帮助(&L)";
+            this.tsbtnHelp.Click += new System.EventHandler(this.tsbtnHelp_Click);
             // 
             // FormMain
             // 
@@ -218,6 +232,7 @@ namespace BlocklyAts {
         private System.Windows.Forms.ToolStripButton tsbtnAbout;
         private System.Windows.Forms.ToolStripSeparator tss2;
         private System.Windows.Forms.ToolStripComboBox tscbLanguage;
+        private System.Windows.Forms.ToolStripButton tsbtnHelp;
     }
 }
 

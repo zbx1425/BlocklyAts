@@ -102,7 +102,9 @@ namespace BlocklyAts {
         }
 
         public async Task<XElement> BkySaveWorkspace() {
-            var element = XElement.Parse((await InvokeScript("batsWkspSave();")).ToString());
+            var workspaceString = (await InvokeScript("batsWkspSave();"))?.ToString();
+            if (workspaceString == null) return null;
+            var element = XElement.Parse(workspaceString);
             element.RemoveAttributes();
             return element;
         }
@@ -112,12 +114,20 @@ namespace BlocklyAts {
             await InvokeScript(string.Format("batsWkspLoad({0});", arg));
         }
 
+        public async Task BkyLoadInitWorkspace(XElement bkyxml) {
+            var arg = EscapeJsString(bkyxml.ToString(SaveOptions.DisableFormatting));
+            await InvokeScript(string.Format(
+                "if (workspace == null) window.onBlocklyLoad = function() {{batsWkspLoad({0});}}; else batsWkspLoad({0});", 
+                arg
+            ));
+        }
+
         public async Task<string> BkyExportLua() {
-            return (await InvokeScript("batsWkspExportLua();")).ToString();
+            return (await InvokeScript("batsWkspExportLua();"))?.ToString();
         }
 
         public async Task<string> BkyExportCSharp() {
-            return (await InvokeScript("batsWkspExportCSharp();")).ToString();
+            return (await InvokeScript("batsWkspExportCSharp();"))?.ToString();
         }
     }
 }

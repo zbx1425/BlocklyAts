@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -29,28 +30,21 @@ namespace BlocklyAts {
                 browser.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All);
                 browser.CoreWebView2.WebResourceRequested += CoreWebView2_WebResourceRequested;
                 browser.CoreWebView2.Settings.IsZoomControlEnabled = false;
-                browser.CoreWebView2.Settings.AreDevToolsEnabled = false;
+                //browser.CoreWebView2.Settings.AreDevToolsEnabled = false;
                 browser.CoreWebView2.Settings.IsStatusBarEnabled = false;
                 browser.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
             };
             browser.EnsureCoreWebView2Async(environment);
-
-            if (url[1] == ':' && url[2] == '\\') {
-                // URLParser says file urls cannot have query param. Make them happy.
-                browser.Source = new Uri("http://make.urlparser.happy/" + url);
-            } else {
-                browser.Source = new Uri(url);
-            }
+            Navigate(url);
         }
 
         private void CoreWebView2_WebResourceRequested(object sender, CoreWebView2WebResourceRequestedEventArgs e) {
+            Uri parsedUri = new Uri(e.Request.Uri);
             string path;
-            if (e.Request.Uri.StartsWith("file:///")) {
-                path = e.Request.Uri.Substring(8).Replace('/', '\\');
-                if (path.Contains("%3F")) path = path.Substring(0, path.IndexOf("%3F"));
-            } else if (e.Request.Uri.StartsWith("http://make.urlparser.happy/")) {
-                path = e.Request.Uri.Substring(28).Replace('/', '\\');
-                if (path.Contains("?")) path = path.Substring(0, path.IndexOf("?"));
+            if (parsedUri.Scheme == "file") {
+                path = parsedUri.LocalPath;
+            } else if (parsedUri.Scheme == "http" && parsedUri.Host == "make.urlparser.happy") {
+                path = parsedUri.LocalPath.TrimStart('/', '\\');
             } else {
                 return;
             }
@@ -67,9 +61,24 @@ namespace BlocklyAts {
                     200, "OK", "Content-Type: " + 
                         (mimeMap.TryGetValue(extension, out string mimeType) ? mimeType : "application/octet-stream"));
             } else {
+                string errorMessageTemplate = @"
+<h2>Error: 404 Not Found</h2>
+<p>Please inform developer with these information: <a href='mailto:zbx1425@outlook.com'>zbx1425@outlook.com</a></p>
+<hr/>
+<table>
+    <tr><th>Missing Path</th><td>{0}</td></tr>
+    <tr><th>URL String</th><td>{1}</td></tr>
+    {2}
+</table>
+                ";
+                var urlParsed = new Uri(e.Request.Uri);
+                var errorMessage = string.Format(errorMessageTemplate, path, e.Request.Uri,
+                    string.Join("\n", urlParsed.GetType().GetProperties()
+                    .Select(t => string.Format("<tr><th>{0}</th><td>{1}</td></tr>", t.Name, t.GetValue(urlParsed))))
+                );
                 e.Response = environment.CreateWebResourceResponse(
-                    new MemoryStream(Encoding.UTF8.GetBytes("404 Not Found")),
-                    404, "Not Found", "Content-Type: text/plain;charset=utf-8"
+                    new MemoryStream(Encoding.UTF8.GetBytes(errorMessage)),
+                    404, "Not Found", "Content-Type: text/html;charset=utf-8"
                 );
             }
         }
@@ -92,12 +101,18 @@ namespace BlocklyAts {
 
         public override async Task<object> InvokeScript(string script) {
             var resultString = await browser.ExecuteScriptAsync(script);
+            if (resultString == null) return null;
             if (resultString == "undefined" || resultString == "null") return null;
             return UnescapeJsString(resultString);
         }
 
         public override void Navigate(string url) {
-            browser.Source = new Uri(url);
+            if (url[1] == ':' && url[2] == '\\') {
+                // URLParser says file urls cannot have query param. Make them happy.
+                browser.Source = new Uri("http://make.urlparser.happy/" + url);
+            } else {
+                browser.Source = new Uri(url);
+            }
         }
 
         public override void Reload() {

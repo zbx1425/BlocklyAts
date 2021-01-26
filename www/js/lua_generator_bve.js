@@ -38,6 +38,10 @@ Blockly.Lua.addReservedWords([
   "__atsarg_reverser",
   "__atsarg_signal",
   "__atsarg_type",
+  "__atsfnc_cfgload",
+  "__atsfnc_cfgsave",
+  "__atsfnc_cfgget",
+  "__atsfnc_cfgset",
   "__atsfnc_panel",
   "__atsfnc_sound",
   "__atsfnc_msgbox",
@@ -198,33 +202,30 @@ Blockly.Lua.bve_get_beacon=function(block){
   return ["__atsarg_" + block.getFieldValue("FIELD_SEL").toLowerCase(), Blockly.Lua.ORDER_ATOMIC];
 }
 Blockly.Lua.bve_config_load=function(block){
-  return "__atsval_config = LIP.load(__atsval_dlldir .. " + Blockly.Lua.quote_(block.getFieldValue("PATH")) + ")\n";
+  return "__atsfnc_cfgload(" + Blockly.Lua.quote_(block.getFieldValue("PATH")) + ")\n";
 }
 Blockly.Lua.bve_config_save=function(block){
-  return "LIP.save(__atsval_dlldir .. " + Blockly.Lua.quote_(block.getFieldValue("PATH")) + ", __atsval_config)\n";
+  return "__atsfnc_cfgsave(" + Blockly.Lua.quote_(block.getFieldValue("PATH")) + ")\n";
 }
 Blockly.Lua.bve_get_config=function(block){
-  return ["__atsval_config." + block.getFieldValue("PART") + "." + block.getFieldValue("KEY"), Blockly.Lua.ORDER_ATOMIC];
-}
-Blockly.Lua.bve_get_config_default_num=function(block){
   return [
-    "((__atsval_config." + block.getFieldValue("PART") + "." + block.getFieldValue("KEY") + " ~= nil) and {"
-    + "__atsval_config." + block.getFieldValue("PART") + "." + block.getFieldValue("KEY") + "} or {"
-    + block.getFieldValue("DEFAULT_VAL") + "})[1]",
+    "__atsfnc_cfgget(" + Blockly.Lua.quote_(block.getFieldValue("PART")) + "," 
+    + Blockly.Lua.quote_(block.getFieldValue("KEY")) + ")",
     Blockly.Lua.ORDER_ATOMIC
   ];
 }
-Blockly.Lua.bve_get_config_default_text=function(block){
+Blockly.Lua.bve_get_config_default=function(block){
   return [
-    "((__atsval_config." + block.getFieldValue("PART") + "." + block.getFieldValue("KEY") + " ~= nil) and {"
-    + "__atsval_config." + block.getFieldValue("PART") + "." + block.getFieldValue("KEY") + "} or {"
-    + Blockly.Lua.quote_("\\" + block.getFieldValue("PATH")) + "})[1]",
+    "__atsfnc_cfgget(" + Blockly.Lua.quote_(block.getFieldValue("PART")) + "," 
+    + Blockly.Lua.quote_(block.getFieldValue("KEY")) + ",("
+    + (Blockly.Lua.valueToCode(block, "DEFAULT_VAL", Blockly.Lua.ORDER_NONE) || "\"\"") + "))",
     Blockly.Lua.ORDER_ATOMIC
   ];
 }
 Blockly.Lua.bve_set_config=function(block){
-  return "__atsval_config." + block.getFieldValue("PART") + "." + block.getFieldValue("KEY") + " = "
-    + (Blockly.Lua.valueToCode(block, "VALUE", Blockly.Lua.ORDER_NONE) || "\"\"") + "\n";;
+  return "__atsfnc_cfgset(" + Blockly.Lua.quote_(block.getFieldValue("PART")) + "," 
+    + Blockly.Lua.quote_(block.getFieldValue("KEY")) + ",("
+    + (Blockly.Lua.valueToCode(block, "VALUE", Blockly.Lua.ORDER_NONE) || "\"\"") + "))\n";;
 }
 Blockly.Lua.bve_msgbox=function(block){
   return "__atsfnc_msgbox(" + (Blockly.Lua.valueToCode(block, "MSG", Blockly.Lua.ORDER_NONE) || "\"\"") + ")\n";;

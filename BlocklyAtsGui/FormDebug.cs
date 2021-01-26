@@ -19,9 +19,9 @@ namespace BlocklyAts {
 
         private void rbLua_CheckedChanged(object sender, EventArgs e) {
             if (sender == rbLua) {
-                tbCode.Text = codeLua;
+                tbCode.Text = CompilerFunction.BoilerplateLua + codeLua;
             } else {
-                tbCode.Text = codeCSharp;
+                tbCode.Text = CompilerFunction.BoilerplateCSharp + codeCSharp;
             }
         }
 

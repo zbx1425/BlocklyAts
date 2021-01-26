@@ -23,28 +23,8 @@ namespace BlocklyAts {
 
         private Workspace currentWorkspace = new Workspace();
 
-        private void FormMain_Load(object sender, EventArgs e) {
-#if DEBUG
-            string webDirectory = Path.Combine(Path.GetDirectoryName(CompilerFunction.appDir), "www");
-            if (!Directory.Exists(webDirectory)) webDirectory = Path.Combine(CompilerFunction.appDir, "www");
-#else
-            string webDirectory = Path.Combine(CompilerFunction.appDir, "www");
-#endif
-            string pageURL = Path.Combine(webDirectory, "index.html") + string.Format("?ver={0}&lang={1}",
-                Assembly.GetExecutingAssembly().GetName().Version.ToString(),
-                I18n.Translate("BlocklyName")
-            );
-            mainWebBrowser = BaseBrowser.AcquireInstance(pageURL);
-            mainWebBrowser.KeyDown += new PreviewKeyDownEventHandler(mainWebBrowser_PreviewKeyDown);
-            this.PreviewKeyDown += new PreviewKeyDownEventHandler(mainWebBrowser_PreviewKeyDown);
-            mainWebBrowser.BindTo(this);
-            updateSaveFileState();
+        private async void FormMain_Load(object sender, EventArgs e) {
 
-            foreach (ToolStripItem item in mainToolStrip.Items) {
-                if (I18n.CanTranslate("FormMain." + item.Name)) {
-                    item.Text = I18n.Translate("FormMain." + item.Name);
-                }
-            }
             for (int i = 0; i < I18n.LanguageDisplayList.Count; i++) {
                 tscbLanguage.Items.Add(I18n.LanguageDisplayList[i].Value);
                 if (I18n.LanguageDisplayList[i].Key == I18n.SelectedLanguage) {
@@ -52,8 +32,9 @@ namespace BlocklyAts {
                     tscbLanguage.Text = I18n.LanguageDisplayList[i].Value;
                 }
             }
+            await ApplyLanguage();
 
-            Task.Run(async () => {
+            await Task.Run(async () => {
                 var info = await UpgradeInfo.FetchOnline(
                     "https://www.zbx1425.cn/nautilus/projectmeta.xml",
                     "BlocklyAts"
@@ -66,14 +47,47 @@ namespace BlocklyAts {
             });
         }
 
+        private async Task ApplyLanguage() {
+            foreach (ToolStripItem item in mainToolStrip.Items) {
+                if (I18n.CanTranslate("FormMain." + item.Name)) {
+                    item.Text = I18n.Translate("FormMain." + item.Name);
+                }
+            }
+            updateSaveFileState();
+#if DEBUG
+            string webDirectory = Path.Combine(Path.GetDirectoryName(CompilerFunction.appDir), "www");
+            if (!Directory.Exists(webDirectory)) webDirectory = Path.Combine(CompilerFunction.appDir, "www");
+#else
+            string webDirectory = Path.Combine(CompilerFunction.appDir, "www");
+#endif
+            string pageURL = Path.Combine(webDirectory, "index.html") + string.Format("?ver={0}&lang={1}",
+                Assembly.GetExecutingAssembly().GetName().Version.ToString(),
+                I18n.Translate("BlocklyName")
+            );
+            if (mainWebBrowser == null) {
+                mainWebBrowser = BaseBrowser.AcquireInstance(pageURL);
+                mainWebBrowser.KeyDown += new PreviewKeyDownEventHandler(mainWebBrowser_PreviewKeyDown);
+                this.PreviewKeyDown += new PreviewKeyDownEventHandler(mainWebBrowser_PreviewKeyDown);
+                mainWebBrowser.BindTo(this);
+            } else {
+                var workspaceState = await mainWebBrowser.BkySaveWorkspace();
+                if (workspaceState == null) return;
+                currentWorkspace.BlocklyXml = new FPXElement(workspaceState);
+                mainWebBrowser.Navigate(pageURL);
+                EventHandler loadHandler = null;
+                loadHandler = (EventHandler)(async (sender, e) => {
+                    await mainWebBrowser.BkyLoadInitWorkspace(currentWorkspace.BlocklyXml);
+                    mainWebBrowser.PageFinished -= loadHandler;
+                });
+                mainWebBrowser.PageFinished += loadHandler;
+            }
+        }
+
         private async void mainWebBrowser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e) {
             if (e.KeyCode == Keys.F5) {
                 if (ModifierKeys.HasFlag(Keys.Control) && ModifierKeys.HasFlag(Keys.Shift)) {
                     // Debug function.
-                    currentWorkspace.BlocklyXml = new FPXElement(await mainWebBrowser.BkySaveWorkspace());
-                    mainWebBrowser.Reload();
-                    await Task.Delay(2000);
-                    await mainWebBrowser.BkyLoadWorkspace(currentWorkspace.BlocklyXml);
+                    await ApplyLanguage();
                 } else {
                     tsbtnCompileRun_Click(null, null);
                 }
@@ -128,7 +142,9 @@ namespace BlocklyAts {
             };
             if (sfd.ShowDialog() != DialogResult.OK) return;
 
-            currentWorkspace.BlocklyXml = new FPXElement(await mainWebBrowser.BkySaveWorkspace());
+            var workspaceState = await mainWebBrowser.BkySaveWorkspace();
+            if (workspaceState == null) return;
+            currentWorkspace.BlocklyXml = new FPXElement(workspaceState);
             currentWorkspace.SaveToFile(sfd.FileName);
             updateSaveFileState();
         }
@@ -199,7 +215,9 @@ namespace BlocklyAts {
 
         private async void tsbtnSave_Click(object sender, EventArgs e) {
             if (string.IsNullOrEmpty(currentWorkspace.SaveFilePath)) return;
-            currentWorkspace.BlocklyXml = new FPXElement(await mainWebBrowser.BkySaveWorkspace());
+            var workspaceState = await mainWebBrowser.BkySaveWorkspace();
+            if (workspaceState == null) return;
+            currentWorkspace.BlocklyXml = new FPXElement(workspaceState);
             currentWorkspace.SaveToFile();
         }
 
@@ -248,12 +266,17 @@ namespace BlocklyAts {
             new FormAbout().ShowDialog();
         }
 
-        private void tscbLanguage_SelectedIndexChanged(object sender, EventArgs e) {
+        private async void tscbLanguage_SelectedIndexChanged(object sender, EventArgs e) {
             var newlang = I18n.LanguageDisplayList[tscbLanguage.SelectedIndex].Key;
             if (newlang != I18n.SelectedLanguage) {
                 I18n.SelectedLanguage = newlang;
-                MessageBox.Show(I18n.Translate("Msg.LanguageChange"));
+                await ApplyLanguage();
+                //MessageBox.Show(I18n.Translate("Msg.LanguageChange"));
             }
+        }
+
+        private void tsbtnHelp_Click(object sender, EventArgs e) {
+            PlatformFunction.CallBrowser("https://github.com/zbx1425/BlocklyAts/wiki");
         }
     }
 }

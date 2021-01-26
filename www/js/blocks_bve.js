@@ -438,9 +438,9 @@ Blockly.defineBlocksWithJsonArray([
     output: [ "String", "Number" ],
   },
   {
-    type: "bve_get_config_default_num",
+    type: "bve_get_config_default",
     style: "bve_blocks",
-    message0: "%{BKY_BVE_GET_CONFIG_DEFAULT_NUM}",
+    message0: "%{BKY_BVE_GET_CONFIG_DEFAULT}",
     args0: [
       {
         type: "field_input",
@@ -453,32 +453,9 @@ Blockly.defineBlocksWithJsonArray([
         text: "%{BKY_BVE_PLACEHOLDER_KEY}"
       },
       {
-        type: "field_number",
+        type: "input_value",
         name: "DEFAULT_VAL",
-        text: 0
-      }
-    ],
-    output: [ "String", "Number" ],
-  },
-  {
-    type: "bve_get_config_default_text",
-    style: "bve_blocks",
-    message0: "%{BKY_BVE_GET_CONFIG_DEFAULT_TEXT}",
-    args0: [
-      {
-        type: "field_input",
-        name: "PART",
-        text: "%{BKY_BVE_PLACEHOLDER_PART}"
-      },
-      {
-        type: "field_input",
-        name: "KEY",
-        text: "%{BKY_BVE_PLACEHOLDER_KEY}"
-      },
-      {
-        type: "field_input",
-        name: "DEFAULT_VAL",
-        text: ""
+        check: [ "String", "Number" ],
       }
     ],
     output: [ "String", "Number" ],
