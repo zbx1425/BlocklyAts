@@ -134,8 +134,13 @@ Blockly.CSharp.bve_get_handle=function(block){
 }
 Blockly.CSharp.bve_set_handle=function(block){
   var handleName = block.getFieldValue("FIELD_SEL"); if (handleName == "Power" || handleName == "Brake") handleName += "Notch";
-  return "__c.EData.Handles." + handleName + " = "
-    + (Blockly.CSharp.valueToCode(block, "VALUE", Blockly.CSharp.ORDER_NONE) || "0") + ";\n";
+  if (handleName == "ConstSpeed") {
+    return "__c.EData.Handles.ConstSpeed = new bool[] {false, true, __c.EData.Handles.ConstSpeed}["
+    + (Blockly.CSharp.valueToCode(block, "VALUE", Blockly.CSharp.ORDER_NONE) || "0") + "];\n";
+  } else {
+    return "__c.EData.Handles." + handleName + " = "
+      + (Blockly.CSharp.valueToCode(block, "VALUE", Blockly.CSharp.ORDER_NONE) || "0") + ";\n";
+  }
 }
 Blockly.CSharp.bve_sound_stop=function(block){
   return "__c.AccessLegacySound(" + block.getFieldValue("ID") + ", -10000);\n";
