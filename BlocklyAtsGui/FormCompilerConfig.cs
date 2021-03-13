@@ -13,16 +13,22 @@ namespace BlocklyAts {
 
         public CompilerConfig Config {
             get {
-                return new CompilerConfig {
+                var cfg = new CompilerConfig {
                     ShouldCompilex86 = cbShouldx86.Checked,
                     ShouldCompilex64 = cbShouldx64.Checked,
                     ShouldCompileAnyCpu = cbShouldAny.Checked,
                     CompilePathx86 = cbCustomx86.Checked ? tbx86.Text : null,
                     CompilePathx64 = cbCustomx64.Checked ? tbx64.Text : null,
                     CompilePathAnyCpu = cbCustomAny.Checked ? tbAny.Text : null,
-                    GamePath = cbCustomGamePath.Checked ? tbGamePath.Text : null,
+                    GameType = CompilerConfig.BveImpl.Unspecified,
+                    GamePath = !string.IsNullOrEmpty(tbGamePath.Text) ? tbGamePath.Text : null,
                     GameArgs = !string.IsNullOrEmpty(tbGameArgs.Text) ? tbGameArgs.Text : null
                 };
+                if (rbGameBve5.Checked) cfg.GameType = CompilerConfig.BveImpl.BveTs5;
+                if (rbGameBve6.Checked) cfg.GameType = CompilerConfig.BveImpl.BveTs6;
+                if (rbGameOpenBve.Checked) cfg.GameType = CompilerConfig.BveImpl.OpenBve;
+                if (rbGameCustom.Checked) cfg.GameType = CompilerConfig.BveImpl.Custom;
+                return cfg;
             }
             set {
                 cbShouldx86.Checked = value.ShouldCompilex86;
@@ -31,25 +37,30 @@ namespace BlocklyAts {
                 cbCustomx86.Checked = !string.IsNullOrEmpty(value.CompilePathx86);
                 cbCustomx64.Checked = !string.IsNullOrEmpty(value.CompilePathx64);
                 cbCustomAny.Checked = !string.IsNullOrEmpty(value.CompilePathAnyCpu);
-                cbCustomGamePath.Checked = !string.IsNullOrEmpty(value.GamePath);
                 tbx86.Text = value.CompilePathx86;
                 tbx64.Text = value.CompilePathx64;
                 tbAny.Text = value.CompilePathAnyCpu;
                 tbGamePath.Text = value.GamePath;
                 tbGameArgs.Text = value.GameArgs;
+                rbGameBve5.Checked = value.GameType == CompilerConfig.BveImpl.BveTs5;
+                rbGameBve6.Checked = value.GameType == CompilerConfig.BveImpl.BveTs6;
+                rbGameOpenBve.Checked = value.GameType == CompilerConfig.BveImpl.OpenBve;
+                rbGameCustom.Checked = value.GameType == CompilerConfig.BveImpl.Custom;
                 cbShould_CheckedChanged(cbShouldx86, null);
                 cbShould_CheckedChanged(cbShouldx64, null);
                 cbShould_CheckedChanged(cbShouldAny, null);
                 cbCustom_CheckedChanged(cbCustomx86, null);
                 cbCustom_CheckedChanged(cbCustomx64, null);
                 cbCustom_CheckedChanged(cbCustomAny, null);
-                cbCustom_CheckedChanged(cbCustomGamePath, null);
             }
         }
 
         public FormCompilerConfig() {
             InitializeComponent();
             tbGameArgs.Width = 0;
+            rbGameBve5.Enabled = GameDetection.BveTs5Path != null;
+            rbGameBve6.Enabled = GameDetection.BveTs6Path != null;
+            rbGameOpenBve.Enabled = GameDetection.OpenBvePath != null;
         }
 
         private void cbCustom_CheckedChanged(object sender, EventArgs e) {

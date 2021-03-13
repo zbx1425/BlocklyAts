@@ -24,7 +24,6 @@ namespace BlocklyAts {
         /// </summary>
         private void InitializeComponent() {
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
-            this.cbCustomGamePath = new System.Windows.Forms.CheckBox();
             this.tbGameArgs = new System.Windows.Forms.TextBox();
             this.tbGamePath = new System.Windows.Forms.TextBox();
             this.btnBrowseAny = new System.Windows.Forms.Button();
@@ -45,8 +44,14 @@ namespace BlocklyAts {
             this.lblGamePath = new System.Windows.Forms.Label();
             this.lblGameArgs = new System.Windows.Forms.Label();
             this.btnBrowseGamePath = new System.Windows.Forms.Button();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.rbGameBve5 = new System.Windows.Forms.RadioButton();
+            this.rbGameBve6 = new System.Windows.Forms.RadioButton();
+            this.rbGameOpenBve = new System.Windows.Forms.RadioButton();
+            this.rbGameCustom = new System.Windows.Forms.RadioButton();
             this.tlpMain.SuspendLayout();
             this.flp.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpMain
@@ -58,9 +63,9 @@ namespace BlocklyAts {
             this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlpMain.Controls.Add(this.cbCustomGamePath, 1, 3);
-            this.tlpMain.Controls.Add(this.tbGameArgs, 1, 4);
-            this.tlpMain.Controls.Add(this.tbGamePath, 2, 3);
+            this.tlpMain.Controls.Add(this.flowLayoutPanel1, 0, 3);
+            this.tlpMain.Controls.Add(this.tbGameArgs, 1, 5);
+            this.tlpMain.Controls.Add(this.tbGamePath, 1, 4);
             this.tlpMain.Controls.Add(this.btnBrowseAny, 3, 2);
             this.tlpMain.Controls.Add(this.btnBrowsex64, 3, 1);
             this.tlpMain.Controls.Add(this.tbAny, 2, 2);
@@ -72,40 +77,30 @@ namespace BlocklyAts {
             this.tlpMain.Controls.Add(this.cbCustomx64, 1, 1);
             this.tlpMain.Controls.Add(this.cbCustomAny, 1, 2);
             this.tlpMain.Controls.Add(this.tbx86, 2, 0);
-            this.tlpMain.Controls.Add(this.flp, 2, 5);
+            this.tlpMain.Controls.Add(this.flp, 2, 6);
             this.tlpMain.Controls.Add(this.btnBrowsex86, 3, 0);
             this.tlpMain.Controls.Add(this.lblGamePath, 0, 3);
-            this.tlpMain.Controls.Add(this.lblGameArgs, 0, 4);
-            this.tlpMain.Controls.Add(this.btnBrowseGamePath, 3, 3);
+            this.tlpMain.Controls.Add(this.lblGameArgs, 0, 5);
+            this.tlpMain.Controls.Add(this.btnBrowseGamePath, 3, 4);
             this.tlpMain.Location = new System.Drawing.Point(12, 12);
             this.tlpMain.Margin = new System.Windows.Forms.Padding(12);
             this.tlpMain.Name = "tlpMain";
-            this.tlpMain.RowCount = 6;
+            this.tlpMain.RowCount = 7;
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpMain.Size = new System.Drawing.Size(682, 272);
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlpMain.Size = new System.Drawing.Size(682, 309);
             this.tlpMain.TabIndex = 0;
-            // 
-            // cbCustomGamePath
-            // 
-            this.cbCustomGamePath.AutoSize = true;
-            this.cbCustomGamePath.Location = new System.Drawing.Point(212, 129);
-            this.cbCustomGamePath.Name = "cbCustomGamePath";
-            this.cbCustomGamePath.Size = new System.Drawing.Size(75, 36);
-            this.cbCustomGamePath.TabIndex = 18;
-            this.cbCustomGamePath.Text = "Custom\r\nPath\r\n";
-            this.cbCustomGamePath.UseVisualStyleBackColor = true;
-            this.cbCustomGamePath.CheckedChanged += new System.EventHandler(this.cbCustom_CheckedChanged);
             // 
             // tbGameArgs
             // 
             this.tlpMain.SetColumnSpan(this.tbGameArgs, 3);
             this.tbGameArgs.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tbGameArgs.Location = new System.Drawing.Point(212, 171);
+            this.tbGameArgs.Location = new System.Drawing.Point(212, 208);
             this.tbGameArgs.Multiline = true;
             this.tbGameArgs.Name = "tbGameArgs";
             this.tbGameArgs.Size = new System.Drawing.Size(467, 60);
@@ -113,10 +108,11 @@ namespace BlocklyAts {
             // 
             // tbGamePath
             // 
+            this.tlpMain.SetColumnSpan(this.tbGamePath, 2);
             this.tbGamePath.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tbGamePath.Location = new System.Drawing.Point(293, 129);
+            this.tbGamePath.Location = new System.Drawing.Point(212, 176);
             this.tbGamePath.Name = "tbGamePath";
-            this.tbGamePath.Size = new System.Drawing.Size(300, 26);
+            this.tbGamePath.Size = new System.Drawing.Size(381, 26);
             this.tbGamePath.TabIndex = 16;
             // 
             // btnBrowseAny
@@ -237,7 +233,7 @@ namespace BlocklyAts {
             this.flp.Controls.Add(this.btnOK);
             this.flp.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.flp.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flp.Location = new System.Drawing.Point(293, 237);
+            this.flp.Location = new System.Drawing.Point(293, 274);
             this.flp.Name = "flp";
             this.flp.Size = new System.Drawing.Size(386, 32);
             this.flp.TabIndex = 12;
@@ -282,7 +278,8 @@ namespace BlocklyAts {
             this.lblGamePath.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblGamePath.Location = new System.Drawing.Point(3, 126);
             this.lblGamePath.Name = "lblGamePath";
-            this.lblGamePath.Size = new System.Drawing.Size(203, 42);
+            this.tlpMain.SetRowSpan(this.lblGamePath, 2);
+            this.lblGamePath.Size = new System.Drawing.Size(203, 79);
             this.lblGamePath.TabIndex = 13;
             this.lblGamePath.Text = "Game Program Path";
             this.lblGamePath.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -291,7 +288,7 @@ namespace BlocklyAts {
             // 
             this.lblGameArgs.AutoSize = true;
             this.lblGameArgs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblGameArgs.Location = new System.Drawing.Point(3, 168);
+            this.lblGameArgs.Location = new System.Drawing.Point(3, 205);
             this.lblGameArgs.Name = "lblGameArgs";
             this.lblGameArgs.Size = new System.Drawing.Size(203, 66);
             this.lblGameArgs.TabIndex = 14;
@@ -301,13 +298,73 @@ namespace BlocklyAts {
             // btnBrowseGamePath
             // 
             this.btnBrowseGamePath.AutoSize = true;
-            this.btnBrowseGamePath.Location = new System.Drawing.Point(599, 129);
+            this.btnBrowseGamePath.Location = new System.Drawing.Point(599, 176);
             this.btnBrowseGamePath.Name = "btnBrowseGamePath";
             this.btnBrowseGamePath.Size = new System.Drawing.Size(80, 26);
             this.btnBrowseGamePath.TabIndex = 15;
             this.btnBrowseGamePath.Text = "Browse";
             this.btnBrowseGamePath.UseVisualStyleBackColor = true;
             this.btnBrowseGamePath.Click += new System.EventHandler(this.btnBrowse_Click);
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.AutoSize = true;
+            this.flowLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tlpMain.SetColumnSpan(this.flowLayoutPanel1, 3);
+            this.flowLayoutPanel1.Controls.Add(this.rbGameBve5);
+            this.flowLayoutPanel1.Controls.Add(this.rbGameBve6);
+            this.flowLayoutPanel1.Controls.Add(this.rbGameOpenBve);
+            this.flowLayoutPanel1.Controls.Add(this.rbGameCustom);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(212, 129);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Padding = new System.Windows.Forms.Padding(0, 15, 0, 0);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(467, 41);
+            this.flowLayoutPanel1.TabIndex = 19;
+            // 
+            // rbGameBve5
+            // 
+            this.rbGameBve5.AutoSize = true;
+            this.rbGameBve5.Location = new System.Drawing.Point(3, 18);
+            this.rbGameBve5.Name = "rbGameBve5";
+            this.rbGameBve5.Size = new System.Drawing.Size(58, 20);
+            this.rbGameBve5.TabIndex = 14;
+            this.rbGameBve5.TabStop = true;
+            this.rbGameBve5.Text = "BVE5";
+            this.rbGameBve5.UseVisualStyleBackColor = true;
+            // 
+            // rbGameBve6
+            // 
+            this.rbGameBve6.AutoSize = true;
+            this.rbGameBve6.Location = new System.Drawing.Point(67, 18);
+            this.rbGameBve6.Name = "rbGameBve6";
+            this.rbGameBve6.Size = new System.Drawing.Size(58, 20);
+            this.rbGameBve6.TabIndex = 15;
+            this.rbGameBve6.TabStop = true;
+            this.rbGameBve6.Text = "BVE6";
+            this.rbGameBve6.UseVisualStyleBackColor = true;
+            // 
+            // rbGameOpenBve
+            // 
+            this.rbGameOpenBve.AutoSize = true;
+            this.rbGameOpenBve.Location = new System.Drawing.Point(131, 18);
+            this.rbGameOpenBve.Name = "rbGameOpenBve";
+            this.rbGameOpenBve.Size = new System.Drawing.Size(82, 20);
+            this.rbGameOpenBve.TabIndex = 16;
+            this.rbGameOpenBve.TabStop = true;
+            this.rbGameOpenBve.Text = "OpenBVE";
+            this.rbGameOpenBve.UseVisualStyleBackColor = true;
+            // 
+            // rbGameCustom
+            // 
+            this.rbGameCustom.AutoSize = true;
+            this.rbGameCustom.Location = new System.Drawing.Point(219, 18);
+            this.rbGameCustom.Name = "rbGameCustom";
+            this.rbGameCustom.Size = new System.Drawing.Size(74, 20);
+            this.rbGameCustom.TabIndex = 17;
+            this.rbGameCustom.TabStop = true;
+            this.rbGameCustom.Text = "Custom";
+            this.rbGameCustom.UseVisualStyleBackColor = true;
             // 
             // FormCompilerConfig
             // 
@@ -330,6 +387,8 @@ namespace BlocklyAts {
             this.tlpMain.PerformLayout();
             this.flp.ResumeLayout(false);
             this.flp.PerformLayout();
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -358,6 +417,10 @@ namespace BlocklyAts {
         private System.Windows.Forms.Label lblGamePath;
         private System.Windows.Forms.Label lblGameArgs;
         private System.Windows.Forms.Button btnBrowseGamePath;
-        private System.Windows.Forms.CheckBox cbCustomGamePath;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.RadioButton rbGameBve5;
+        private System.Windows.Forms.RadioButton rbGameBve6;
+        private System.Windows.Forms.RadioButton rbGameOpenBve;
+        private System.Windows.Forms.RadioButton rbGameCustom;
     }
 }

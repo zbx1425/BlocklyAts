@@ -10,7 +10,7 @@ using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.WinForms;
 
 namespace BlocklyAts {
-    class WebView2Browser : BaseBrowser {
+    partial class WebView2Browser : BaseBrowser {
         public override event EventHandler PageFinished;
         public override event PreviewKeyDownEventHandler KeyDown;
 
@@ -18,6 +18,9 @@ namespace BlocklyAts {
         private WebView2 browser;
 
         public WebView2Browser(string url = "about:blank") {
+            // Use an alternative path for WebView2 Loader, for a better appearance
+            // Might remove it if it causes troubles
+            TryLoadWebview2Loader();
 
             browser = new WebView2();
             browser.PreviewKeyDown += Browser_PreviewKeyDown;
@@ -122,5 +125,6 @@ namespace BlocklyAts {
         public override void ShowDevTools() {
             browser.CoreWebView2.OpenDevToolsWindow();
         }
+
     }
 }

@@ -19,9 +19,13 @@ namespace BlocklyAts {
 
         private void rbLua_CheckedChanged(object sender, EventArgs e) {
             if (sender == rbLua) {
-                tbCode.Text = CompilerFunction.BoilerplateLua + codeLua;
+                tbCode.ResetText();
+                tbCode.Language = FastColoredTextBoxNS.Language.Lua;
+                tbCode.Text = CompilerFunction.BoilerplateLua + Environment.NewLine + codeLua;
             } else {
-                tbCode.Text = CompilerFunction.BoilerplateCSharp + codeCSharp;
+                tbCode.ResetText();
+                tbCode.Language = FastColoredTextBoxNS.Language.CSharp;
+                tbCode.Text = CompilerFunction.BoilerplateCSharp + Environment.NewLine + codeCSharp;
             }
         }
 

@@ -27,6 +27,10 @@ namespace BlocklyAts {
             }
         }
 
+        public static bool IsMono() {
+            return Type.GetType("Mono.Runtime") != null;
+        }
+
         public static void CallBrowser(string url) {
             try {
                 System.Diagnostics.Process.Start(url);

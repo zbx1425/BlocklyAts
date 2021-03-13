@@ -54,7 +54,7 @@ namespace BlocklyAts {
             }
             var luaByteStream = new MemoryStream();*/
 
-            var sourceCode = BoilerplateLua + script;
+            var sourceCode = BoilerplateLua + Environment.NewLine + script;
 
             var boilerplateStream = new FileStream(
                 Path.Combine(appDir, "lib", "batswinapi_" + arch + ".dll"), 
@@ -83,7 +83,7 @@ namespace BlocklyAts {
         }
 
         public static void CompileCSharp(string script, string outputPath) {
-            var sourceCode = BoilerplateCSharp + script;
+            var sourceCode = BoilerplateCSharp + Environment.NewLine + script;
             var settings = new Dictionary<string, string>() {
                 { "CompilerVersion", "v4.0" }
             };

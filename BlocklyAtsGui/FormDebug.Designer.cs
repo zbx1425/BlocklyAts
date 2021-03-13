@@ -23,9 +23,12 @@ namespace BlocklyAts {
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormDebug));
             this.rbLua = new System.Windows.Forms.RadioButton();
             this.rbCSharp = new System.Windows.Forms.RadioButton();
-            this.tbCode = new System.Windows.Forms.TextBox();
+            this.tbCode = new FastColoredTextBoxNS.FastColoredTextBox();
+            ((System.ComponentModel.ISupportInitialize)(this.tbCode)).BeginInit();
             this.SuspendLayout();
             // 
             // rbLua
@@ -34,21 +37,21 @@ namespace BlocklyAts {
             this.rbLua.Checked = true;
             this.rbLua.Location = new System.Drawing.Point(13, 13);
             this.rbLua.Name = "rbLua";
-            this.rbLua.Size = new System.Drawing.Size(41, 16);
+            this.rbLua.Size = new System.Drawing.Size(107, 16);
             this.rbLua.TabIndex = 0;
             this.rbLua.TabStop = true;
-            this.rbLua.Text = "Lua";
+            this.rbLua.Text = "Lua (BVE4/5/6)";
             this.rbLua.UseVisualStyleBackColor = true;
             this.rbLua.CheckedChanged += new System.EventHandler(this.rbLua_CheckedChanged);
             // 
             // rbCSharp
             // 
             this.rbCSharp.AutoSize = true;
-            this.rbCSharp.Location = new System.Drawing.Point(109, 13);
+            this.rbCSharp.Location = new System.Drawing.Point(151, 12);
             this.rbCSharp.Name = "rbCSharp";
-            this.rbCSharp.Size = new System.Drawing.Size(59, 16);
+            this.rbCSharp.Size = new System.Drawing.Size(119, 16);
             this.rbCSharp.TabIndex = 1;
-            this.rbCSharp.Text = "CSharp";
+            this.rbCSharp.Text = "CSharp (OpenBVE)";
             this.rbCSharp.UseVisualStyleBackColor = true;
             this.rbCSharp.CheckedChanged += new System.EventHandler(this.rbLua_CheckedChanged);
             // 
@@ -57,15 +60,34 @@ namespace BlocklyAts {
             this.tbCode.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbCode.Font = new System.Drawing.Font("宋体", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.tbCode.AutoCompleteBracketsList = new char[] {
+        '(',
+        ')',
+        '{',
+        '}',
+        '[',
+        ']',
+        '\"',
+        '\"',
+        '\'',
+        '\''};
+            this.tbCode.AutoScrollMinSize = new System.Drawing.Size(27, 14);
+            this.tbCode.BackBrush = null;
+            this.tbCode.CharHeight = 14;
+            this.tbCode.CharWidth = 8;
+            this.tbCode.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbCode.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.tbCode.Font = new System.Drawing.Font("Courier New", 9.75F);
+            this.tbCode.IsReplaceMode = false;
             this.tbCode.Location = new System.Drawing.Point(13, 36);
-            this.tbCode.Multiline = true;
             this.tbCode.Name = "tbCode";
+            this.tbCode.Paddings = new System.Windows.Forms.Padding(0);
             this.tbCode.ReadOnly = true;
-            this.tbCode.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.tbCode.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
+            this.tbCode.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("tbCode.ServiceColors")));
             this.tbCode.Size = new System.Drawing.Size(759, 413);
             this.tbCode.TabIndex = 2;
-            this.tbCode.WordWrap = false;
+            this.tbCode.Zoom = 100;
             // 
             // FormDebug
             // 
@@ -78,6 +100,7 @@ namespace BlocklyAts {
             this.Name = "FormDebug";
             this.Text = "BlocklyAts Code Generator Debug Information";
             this.Load += new System.EventHandler(this.FormDebug_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.tbCode)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -87,6 +110,6 @@ namespace BlocklyAts {
 
         private System.Windows.Forms.RadioButton rbLua;
         private System.Windows.Forms.RadioButton rbCSharp;
-        private System.Windows.Forms.TextBox tbCode;
+        private FastColoredTextBoxNS.FastColoredTextBox tbCode;
     }
 }

@@ -15,55 +15,55 @@ function removeItemOnce(arr, value) {
 }
 
 Blockly.Lua.addReservedWords([
-  "__atsapi_dispose",
-  "__atsapi_doorchange",
-  "__atsapi_doorchange",
-  "__atsapi_elapse",
-  "__atsapi_hornblow",
-  "__atsapi_initialize",
-  "__atsapi_keydown",
-  "__atsapi_keyup",
-  "__atsapi_load",
-  "__atsapi_setbeacondata",
-  "__atsapi_setsignal",
-  "__atsarg_brake",
-  "__atsarg_constspeed",
-  "__atsarg_distance",
-  "__atsarg_doorstate",
-  "__atsarg_horntype",
-  "__atsarg_initindex",
-  "__atsarg_key",
-  "__atsarg_optional",
-  "__atsarg_power",
-  "__atsarg_reverser",
-  "__atsarg_signal",
-  "__atsarg_type",
-  "__atsfnc_cfgload",
-  "__atsfnc_cfgsave",
-  "__atsfnc_cfgget",
-  "__atsfnc_cfgset",
-  "__atsfnc_panel",
-  "__atsfnc_sound",
-  "__atsfnc_msgbox",
-  "__atsval_config",
-  "__atsval_dlldir",
-  "__bve_edBcPressure",
-  "__bve_edBpPressure",
-  "__bve_edCurrent",
-  "__bve_edErPressure",
-  "__bve_edLocation",
-  "__bve_edMrPressure",
-  "__bve_edSapPressure",
-  "__bve_edSpeed",
-  "__bve_edTime",
-  "__bve_hBrake",
-  "__bve_hPower",
-  "__bve_hReverser",
-  "__bve_vsAtsNotch",
-  "__bve_vsB67Notch",
-  "__bve_vsBrakeNotches",
-  "__bve_vsCars",
-  "__bve_vsPowerNotches",
+  "_edispose",
+  "_edoorchange",
+  "_edoorchange",
+  "_eelapse",
+  "_ehornblow",
+  "_einitialize",
+  "_ekeydown",
+  "_ekeyup",
+  "_eload",
+  "_esetbeacondata",
+  "_esetsignal",
+  "_pbrake",
+  "_pconstspeed",
+  "_pdistance",
+  "_pdoorstate",
+  "_phorntype",
+  "_pinitindex",
+  "_pkey",
+  "_poptional",
+  "_ppower",
+  "_preverser",
+  "_psignal",
+  "_ptype",
+  "_fcfgload",
+  "_fcfgsave",
+  "_fcfgget",
+  "_fcfgset",
+  "_fpanel",
+  "_fsound",
+  "_fmsgbox",
+  "_vconfig",
+  "_vdlldir",
+  "_bEdBcPressure",
+  "_bEdBpPressure",
+  "_bEdCurrent",
+  "_bEdErPressure",
+  "_bEdLocation",
+  "_bEdMrPressure",
+  "_bEdSapPressure",
+  "_bEdSpeed",
+  "_bEdTime",
+  "_bHBrake",
+  "_bHPower",
+  "_bHReverser",
+  "_bVsAtsNotch",
+  "_bVsB67Notch",
+  "_bVsBrakeNotches",
+  "_bVsCars",
+  "_bVsPowerNotches",
   "LIP",
 ].join(","));
 
@@ -80,7 +80,7 @@ function batsExportLua(workspace) {
       code += Blockly.Lua.blockToCode(block, true);
       var nextBlock = block.getNextBlock();
       if (nextBlock) code += Blockly.Lua.blockToCode(nextBlock);
-      if (block.type == "bve_hat_elapse") code += "return __atsarg_power, __atsarg_brake, __atsarg_reverser, __atsarg_constspeed\n";
+      if (block.type == "bve_hat_elapse") code += "return _ppower, _pbrake, _preverser, _pconstspeed\n";
       code += "end\n";
     } else if (block.type == "procedures_defnoreturn" || block.type == "procedures_defreturn") {
       code += Blockly.Lua.blockToCode(block);
@@ -89,7 +89,7 @@ function batsExportLua(workspace) {
 
   for (var i = 0, hatName; hatName = allHats[i]; i++) {
     code += Blockly.Lua[hatName]();
-    if (hatName == "bve_hat_elapse") code += "return __atsarg_power, __atsarg_brake, __atsarg_reverser, __atsarg_constspeed\n";
+    if (hatName == "bve_hat_elapse") code += "return _ppower, _pbrake, _preverser, _pconstspeed\n";
     code += "end\n";
   }
 
@@ -97,136 +97,136 @@ function batsExportLua(workspace) {
 }
 
 Blockly.Lua.bve_hat_elapse=function(block){
-  return "function __atsapi_elapse(__atsarg_power, __atsarg_brake, __atsarg_reverser, __atsarg_constspeed)\n";
+  return "function _eelapse(_ppower, _pbrake, _preverser, _pconstspeed)\n";
 }
 Blockly.Lua.bve_hat_initialize=function(block){
-  return "function __atsapi_initialize(__atsarg_initindex)\n";
+  return "function _einitialize(_pinitindex)\n";
 }
 Blockly.Lua.bve_hat_keydown_any=function(block){
-  return "function __atsapi_keydown(__atsarg_key)\n__bve_keystate[__atsarg_key+1]=true\n";
+  return "function _ekeydown(_pkey)\n_bkeystate[_pkey+1]=true\n";
 }
 Blockly.Lua.bve_hat_keyup_any=function(block){
-  return "function __atsapi_keyup(__atsarg_key)\n__bve_keystate[__atsarg_key+1]=false\n";
+  return "function _ekeyup(_pkey)\n_bkeystate[_pkey+1]=false\n";
 }
 Blockly.Lua.bve_hat_horn_blow=function(block){
-  return "function __atsapi_hornblow(__atsarg_horntype)\n";
+  return "function _ehornblow(_phorntype)\n";
 }
 Blockly.Lua.bve_hat_door_change=function(block){
-  return "function __atsapi_doorchange(__atsarg_doorstate)\n__bve_doorstate=__atsarg_doorstate\n";
+  return "function _edoorchange(_pdoorstate)\n_bdoorstate=_pdoorstate\n";
 }
 Blockly.Lua.bve_hat_set_signal=function(block){
-  return "function __atsapi_setsignal(__atsarg_signal)\n";
+  return "function _esetsignal(_psignal)\n";
 }
 Blockly.Lua.bve_hat_set_beacon=function(block){
-  return "function __atsapi_setbeacondata(__atsarg_distance, __atsarg_optional, __atsarg_signal, __atsarg_type)\n";
+  return "function _esetbeacondata(_pdistance, _poptional, _psignal, _ptype)\n";
 }
 Blockly.Lua.bve_hat_load=function(block){
-  return "function __atsapi_load()\n";
+  return "function _eload()\n";
 }
 Blockly.Lua.bve_hat_dispose=function(block){
-  return "function __atsapi_dispose()\n";
+  return "function _edispose()\n";
 }
 Blockly.Lua.bve_vehicle_spec=function(block){
-  return ["__bve_vs"+block.getFieldValue("FIELD_SEL"), Blockly.Lua.ORDER_ATOMIC];
+  return ["_bVs"+block.getFieldValue("FIELD_SEL"), Blockly.Lua.ORDER_ATOMIC];
 }
 Blockly.Lua.bve_location=function(block){
-  return ["__bve_edLocation", Blockly.Lua.ORDER_ATOMIC];
+  return ["_bEdLocation", Blockly.Lua.ORDER_ATOMIC];
 }
 Blockly.Lua.bve_speed=function(block){
-  return ["__bve_edSpeed", Blockly.Lua.ORDER_ATOMIC];
+  return ["_bEdSpeed", Blockly.Lua.ORDER_ATOMIC];
 }
 Blockly.Lua.bve_time=function(block){
-  return ["__bve_edTime", Blockly.Lua.ORDER_ATOMIC];
+  return ["_bEdTime", Blockly.Lua.ORDER_ATOMIC];
 }
 Blockly.Lua.bve_vehicle_state=function(block){
-  return ["__bve_ed" + block.getFieldValue("FIELD_SEL"), Blockly.Lua.ORDER_ATOMIC];
+  return ["_bEd" + block.getFieldValue("FIELD_SEL"), Blockly.Lua.ORDER_ATOMIC];
 }
 Blockly.Lua.bve_get_handle=function(block){
-  return ["__bve_h" + block.getFieldValue("FIELD_SEL"), Blockly.Lua.ORDER_ATOMIC];
+  return ["_bH" + block.getFieldValue("FIELD_SEL"), Blockly.Lua.ORDER_ATOMIC];
 }
 Blockly.Lua.bve_set_handle=function(block){
-  return "__atsarg_" + block.getFieldValue("FIELD_SEL").toLowerCase() + " = "
+  return "_p" + block.getFieldValue("FIELD_SEL").toLowerCase() + " = "
     + (Blockly.Lua.valueToCode(block, "VALUE", Blockly.Lua.ORDER_NONE) || "0") + "\n";
 }
 Blockly.Lua.bve_sound_stop=function(block){
-  return "__atsfnc_sound(" + block.getFieldValue("ID") + ", -10000)\n";
+  return "_fsound(" + block.getFieldValue("ID") + ", -10000)\n";
 }
 Blockly.Lua.bve_sound_play_once=function(block){
-  return "__atsfnc_sound(" + block.getFieldValue("ID") + ", 1)\n";
+  return "_fsound(" + block.getFieldValue("ID") + ", 1)\n";
 }
 Blockly.Lua.bve_sound_play_loop=function(block){
-  return "__atsfnc_sound(" + block.getFieldValue("ID") + ", 0, " + 
+  return "_fsound(" + block.getFieldValue("ID") + ", 0, " + 
     Blockly.Lua.valueToCode(block, "VOLUME", Blockly.Lua.ORDER_NONE) + ")\n";
 }
 Blockly.Lua.bve_get_sound_internal=function(block){
-  return ["__atsfnc_sound(" + block.getFieldValue("ID") + ")", Blockly.Lua.ORDER_ATOMIC];
+  return ["_fsound(" + block.getFieldValue("ID") + ")", Blockly.Lua.ORDER_ATOMIC];
 }
 Blockly.Lua.bve_set_sound_internal=function(block){
-  return "__atsfnc_sound(" + block.getFieldValue("ID") + ", " + 
+  return "_fsound(" + block.getFieldValue("ID") + ", " + 
     Blockly.Lua.valueToCode(block, "INTERNAL_VAL", Blockly.Lua.ORDER_NONE) + ")\n";
 }
 Blockly.Lua.bve_set_panel=function(block){
-  return "__atsfnc_panel(" + block.getFieldValue("ID") + ", " + 
+  return "_fpanel(" + block.getFieldValue("ID") + ", " + 
     Blockly.Lua.valueToCode(block, "VALUE", Blockly.Lua.ORDER_NONE) + ")\n";
 }
 Blockly.Lua.bve_get_panel=function(block){
-  return ["__atsfnc_panel(" + block.getFieldValue("ID") + ")", Blockly.Lua.ORDER_ATOMIC];
+  return ["_fpanel(" + block.getFieldValue("ID") + ")", Blockly.Lua.ORDER_ATOMIC];
 }
 Blockly.Lua.bve_key=function(block){
   return [["S","A1","A2","B1","B2","C1","C2","D","E","F","G","H","I","J","K","L"].indexOf(block.getFieldValue("KEY_TYPE")),
     Blockly.Lua.ORDER_ATOMIC];
 }
 Blockly.Lua.bve_get_key=function(block){
-  return ["__bve_keystate[(" + Blockly.Lua.valueToCode(block, "KEY_TYPE", Blockly.Lua.ORDER_NONE) + ")+1]",
+  return ["_bkeystate[(" + Blockly.Lua.valueToCode(block, "KEY_TYPE", Blockly.Lua.ORDER_NONE) + ")+1]",
     Blockly.Lua.ORDER_ATOMIC];
 }
 Blockly.Lua.bve_horn=function(block){
   return [["Primary", "Secondary", "Music"].indexOf(block.getFieldValue("KEY_TYPE")), Blockly.Lua.ORDER_ATOMIC];
 }
 Blockly.Lua.bve_get_door=function(block){
-  return ["__bve_doorstate", Blockly.Lua.ORDER_ATOMIC];
+  return ["_bdoorstate", Blockly.Lua.ORDER_ATOMIC];
 }
 Blockly.Lua.bve_init_mode=function(block){
-  return ["__atsarg_initindex", Blockly.Lua.ORDER_ATOMIC];
+  return ["_pinitindex", Blockly.Lua.ORDER_ATOMIC];
 }
 Blockly.Lua.bve_updown_key=function(block){
-  return ["__atsarg_key", Blockly.Lua.ORDER_ATOMIC];
+  return ["_pkey", Blockly.Lua.ORDER_ATOMIC];
 }
 Blockly.Lua.bve_horn_blew=function(block){
-  return ["__atsarg_horntype", Blockly.Lua.ORDER_ATOMIC];
+  return ["_phorntype", Blockly.Lua.ORDER_ATOMIC];
 }
 Blockly.Lua.bve_signal_aspect=function(block){
-  return ["__atsarg_signal", Blockly.Lua.ORDER_ATOMIC];
+  return ["_psignal", Blockly.Lua.ORDER_ATOMIC];
 }
 Blockly.Lua.bve_get_beacon=function(block){
-  return ["__atsarg_" + block.getFieldValue("FIELD_SEL").toLowerCase(), Blockly.Lua.ORDER_ATOMIC];
+  return ["_p" + block.getFieldValue("FIELD_SEL").toLowerCase(), Blockly.Lua.ORDER_ATOMIC];
 }
 Blockly.Lua.bve_config_load=function(block){
-  return "__atsfnc_cfgload(" + Blockly.Lua.quote_(block.getFieldValue("PATH")) + ")\n";
+  return "_fcfgload(" + Blockly.Lua.quote_(block.getFieldValue("PATH")) + ")\n";
 }
 Blockly.Lua.bve_config_save=function(block){
-  return "__atsfnc_cfgsave(" + Blockly.Lua.quote_(block.getFieldValue("PATH")) + ")\n";
+  return "_fcfgsave(" + Blockly.Lua.quote_(block.getFieldValue("PATH")) + ")\n";
 }
 Blockly.Lua.bve_get_config=function(block){
   return [
-    "__atsfnc_cfgget(" + Blockly.Lua.quote_(block.getFieldValue("PART")) + "," 
+    "_fcfgget(" + Blockly.Lua.quote_(block.getFieldValue("PART")) + "," 
     + Blockly.Lua.quote_(block.getFieldValue("KEY")) + ")",
     Blockly.Lua.ORDER_ATOMIC
   ];
 }
 Blockly.Lua.bve_get_config_default=function(block){
   return [
-    "__atsfnc_cfgget(" + Blockly.Lua.quote_(block.getFieldValue("PART")) + "," 
+    "_fcfgget(" + Blockly.Lua.quote_(block.getFieldValue("PART")) + "," 
     + Blockly.Lua.quote_(block.getFieldValue("KEY")) + ",("
     + (Blockly.Lua.valueToCode(block, "DEFAULT_VAL", Blockly.Lua.ORDER_NONE) || "\"\"") + "))",
     Blockly.Lua.ORDER_ATOMIC
   ];
 }
 Blockly.Lua.bve_set_config=function(block){
-  return "__atsfnc_cfgset(" + Blockly.Lua.quote_(block.getFieldValue("PART")) + "," 
+  return "_fcfgset(" + Blockly.Lua.quote_(block.getFieldValue("PART")) + "," 
     + Blockly.Lua.quote_(block.getFieldValue("KEY")) + ",("
     + (Blockly.Lua.valueToCode(block, "VALUE", Blockly.Lua.ORDER_NONE) || "\"\"") + "))\n";;
 }
 Blockly.Lua.bve_msgbox=function(block){
-  return "__atsfnc_msgbox(" + (Blockly.Lua.valueToCode(block, "MSG", Blockly.Lua.ORDER_NONE) || "\"\"") + ")\n";;
+  return "_fmsgbox(" + (Blockly.Lua.valueToCode(block, "MSG", Blockly.Lua.ORDER_NONE) || "\"\"") + ")\n";;
 }

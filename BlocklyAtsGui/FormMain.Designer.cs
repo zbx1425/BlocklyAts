@@ -34,10 +34,10 @@ namespace BlocklyAts {
             this.tsbtnCompileRun = new System.Windows.Forms.ToolStripButton();
             this.tsbtnCompileSetting = new System.Windows.Forms.ToolStripButton();
             this.tsbtnAbout = new System.Windows.Forms.ToolStripButton();
+            this.tsbtnHelp = new System.Windows.Forms.ToolStripButton();
             this.tsbtnDebugWindow = new System.Windows.Forms.ToolStripButton();
             this.tss2 = new System.Windows.Forms.ToolStripSeparator();
             this.tscbLanguage = new System.Windows.Forms.ToolStripComboBox();
-            this.tsbtnHelp = new System.Windows.Forms.ToolStripButton();
             this.mainToolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -158,6 +158,18 @@ namespace BlocklyAts {
             this.tsbtnAbout.Text = "About BlocklyAts";
             this.tsbtnAbout.Click += new System.EventHandler(this.tsbtnAbout_Click);
             // 
+            // tsbtnHelp
+            // 
+            this.tsbtnHelp.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tsbtnHelp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbtnHelp.Image = ((System.Drawing.Image)(resources.GetObject("tsbtnHelp.Image")));
+            this.tsbtnHelp.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbtnHelp.Margin = new System.Windows.Forms.Padding(0, 1, 4, 2);
+            this.tsbtnHelp.Name = "tsbtnHelp";
+            this.tsbtnHelp.Size = new System.Drawing.Size(23, 22);
+            this.tsbtnHelp.Text = "帮助(&L)";
+            this.tsbtnHelp.Click += new System.EventHandler(this.tsbtnHelp_Click);
+            // 
             // tsbtnDebugWindow
             // 
             this.tsbtnDebugWindow.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
@@ -186,18 +198,6 @@ namespace BlocklyAts {
             this.tscbLanguage.Name = "tscbLanguage";
             this.tscbLanguage.Size = new System.Drawing.Size(121, 25);
             this.tscbLanguage.SelectedIndexChanged += new System.EventHandler(this.tscbLanguage_SelectedIndexChanged);
-            // 
-            // tsbtnHelp
-            // 
-            this.tsbtnHelp.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.tsbtnHelp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbtnHelp.Image = ((System.Drawing.Image)(resources.GetObject("tsbtnHelp.Image")));
-            this.tsbtnHelp.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbtnHelp.Margin = new System.Windows.Forms.Padding(0, 1, 4, 2);
-            this.tsbtnHelp.Name = "tsbtnHelp";
-            this.tsbtnHelp.Size = new System.Drawing.Size(23, 22);
-            this.tsbtnHelp.Text = "帮助(&L)";
-            this.tsbtnHelp.Click += new System.EventHandler(this.tsbtnHelp_Click);
             // 
             // FormMain
             // 

@@ -66,10 +66,40 @@ namespace BlocklyAts {
             );
             if (mainWebBrowser == null) {
                 mainWebBrowser = BaseBrowser.AcquireInstance(pageURL);
+                int tsbSize;
+                if (mainWebBrowser is ExternalBrowser) {
+                    this.TopMost = true;
+                    this.MinimumSize = Size.Empty;
+                    this.Size = new Size(600, 200);
+                    tsbSize = 40;
+                } else {
+                    tsbSize = 30;
+                }
+                foreach (ToolStripItem item in mainToolStrip.Items) {
+                    if (!(item is ToolStripButton)) continue;
+                    item.AutoSize = false;
+                    item.Size = new Size(tsbSize, tsbSize);
+                    if (item.Image == null) continue;
+                    int sourceWidth = item.Image.Width;
+                    int sourceHeight = item.Image.Height;
+                    Bitmap b = new Bitmap(tsbSize, tsbSize);
+                    using (Graphics g = Graphics.FromImage((Image)b)) {
+                        g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+                        g.DrawImage(item.Image, 0, 0, tsbSize, tsbSize);
+                    }
+                    Image myResizedImg = (Image)b;
+                    item.Image = myResizedImg;
+                }
+                mainToolStrip.ImageScalingSize = new Size(tsbSize, tsbSize);
+                mainToolStrip.Height = tsbSize;
                 mainWebBrowser.KeyDown += new PreviewKeyDownEventHandler(mainWebBrowser_PreviewKeyDown);
                 this.PreviewKeyDown += new PreviewKeyDownEventHandler(mainWebBrowser_PreviewKeyDown);
                 mainWebBrowser.BindTo(this);
             } else {
+                if (mainWebBrowser is ExternalBrowser) {
+                    MessageBox.Show("Please reopen browser page to apply language change.");
+                    return;
+                }
                 var workspaceState = await mainWebBrowser.BkySaveWorkspace();
                 if (workspaceState == null) return;
                 currentWorkspace.BlocklyXml = new FPXElement(workspaceState);

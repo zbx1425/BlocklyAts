@@ -18,7 +18,7 @@ void l_printerr() {
 
 static int l_panel_getset(lua_State *L) {
 	int id = luaL_checkinteger(L, 1);
-	if (id < 0 || id > 255) return luaL_error(L, "__atsfnc_panel_getset expects id 0~255");
+	if (id < 0 || id > 255) return luaL_error(L, "_fpanel_getset expects id 0~255");
 	if (lua_gettop(L) == 1) {
 		lua_pushinteger(L, bvePanel[id]);
 		return 1;
@@ -27,13 +27,13 @@ static int l_panel_getset(lua_State *L) {
 		bvePanel[id] = val;
 		return 0;
 	} else {
-		return luaL_error(L, "__atsfnc_panel_getset expects no more than 2 arguments");
+		return luaL_error(L, "_fpanel_getset expects no more than 2 arguments");
 	}
 }
 
 static int l_sound_getset(lua_State *L) {
 	int id = luaL_checkinteger(L, 1);
-	if (id < 0 || id > 255) return luaL_error(L, "__atsfnc_sound_getset expects id 0~255");
+	if (id < 0 || id > 255) return luaL_error(L, "_fsound_getset expects id 0~255");
 	if (lua_gettop(L) == 1) {
 		lua_pushinteger(L, bveSound[id]);
 		return 1;
@@ -58,7 +58,7 @@ static int l_sound_getset(lua_State *L) {
 		}
 		return 0;
 	} else {
-		return luaL_error(L, "__atsfnc_sound_getset expects no more than 3 arguments");
+		return luaL_error(L, "_fsound_getset expects no more than 3 arguments");
 	}
 }
 
@@ -130,12 +130,12 @@ ATS_API void WINAPI Load() {
 	L = luaL_newstate();
 	luaL_openlibs(L);
 
-	l_setglobalF("__atsfnc_panel", l_panel_getset);
-	l_setglobalF("__atsfnc_sound", l_sound_getset);
-	l_setglobalF("__atsfnc_msgbox", l_msgbox);
+	l_setglobalF("_fpanel", l_panel_getset);
+	l_setglobalF("_fsound", l_sound_getset);
+	l_setglobalF("_fmsgbox", l_msgbox);
 
 	*(strrchr(dllPath, '\\') + 1) = 0;
-	l_setglobalS("__atsval_dlldir", dllPath);
+	l_setglobalS("_vdlldir", dllPath);
 	//sprintf_s(programPath, "%s\\program.lua", dllPath);
 
 	int error = luaL_loadbuffer(L, luaCode, filesize - exesize, "bats") || lua_pcall(L, 0, LUA_MULTRET, 0);
@@ -143,14 +143,14 @@ ATS_API void WINAPI Load() {
 	if (error) {
 		l_printerr();
 	} else {
-		lua_getglobal(L, "__atsapi_load");
+		lua_getglobal(L, "_eload");
 		if (lua_pcall(L, 0, 0, 0) != 0) l_printerr();
 	}
 }
 
 ATS_API void WINAPI Dispose() {
 	if (L == NULL) return;
-	lua_getglobal(L, "__atsapi_dispose");
+	lua_getglobal(L, "_edispose");
 	if (lua_pcall(L, 0, 0, 0) != 0) l_printerr();
 	lua_close(L);
 }
@@ -162,16 +162,16 @@ ATS_API int WINAPI GetPluginVersion() {
 ATS_API void WINAPI SetVehicleSpec(ATS_VEHICLESPEC vehicleSpec) {
 	vSpec = vehicleSpec;
 	if (L == NULL) return;
-	l_setglobalI("__bve_vsAtsNotch", vehicleSpec.AtsNotch);
-	l_setglobalI("__bve_vsB67Notch", vehicleSpec.B67Notch);
-	l_setglobalI("__bve_vsBrakeNotches", vehicleSpec.BrakeNotches);
-	l_setglobalI("__bve_vsCars", vehicleSpec.Cars);
-	l_setglobalI("__bve_vsPowerNotches", vehicleSpec.PowerNotches);
+	l_setglobalI("_bVsAtsNotch", vehicleSpec.AtsNotch);
+	l_setglobalI("_bVsB67Notch", vehicleSpec.B67Notch);
+	l_setglobalI("_bVsBrakeNotches", vehicleSpec.BrakeNotches);
+	l_setglobalI("_bVsCars", vehicleSpec.Cars);
+	l_setglobalI("_bVsPowerNotches", vehicleSpec.PowerNotches);
 }
 
 ATS_API void WINAPI Initialize(int initIndex) {
 	if (L == NULL) return;
-	lua_getglobal(L, "__atsapi_initialize");
+	lua_getglobal(L, "_einitialize");
 	lua_pushinteger(L, initIndex);
 	if (lua_pcall(L, 1, 0, 0) != 0) l_printerr();
 }
@@ -185,15 +185,15 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	if (L == NULL) return result;
 	bvePanel = panel;
 	bveSound = sound;
-	l_setglobalN("__bve_edLocation", vehicleState.Location);
-	l_setglobalN("__bve_edSpeed", vehicleState.Speed);
-	l_setglobalI("__bve_edTime", vehicleState.Time);
-	l_setglobalN("__bve_edBcPressure", vehicleState.BcPressure);
-	l_setglobalN("__bve_edMrPressure", vehicleState.MrPressure);
-	l_setglobalN("__bve_edErPressure", vehicleState.ErPressure);
-	l_setglobalN("__bve_edBpPressure", vehicleState.BpPressure);
-	l_setglobalN("__bve_edSapPressure", vehicleState.SapPressure);
-	l_setglobalN("__bve_edCurrent", vehicleState.Current);
+	l_setglobalN("_bEdLocation", vehicleState.Location);
+	l_setglobalN("_bEdSpeed", vehicleState.Speed);
+	l_setglobalI("_bEdTime", vehicleState.Time);
+	l_setglobalN("_bEdBcPressure", vehicleState.BcPressure);
+	l_setglobalN("_bEdMrPressure", vehicleState.MrPressure);
+	l_setglobalN("_bEdErPressure", vehicleState.ErPressure);
+	l_setglobalN("_bEdBpPressure", vehicleState.BpPressure);
+	l_setglobalN("_bEdSapPressure", vehicleState.SapPressure);
+	l_setglobalN("_bEdCurrent", vehicleState.Current);
 	if (firstElapse) {
 		// Let the internal LastSound inside BVE to be -10000
 		// So that new sounds can start from the first plugin Elapse
@@ -203,21 +203,21 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	}
 	if (schdDoorChange) {
 		schdDoorChange = false;
-		lua_getglobal(L, "__atsapi_doorchange");
+		lua_getglobal(L, "_edoorchange");
 		lua_pushboolean(L, sdatDoor);
 		if (lua_pcall(L, 1, 0, 0) != 0) l_printerr();
 		if (L == NULL) return result;
 	}
 	if (schdSetSignal) {
 		schdSetSignal = false;
-		lua_getglobal(L, "__atsapi_setsignal");
+		lua_getglobal(L, "_esetsignal");
 		lua_pushinteger(L, sdatSignal);
 		if (lua_pcall(L, 1, 0, 0) != 0) l_printerr();
 		if (L == NULL) return result;
 	}
 	if (schdSetBeacon) {
 		schdSetBeacon = false;
-		lua_getglobal(L, "__atsapi_setbeacondata");
+		lua_getglobal(L, "_esetbeacondata");
 		lua_pushnumber(L, sdatBeacon.Distance);
 		lua_pushinteger(L, sdatBeacon.Optional);
 		lua_pushinteger(L, sdatBeacon.Signal);
@@ -225,7 +225,7 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 		if (lua_pcall(L, 4, 0, 0) != 0) l_printerr();
 		if (L == NULL) return result;
 	}
-	lua_getglobal(L, "__atsapi_elapse");
+	lua_getglobal(L, "_eelapse");
 	lua_pushinteger(L, phPower);
 	lua_pushinteger(L, phBrake);
 	lua_pushinteger(L, phReverser);
@@ -248,38 +248,38 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 ATS_API void WINAPI SetPower(int notch) {
 	phPower = notch;
 	if (L == NULL) return;
-	l_setglobalI("__bve_hPower", notch);
+	l_setglobalI("_bHPower", notch);
 }
 
 ATS_API void WINAPI SetBrake(int notch) {
 	phBrake = notch;
 	if (L == NULL) return;
-	l_setglobalI("__bve_hBrake", notch);
+	l_setglobalI("_bHBrake", notch);
 }
 
 ATS_API void WINAPI SetReverser(int pos) {
 	phReverser = pos;
 	if (L == NULL) return;
-	l_setglobalI("__bve_hReverser", pos);
+	l_setglobalI("_bHReverser", pos);
 }
 
 ATS_API void WINAPI KeyDown(int atsKeyCode) {
 	if (L == NULL) return;
-	lua_getglobal(L, "__atsapi_keydown");
+	lua_getglobal(L, "_ekeydown");
 	lua_pushinteger(L, atsKeyCode);
 	if (lua_pcall(L, 1, 0, 0) != 0) l_printerr();
 }
 
 ATS_API void WINAPI KeyUp(int atsKeyCode) {
 	if (L == NULL) return;
-	lua_getglobal(L, "__atsapi_keyup");
+	lua_getglobal(L, "_ekeyup");
 	lua_pushinteger(L, atsKeyCode);
 	if (lua_pcall(L, 1, 0, 0) != 0) l_printerr();
 }
 
 ATS_API void WINAPI HornBlow(int atsHornBlowIndex) {
 	if (L == NULL) return;
-	lua_getglobal(L, "__atsapi_hornblow");
+	lua_getglobal(L, "_ehornblow");
 	lua_pushinteger(L, atsHornBlowIndex);
 	if (lua_pcall(L, 1, 0, 0) != 0) l_printerr();
 }

@@ -32,21 +32,18 @@ namespace BlocklyAts {
 
         public static BaseBrowser AcquireInstance(string url = "about:blank") {
 #if MONO
-            return new WinformBrowser(url);
+            return new ExternalBrowser(url);
 #else
-            if (PlatformFunction.IsWindows()) {
-                var CEFAvailable = File.Exists(Path.Combine(CompilerFunction.appDir, @"x86\CefSharp.dll"));
+            if (PlatformFunction.IsWindows() && !PlatformFunction.IsMono()) {
                 const string EdgeKeyName = @"SOFTWARE\WOW6432Node\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}";
                 var WebView2Available = Registry.LocalMachine.OpenSubKey(EdgeKeyName)?.GetValue("pv", null) != null;
-                if (CEFAvailable) {
-                    return new CefBrowser(url);
-                } else if (WebView2Available) {
+                if (WebView2Available) {
                     return new WebView2Browser(url);
                 } else {
                     return new WinformBrowser(url);
                 }
             } else {
-                return new WinformBrowser(url);
+                return new ExternalBrowser(url);
             }
 #endif
         }
