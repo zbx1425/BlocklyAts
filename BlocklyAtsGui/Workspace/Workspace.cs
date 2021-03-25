@@ -21,13 +21,13 @@ namespace BlocklyAts {
         public string EditorVersion { get; set; }
 
         [XmlElement("config")]
-        public CompilerConfig Config { get; set; }
+        public BuildRunConfig Config { get; set; }
 
         [XmlElement("blocklyxml")]
         public FPXElement BlocklyXml { get; set; }
 
         public Workspace() {
-            Config = new CompilerConfig();
+            Config = new BuildRunConfig();
             Config.ShouldCompileAnyCpu = true;
             Config.ShouldCompilex64 = true;
             Config.ShouldCompilex86 = true;

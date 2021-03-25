@@ -11,7 +11,7 @@ using System.Xml.Serialization;
 
 namespace BlocklyAts {
     
-    public class CompilerConfig {
+    public class BuildRunConfig {
 
         public enum BveImpl {
             Custom = -1,
@@ -39,8 +39,8 @@ namespace BlocklyAts {
 
         public string GameArgs { get; set; }
 
-        public CompilerConfig Clone() {
-            return (CompilerConfig)this.MemberwiseClone();
+        public BuildRunConfig Clone() {
+            return (BuildRunConfig)this.MemberwiseClone();
         }
         
         public Process GetGameProcess() {

@@ -148,7 +148,7 @@ namespace BlocklyAts {
 
         private void updateSaveFileState() {
             if (string.IsNullOrEmpty(currentWorkspace.SaveFilePath)) {
-                this.Text = "BlocklyAts: " + I18n.Translate("Msg.NotSaved");
+                this.Text = "BlocklyAts: " + I18n.Translate("Text.NotSaved");
                 tsbtnSave.Enabled = false;
             } else {
                 this.Text = "BlocklyAts: " + currentWorkspace.SaveFilePath;

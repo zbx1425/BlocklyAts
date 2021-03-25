@@ -14,20 +14,27 @@ FormMain.tsbtnAbout = 关于 BlocklyAts
 
 FormCompilerConfig.cbShouldx86 = 32位 Windows DLL\n用于 BVE4/5、OpenBVE
 FormCompilerConfig.cbShouldx64 = 64位 Windows DLL\n用于 BVE6
-FormCompilerConfig.cbShouldAny = AnyCpu .NET 程序集\n用于 OpenBVE
+FormCompilerConfig.cbShouldNet = AnyCpu .NET 程序集\n用于 OpenBVE
 FormCompilerConfig.lblGamePath = 游戏程序路径
 FormCompilerConfig.lblGameArgs = 游戏程序参数
 FormCompilerConfig.cbCustom = 自设\n路径
+FormCompilerConfig.rbGameCustom = 自设路径
 FormCompilerConfig.btnBrowse = 浏览
+FormCompilerConfig.btnGenerateArgs = 自动启动\n线路场景
 FormCompilerConfig.btnOK = 确定
 FormCompilerConfig.btnCancel = 取消
+
+Text.NotSaved = 尚未保存
+Text.GenArg.SelectScenario = 选择 BVE5/6 场景TXT文件
+Text.GenArg.SelectRoute = 选择 BVE2/4 线路CSV文件
+Text.GenArg.SelectTrain = 选择 BVE2/4 列车文件夹
 
 Msg.CompileNotSaved = 请先保存工程，然后才可编译。
 Msg.CompileNoTarget = 未选择编译目标。请检查编译设置！
 Msg.CompileFinish = 编译完成。结果已存储至：
 Msg.CompileFail = 编译失败：\n
-Msg.NoGameProgram = 请先在 "编译设置" 中指定游戏程序路径。
-Msg.NotSaved = 尚未保存
+Msg.NoGameProgram = 请先在 "编译设置" 中选择游戏程序，或人工指定其路径。
+Msg.GenArgInvalidSelect = 选择的文件或目录并不符合所要求的场景、线路或列车格式。
 Msg.DiscardChange = 未保存的更改将被放弃。确认？
 Msg.LanguageChange = 重新启动程序以应用语言更改。 
 Msg.UpgradeAvailable = 新版本 {0} 已推出。\n建议您使用新版本，以避免问题。\n下载链接: {1} (按确认键打开)\n\n{2}

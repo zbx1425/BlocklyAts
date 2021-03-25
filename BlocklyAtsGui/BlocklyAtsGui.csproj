@@ -33,7 +33,7 @@
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\bin_release\</OutputPath>
-    <DefineConstants>TRACE;MONO</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>true</Prefer32Bit>
@@ -87,55 +87,56 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BrowserImpl\HttpServer.cs" />
-    <Compile Include="BrowserImpl\WebView2Browser.Reflection.cs" />
-    <Compile Include="Building\CompilerFunction.cs" />
-    <Compile Include="Building\CompilerConfig.cs" />
-    <Compile Include="BrowserImpl\ExternalBrowser.cs" />
-    <Compile Include="FormAbout.cs">
+    <Compile Include="WebView\HttpServer.cs" />
+    <Compile Include="WebView\WebView2Browser.Reflection.cs" />
+    <Compile Include="Workspace\CompilerFunction.cs" />
+    <Compile Include="Workspace\BuildRunConfig.cs" />
+    <Compile Include="WebView\ExternalBrowser.cs" />
+    <Compile Include="UserInterface\FolderSelectDialog.cs" />
+    <Compile Include="UserInterface\FormAbout.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormAbout.Designer.cs">
+    <Compile Include="UserInterface\FormAbout.Designer.cs">
       <DependentUpon>FormAbout.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormCompilerConfig.cs">
+    <Compile Include="UserInterface\FormCompilerConfig.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormCompilerConfig.Designer.cs">
+    <Compile Include="UserInterface\FormCompilerConfig.Designer.cs">
       <DependentUpon>FormCompilerConfig.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormDebug.cs">
+    <Compile Include="UserInterface\FormDebug.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormDebug.Designer.cs">
+    <Compile Include="UserInterface\FormDebug.Designer.cs">
       <DependentUpon>FormDebug.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormMain.cs">
+    <Compile Include="UserInterface\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormMain.Designer.cs">
+    <Compile Include="UserInterface\FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="BrowserImpl\BaseBrowser.cs" />
-    <Compile Include="Building\GameDetection.cs" />
-    <Compile Include="I18n.cs" />
-    <Compile Include="PlatformFunction.cs" />
+    <Compile Include="WebView\BaseBrowser.cs" />
+    <Compile Include="Workspace\GameDetection.cs" />
+    <Compile Include="System\I18n.cs" />
+    <Compile Include="System\PlatformFunction.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UpgradeInfo.cs" />
-    <Compile Include="BrowserImpl\WebView2Browser.cs" />
-    <Compile Include="BrowserImpl\WinformBrowser.cs" />
-    <Compile Include="Building\Workspace.cs" />
-    <EmbeddedResource Include="FormAbout.resx">
+    <Compile Include="System\UpgradeInfo.cs" />
+    <Compile Include="WebView\WebView2Browser.cs" />
+    <Compile Include="WebView\WinformBrowser.cs" />
+    <Compile Include="Workspace\Workspace.cs" />
+    <EmbeddedResource Include="UserInterface\FormAbout.resx">
       <DependentUpon>FormAbout.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormCompilerConfig.resx">
+    <EmbeddedResource Include="UserInterface\FormCompilerConfig.resx">
       <DependentUpon>FormCompilerConfig.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormDebug.resx">
+    <EmbeddedResource Include="UserInterface\FormDebug.resx">
       <DependentUpon>FormDebug.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormMain.resx">
+    <EmbeddedResource Include="UserInterface\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
