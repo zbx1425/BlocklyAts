@@ -2,6 +2,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,33 +15,18 @@ namespace BlocklyAts {
 
         static readonly string featureControlRegKey = @"Software\Microsoft\Internet Explorer\Main\FeatureControl\";
 
-        public static bool IsWindows() {
-            switch (Environment.OSVersion.Platform) {
-                case PlatformID.Win32NT:
-                case PlatformID.Win32S:
-                case PlatformID.Win32Windows:
-                case PlatformID.WinCE:
-                case PlatformID.Xbox:
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
-        public static bool IsMono() {
-            return Type.GetType("Mono.Runtime") != null;
-        }
+        public static bool IsMono { get; } = Type.GetType("Mono.Runtime") != null;
 
         public static void CallBrowser(string url) {
-            try {
-                System.Diagnostics.Process.Start(url);
-            } catch {
-
-            }
+            try { if (Process.GetProcessById(Process.Start(url).Id) != null) return; } catch { }
+            try { if (Process.GetProcessById(Process.Start("xdg-open " + url).Id) != null) return; } catch { }
+            try { if (Process.GetProcessById(Process.Start("gnome-open " + url).Id) != null) return; } catch { }
+            try { if (Process.GetProcessById(Process.Start("sensible-browser " + url).Id) != null) return; } catch { }
+            MessageBox.Show(url, "Failed to call a browser", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         public static void SetWebBrowserFeatures() {
-            if (!IsWindows()) return;
+            if (IsMono) return;
             // don't change the registry if running in-proc inside Visual Studio
             if (LicenseManager.UsageMode != LicenseUsageMode.Runtime) return;
 
@@ -61,7 +47,7 @@ namespace BlocklyAts {
         }
 
         public static void UnsetWebBrowserFeatures() {
-            if (!IsWindows()) return;
+            if (IsMono) return;
             // don't change the registry if running in-proc inside Visual Studio
             if (LicenseManager.UsageMode != LicenseUsageMode.Runtime) return;
 
@@ -82,7 +68,7 @@ namespace BlocklyAts {
         }
 
         private static UInt32 GetBrowserEmulationMode() {
-            if (!IsWindows()) return 11000;
+            if (IsMono) return 11000;
             int browserVersion = 0;
             using (var ieKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Internet Explorer",
                 RegistryKeyPermissionCheck.ReadSubTree,

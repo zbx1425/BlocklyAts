@@ -25,7 +25,7 @@ namespace BlocklyAts {
         static extern int CoInternetSetFeatureEnabled(int FeatureEntry, [MarshalAs(UnmanagedType.U4)] int dwFlags, bool fEnable);
 
         public WinformBrowser(string url = "about:blank") {
-            if (PlatformFunction.IsWindows()) {
+            if (PlatformFunction.IsMono) {
                 try {
                     PlatformFunction.SetWebBrowserFeatures();
                     CoInternetSetFeatureEnabled(FEATURE_LOCALMACHINE_LOCKDOWN, SET_FEATURE_ON_PROCESS, false);

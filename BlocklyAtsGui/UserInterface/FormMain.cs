@@ -17,6 +17,14 @@ namespace BlocklyAts {
 
         public FormMain() {
             InitializeComponent();
+
+            for (int i = 0; i < I18n.LanguageDisplayList.Count; i++) {
+                tscbLanguage.Items.Add(I18n.LanguageDisplayList[i].Value);
+                if (I18n.LanguageDisplayList[i].Key == PreferenceManager.CurrentPreference.Language) {
+                    tscbLanguage.SelectedIndex = i;
+                    tscbLanguage.Text = I18n.LanguageDisplayList[i].Value;
+                }
+            }
         }
 
         private BaseBrowser mainWebBrowser;
@@ -24,15 +32,7 @@ namespace BlocklyAts {
         private Workspace currentWorkspace = new Workspace();
 
         private async void FormMain_Load(object sender, EventArgs e) {
-
-            for (int i = 0; i < I18n.LanguageDisplayList.Count; i++) {
-                tscbLanguage.Items.Add(I18n.LanguageDisplayList[i].Value);
-                if (I18n.LanguageDisplayList[i].Key == I18n.SelectedLanguage) {
-                    tscbLanguage.SelectedIndex = i;
-                    tscbLanguage.Text = I18n.LanguageDisplayList[i].Value;
-                }
-            }
-            await ApplyLanguage();
+            ApplyLanguage();
 
             await Task.Run(async () => {
                 var info = await UpgradeInfo.FetchOnline(
@@ -47,7 +47,7 @@ namespace BlocklyAts {
             });
         }
 
-        private async Task ApplyLanguage() {
+        private void ApplyLanguage() {
             foreach (ToolStripItem item in mainToolStrip.Items) {
                 if (I18n.CanTranslate("FormMain." + item.Name)) {
                     item.Text = I18n.Translate("FormMain." + item.Name);
@@ -96,28 +96,16 @@ namespace BlocklyAts {
                 this.PreviewKeyDown += new PreviewKeyDownEventHandler(mainWebBrowser_PreviewKeyDown);
                 mainWebBrowser.BindTo(this);
             } else {
-                if (mainWebBrowser is ExternalBrowser) {
-                    MessageBox.Show("Please reopen browser page to apply language change.");
-                    return;
-                }
-                var workspaceState = await mainWebBrowser.BkySaveWorkspace();
-                if (workspaceState == null) return;
-                currentWorkspace.BlocklyXml = new FPXElement(workspaceState);
-                mainWebBrowser.Navigate(pageURL);
-                EventHandler loadHandler = null;
-                loadHandler = (EventHandler)(async (sender, e) => {
-                    await mainWebBrowser.BkyLoadInitWorkspace(currentWorkspace.BlocklyXml);
-                    mainWebBrowser.PageFinished -= loadHandler;
-                });
-                mainWebBrowser.PageFinished += loadHandler;
+                MessageBox.Show("Please reopen browser page to apply language change.");
+                return;
             }
         }
 
-        private async void mainWebBrowser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e) {
+        private void mainWebBrowser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e) {
             if (e.KeyCode == Keys.F5) {
                 if (ModifierKeys.HasFlag(Keys.Control) && ModifierKeys.HasFlag(Keys.Shift)) {
                     // Debug function.
-                    await ApplyLanguage();
+                    ApplyLanguage();
                 } else {
                     tsbtnCompileRun_Click(null, null);
                 }
@@ -278,30 +266,52 @@ namespace BlocklyAts {
         }
 
         private void tsbtnCompileSetting_Click(object sender, EventArgs e) {
-            var ccd = new FormCompilerConfig();
-            ccd.Config = currentWorkspace.Config;
+            var ccd = new FormBuildRunConfig {
+                Config = currentWorkspace.Config
+            };
             if (ccd.ShowDialog() == DialogResult.OK) {
                 currentWorkspace.Config = ccd.Config;
             }
         }
 
         private async void tsbtnDebugWindow_Click(object sender, EventArgs e) {
-            var formDebug = new FormDebug();
-            formDebug.codeLua = (await mainWebBrowser.BkyExportLua()).Replace("\n", Environment.NewLine);
-            formDebug.codeCSharp = (await mainWebBrowser.BkyExportCSharp()).Replace("\n", Environment.NewLine);
-            formDebug.ShowDialog();
+                // TODO: Not working on Mono
+                tsbtnDebugWindow.Enabled = false;
+                var codeLua = await mainWebBrowser.BkyExportLua();
+                if (codeLua == null) {
+                    tsbtnDebugWindow.Enabled = true;
+                    return;
+                }
+                var codeCSharp = await mainWebBrowser.BkyExportCSharp();
+                if (codeCSharp == null) {
+                    tsbtnDebugWindow.Enabled = true;
+                    return;
+                }
+                tsbtnDebugWindow.Enabled = true;
+                this.BeginInvoke((Action)(() => {
+
+                    try {
+                        var formDebug = new FormDebug {
+                        codeLua = codeLua.Replace("\n", Environment.NewLine),
+                        codeCSharp = codeCSharp.Replace("\n", Environment.NewLine)
+                    };
+                    formDebug.ShowDialog(this);
+
+                } catch (Exception ex) {
+                MessageBox.Show(ex.ToString());
+            }
+        }));
         }
 
         private void tsbtnAbout_Click(object sender, EventArgs e) {
             new FormAbout().ShowDialog();
         }
 
-        private async void tscbLanguage_SelectedIndexChanged(object sender, EventArgs e) {
+        private void tscbLanguage_SelectedIndexChanged(object sender, EventArgs e) {
             var newlang = I18n.LanguageDisplayList[tscbLanguage.SelectedIndex].Key;
-            if (newlang != I18n.SelectedLanguage) {
-                I18n.SelectedLanguage = newlang;
-                await ApplyLanguage();
-                //MessageBox.Show(I18n.Translate("Msg.LanguageChange"));
+            if (newlang != PreferenceManager.CurrentPreference.Language) {
+                PreferenceManager.CurrentPreference.Language = newlang;
+                ApplyLanguage();
             }
         }
 

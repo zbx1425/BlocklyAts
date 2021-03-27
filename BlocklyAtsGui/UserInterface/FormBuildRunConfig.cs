@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BlocklyAts {
-    public partial class FormCompilerConfig : Form {
+    public partial class FormBuildRunConfig : Form {
 
         public BuildRunConfig Config {
             get {
@@ -57,7 +57,7 @@ namespace BlocklyAts {
             }
         }
 
-        public FormCompilerConfig() {
+        public FormBuildRunConfig() {
             InitializeComponent();
             tbGameArgs.Width = 0;
             rbGameBve5.Enabled = GameDetection.BveTs5Path != null;

@@ -12,12 +12,13 @@ namespace BlocklyAts {
         /// </summary>
         [STAThread]
         static void Main() {
+            PreferenceManager.LoadPreference();
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormMain());
 
-            I18n.SavePreference();
+            PreferenceManager.SavePreference();
         }
     }
 }

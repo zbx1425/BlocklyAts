@@ -1,5 +1,5 @@
 namespace BlocklyAts {
-    partial class FormCompilerConfig {
+    partial class FormBuildRunConfig {
         /// <summary>
         /// Required designer variable.
         /// </summary>

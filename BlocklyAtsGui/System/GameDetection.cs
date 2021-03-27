@@ -13,39 +13,43 @@ namespace BlocklyAts {
         public static readonly string OpenBvePath = null;
         public static readonly string BveTs5Path = null;
         public static readonly string BveTs6Path = null;
-
-#if !MONO
+        
         static GameDetection() {
-            const string InnoAppID = "{D617A45D-C2F6-44D1-A85C-CA7FFA91F7FC}_is1";
-            var msiUninstallKeys = new List<RegistryKey>();
-            var msiUninstallParentNames = new string[] {
-                @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\",
-                @"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\",
-            };
-            foreach (var msiUninstallParentName in msiUninstallParentNames) {
-                try {
-                    msiUninstallKeys.Add(Registry.CurrentUser.OpenSubKey(msiUninstallParentName + InnoAppID));
-                    msiUninstallKeys.Add(Registry.LocalMachine.OpenSubKey(msiUninstallParentName + InnoAppID));
-                } catch { }
-            }
-            string[] InstallLocations = msiUninstallKeys
-                .Select(regKey => regKey != null ? regKey.GetValue("InstallLocation", null) : null)
-                .OfType<string>().Distinct().ToArray();
-            foreach (string location in InstallLocations) {
-                string assemblyFile = Path.Combine(location, "OpenBve.exe");
-                if (!File.Exists(assemblyFile)) continue;
-                OpenBvePath = assemblyFile;
-                break;
-            }
+            if (PlatformFunction.IsMono) {
 
-            const string Bve5ProductID = "{D38EB8AB-0772-473D-9443-9B2149E4F13D}";
-            var basePath5 = GetMsiBasePath(Bve5ProductID);
-            if (basePath5 != null) BveTs5Path = Path.Combine(basePath5, "BveTs.exe");
+            } else {
+                const string InnoAppID = "{D617A45D-C2F6-44D1-A85C-CA7FFA91F7FC}_is1";
+                var msiUninstallKeys = new List<RegistryKey>();
+                var msiUninstallParentNames = new string[] {
+                    @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\",
+                    @"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\",
+                };
+                foreach (var msiUninstallParentName in msiUninstallParentNames) {
+                    try {
+                        msiUninstallKeys.Add(Registry.CurrentUser.OpenSubKey(msiUninstallParentName + InnoAppID));
+                        msiUninstallKeys.Add(Registry.LocalMachine.OpenSubKey(msiUninstallParentName + InnoAppID));
+                    } catch { }
+                }
+                string[] InstallLocations = msiUninstallKeys
+                    .Select(regKey => regKey != null ? regKey.GetValue("InstallLocation", null) : null)
+                    .OfType<string>().Distinct().ToArray();
+                foreach (string location in InstallLocations) {
+                    string assemblyFile = Path.Combine(location, "OpenBve.exe");
+                    if (!File.Exists(assemblyFile)) continue;
+                    OpenBvePath = assemblyFile;
+                    break;
+                }
 
-            const string Bve6ProductID = "{AB8616E0-A471-4261-9563-FE411A2A245B}";
-            var basePath6 = GetMsiBasePath(Bve6ProductID);
-            if (basePath6 != null) BveTs6Path = Path.Combine(basePath6, "BveTs.exe");
-            if (!File.Exists(BveTs6Path)) BveTs6Path = null;
+                const string Bve5ProductID = "{D38EB8AB-0772-473D-9443-9B2149E4F13D}";
+                var basePath5 = GetMsiBasePath(Bve5ProductID);
+                if (basePath5 != null) BveTs5Path = Path.Combine(basePath5, "BveTs.exe");
+                if (!File.Exists(BveTs5Path)) BveTs5Path = null;
+
+                const string Bve6ProductID = "{AB8616E0-A471-4261-9563-FE411A2A245B}";
+                var basePath6 = GetMsiBasePath(Bve6ProductID);
+                if (basePath6 != null) BveTs6Path = Path.Combine(basePath6, "BveTs.exe");
+                if (!File.Exists(BveTs6Path)) BveTs6Path = null;
+            }
         }
 
         [DllImport("msi.dll", CharSet = CharSet.Unicode)]
@@ -90,6 +94,5 @@ namespace BlocklyAts {
             MsiViewClose(hView);
             return possiblePath;
         }
-#endif
     }
 }

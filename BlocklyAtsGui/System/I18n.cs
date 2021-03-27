@@ -33,44 +33,21 @@ namespace BlocklyAts {
                 LanguageDisplayList.Add(new KeyValuePair<string, string>(pair.Key, pair.Value["Name"]));
             }
 
-            if (File.Exists("Preference.xml")) {
-                try {
-                    XDocument xdoc = XDocument.Load("Preference.xml");
-                    SelectedLanguage = xdoc.Root.Element("Language")?.Value;
-                } catch {
-                    // Unable to load configuration is not a big deal.
-                }
-                if (string.IsNullOrEmpty(SelectedLanguage)) SelectedLanguage = "en";
-            }
-            if (!languages.ContainsKey(SelectedLanguage)) SelectedLanguage = "en";
-        }
-
-        public static string SelectedLanguage = "en";
-
-        public static void SavePreference() {
-            // TODO: A class for preference
-            // Currently manually building XDocument, since only one preference is selected
-            XDocument xdoc = new XDocument(
-                new XElement("Preference",
-                    new XElement("Language", SelectedLanguage)
-                )
-            );
-            try {
-                xdoc.Save("Preference.xml");
-            } catch {
-                // Unable to save configuration is not a big deal.
-            }
+            if (string.IsNullOrEmpty(PreferenceManager.CurrentPreference.Language))
+                PreferenceManager.CurrentPreference.Language = "en";
+            if (!languages.ContainsKey(PreferenceManager.CurrentPreference.Language))
+                PreferenceManager.CurrentPreference.Language = "en";
         }
 
         public static bool CanTranslate(string key) {
-            return languages[SelectedLanguage].ContainsKey(key);
+            return languages[PreferenceManager.CurrentPreference.Language].ContainsKey(key);
         }
 
         public static string Translate(string key, object param = null) {
             if (param == null) {
-                return languages[SelectedLanguage][key];
+                return languages[PreferenceManager.CurrentPreference.Language][key];
             } else {
-                return string.Format(languages[SelectedLanguage][key], param);
+                return string.Format(languages[PreferenceManager.CurrentPreference.Language][key], param);
             }
         }
     }
