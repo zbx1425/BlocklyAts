@@ -1,6 +1,7 @@
 Blockly.Msg["BVE_CAT_EVENT"]="BVE Events";
 Blockly.Msg["BVE_CAT_COMMON"]="BVE Common";
-Blockly.Msg["BVE_CAT_SPECIALIZE"]="BVE Misc";
+Blockly.Msg["BVE_CAT_SPECIALIZE"]="BVE Argument";
+Blockly.Msg["BVE_CAT_UTILITY"]="Utility Func";
 
 Blockly.Msg["BVE_ELAPSE"]="when elapse (each frame)";
 Blockly.Msg["BVE_INITIALIZE"]="when init (load/jump station)";
@@ -81,7 +82,16 @@ Blockly.Msg["BVE_BCN_SIGNAL"]="signal";
 Blockly.Msg["BVE_BCN_DISTANCE"]="distance/m";
 Blockly.Msg["BVE_BCN_OPTIONAL"]="optional data";
 
+Blockly.Msg["BVE_TIMER_SET"]="start timer %1 %4 interval(ms) %2 repeat? %3"
+Blockly.Msg["BVE_TIMER_MODIFY"]="%2 timer %1";
+Blockly.Msg["BVE_TIMER_TRIGGER"]="when timer %1 triggered";
+Blockly.Msg["BVE_TMRMOD_STOP"]="stop";
+Blockly.Msg["BVE_TMRMOD_TRIGSTOP"]="trigger&stop";
+Blockly.Msg["BVE_TMRMOD_RESET"]="restart";
+Blockly.Msg["BVE_TMRMOD_TRIGRESET"]="trigger&restart";
+
 Blockly.Msg["BVE_MSG_HAT_SINGLETON"]="Events may only be used once each";
+Blockly.Msg["BVE_MSG_HAT_TIMER_SINGLETON"]="Only one 'when triggered' may be used for each timer name.";
 Blockly.Msg["BVE_MSG_NO_LIMIT"]="No limitations:";
 Blockly.Msg["BVE_MSG_NULL_LOAD"]="Don't use when 'load':";
 Blockly.Msg["BVE_MSG_NULL_LOAD_INIT"]="Don't use when 'load' or 'init':";
@@ -97,11 +107,13 @@ Blockly.Msg["BVE_GET_CONFIG"]="config [%1]%2";
 Blockly.Msg["BVE_GET_CONFIG_DEFAULT"]="config [%1]%2 default %3";
 Blockly.Msg["BVE_SET_CONFIG"]="set config [%1]%2 to %3";
 Blockly.Msg["BVE_CONFIG_SAVE"]="save config to file %1";
-Blockly.Msg["BVE_PLACEHOLDER_PATH"]="englishnameonly.ini";
+Blockly.Msg["BVE_PLACEHOLDER_PATH"]="filename.ini";
 Blockly.Msg["BVE_PLACEHOLDER_PART"]="part name";
 Blockly.Msg["BVE_PLACEHOLDER_KEY"]="key name";
+Blockly.Msg["BVE_PLACEHOLDER_TIMER"]="timer name";
+Blockly.Msg["BVE_PLACEHOLDER_COMMENT"]="Comment block. Have no effect. Insert at places you want to describe.";
 
-Blockly.Msg["BVE_MSGBOX"]="MsgBox %1";
+Blockly.Msg["BVE_MSGBOX"]="msgbox %1";
 
 Blockly.Msg["CAT_LOGIC"]="Logics";
 Blockly.Msg["CAT_LOOP"]="Loops";

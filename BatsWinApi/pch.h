@@ -11,7 +11,11 @@
 
 // 添加要在此处预编译的标头
 #include "framework.h"
-#include "atsplugin.h"
+
+#include <vector>
+
 #include "lua54/include/lua.hpp"
+
+#include "atsplugin.h"
 
 #endif //PCH_H

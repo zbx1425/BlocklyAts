@@ -14,6 +14,8 @@ function removeItemOnce(arr, value) {
   return arr;
 }
 
+Blockly.CSharp.bveTimerNameDB = new Blockly.Names();
+
 Blockly.CSharp.addReservedWords([
   "BlocklyAtsPlugin",
   "DoorChange",
@@ -49,7 +51,7 @@ function batsExportCSharp(workspace) {
 
   var allHats = ["bve_hat_elapse", "bve_hat_initialize", "bve_hat_keydown_any", "bve_hat_keyup_any", "bve_hat_horn_blow", 
     "bve_hat_door_change", "bve_hat_set_signal", "bve_hat_set_beacon", "bve_hat_load", "bve_hat_dispose"];
-  var code = "private AtsCompanion _c;\n"
+  var code = "private BlocklyAtsCompanion _c;\n"
   + "public void SetVehicleSpecs(VehicleSpecs _p1) { _c.VSpec = _p1; }\n"
   + "public void SetReverser(int _p1) { if (_c.EData != null) _c.EData.Handles.Reverser = _p1; }\n"
   + "public void SetPower(int _p1) { if (_c.EData != null) _c.EData.Handles.PowerNotch = _p1; }\n"
@@ -76,35 +78,35 @@ function batsExportCSharp(workspace) {
   }
 
   code = Blockly.CSharp.finish(code).trim();
-  return "public class BlocklyAtsPlugin : IRuntime {\n" + code + "}";
+  return "public class BlocklyAtsPlugin : IRuntime {\n" + code + "\n}";
 }
 
 Blockly.CSharp.bve_hat_elapse=function(block){
-  return "public void Elapse(ElapseData _p1) { _c.EData = _p1;\n";
+  return "public void Elapse(ElapseData _p1) {\n_c.EData = _p1;\n_c.UpdateTimer();\n";
 }
 Blockly.CSharp.bve_hat_initialize=function(block){
-  return "public void Initialize(InitializationModes _p1) { int _pinitindex = (int)_p1;\n";
+  return "public void Initialize(InitializationModes _p1) {\nint _pinitindex = (int)_p1;\n";
 }
 Blockly.CSharp.bve_hat_keydown_any=function(block){
-  return "public void KeyDown(VirtualKeys _p1) { int _pkey = (int)_p1; if (_pkey > 15) return; _c.KeyState[_pkey] = true;\n";
+  return "public void KeyDown(VirtualKeys _p1) {\nint _pkey = (int)_p1;\nif (_pkey > 15) return; _c.KeyState[_pkey] = true;\n";
 }
 Blockly.CSharp.bve_hat_keyup_any=function(block){
-  return "public void KeyUp(VirtualKeys _p1) { int _pkey = (int)_p1; if (_pkey > 15) return; _c.KeyState[_pkey] = false;\n";
+  return "public void KeyUp(VirtualKeys _p1) {\nint _pkey = (int)_p1;\nif (_pkey > 15) return; _c.KeyState[_pkey] = false;\n";
 }
 Blockly.CSharp.bve_hat_horn_blow=function(block){
-  return "public void HornBlow(HornTypes _p1) { int _phorntype = (int)_p1;\n";
+  return "public void HornBlow(HornTypes _p1) {\nint _phorntype = (int)_p1;\n";
 }
 Blockly.CSharp.bve_hat_door_change=function(block){
-  return "public void DoorChange(DoorStates _p1, DoorStates _p2) { _c.DoorState = _p2; if ((_p1 == DoorStates.None) == (_p2 == DoorStates.None)) return;\n";
+  return "public void DoorChange(DoorStates _p1, DoorStates _p2) {\n_c.DoorState = _p2;\nif ((_p1 == DoorStates.None) == (_p2 == DoorStates.None)) return;\n";
 }
 Blockly.CSharp.bve_hat_set_signal=function(block){
-  return "public void SetSignal(SignalData[] _p1) { int _psignal = _p1[0].Aspect;\n";
+  return "public void SetSignal(SignalData[] _p1) {\nint _psignal = _p1[0].Aspect;\n";
 }
 Blockly.CSharp.bve_hat_set_beacon=function(block){
   return "public void SetBeacon(BeaconData _pbeacondata) {\n";
 }
 Blockly.CSharp.bve_hat_load=function(block){
-  return "public bool Load(LoadProperties _p1) { _c = new AtsCompanion(_p1);\n";
+  return "public bool Load(LoadProperties _p1) {\n_c = new BlocklyAtsCompanion(_p1, this);\n";
 }
 Blockly.CSharp.bve_hat_dispose=function(block){
   return "public void Unload() {\n";
@@ -218,9 +220,34 @@ Blockly.CSharp.bve_get_config_default=function(block){ // TODO
 Blockly.CSharp.bve_set_config=function(block){
   return "_c.SetConfig(" + Blockly.CSharp.quote_(block.getFieldValue("PART")) + ", " 
     + Blockly.CSharp.quote_(block.getFieldValue("KEY")) + ", "
-    + (Blockly.CSharp.valueToCode(block, "VALUE", Blockly.CSharp.ORDER_NONE) || "\"\"") + ");\n";;
+    + (Blockly.CSharp.valueToCode(block, "VALUE", Blockly.CSharp.ORDER_NONE) || "\"\"") + ");\n";
 }
 Blockly.CSharp.bve_msgbox=function(block){
   return "MessageBox.Show(" + (Blockly.CSharp.valueToCode(block, "MSG", Blockly.CSharp.ORDER_NONE) || "\"\"") 
-    + ", \"BlocklyATS Message\");\n";;
+    + ", \"BlocklyATS Message\");\n";
 }
+Blockly.CSharp.bve_hat_timer=function(block){
+  var timerName = Blockly.CSharp.bveTimerNameDB.getName(block.getFieldValue("NAME"), Blockly.Generator.NAME_TYPE);
+  return "public void _etimertick_" + timerName + "() {\n";
+}
+Blockly.CSharp.bve_timer_set=function(block){
+  var timerName = Blockly.CSharp.bveTimerNameDB.getName(block.getFieldValue("NAME"), Blockly.Generator.NAME_TYPE);
+  return "_c.SetTimer(" 
+    + Blockly.CSharp.quote_(timerName) + ", "
+    + Blockly.CSharp.valueToCode(block, "INTERVAL", Blockly.CSharp.ORDER_NONE) + ", "
+    + Blockly.CSharp.valueToCode(block, "CYCLE", Blockly.CSharp.ORDER_NONE) + ");\n";
+}
+Blockly.CSharp.bve_timer_modify=function(block){
+  var timerName = Blockly.CSharp.bveTimerNameDB.getName(block.getFieldValue("NAME"), Blockly.Generator.NAME_TYPE);
+  switch (block.getFieldValue("OPERATION")) {
+    case "Stop":
+      return "_c.CancelTimer(" + Blockly.CSharp.quote_(timerName) + ", false);\n";
+    case "TrigStop":
+      return "_c.CancelTimer(" + Blockly.CSharp.quote_(timerName) + ", true);\n";
+    case "Reset":
+      return "_c.ResetTimer(" + Blockly.CSharp.quote_(timerName) + ", false);\n";
+    case "TrigReset":
+      return "_c.ResetTimer(" + Blockly.CSharp.quote_(timerName) + ", true);\n";
+  }
+}
+Blockly.CSharp.bve_comment = function(block) {}

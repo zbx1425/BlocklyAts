@@ -60,8 +60,15 @@ namespace BlocklyAts {
 #else
             string webDirectory = Path.Combine(CompilerFunction.appDir, "www");
 #endif
+            var version = Assembly.GetExecutingAssembly().GetName().Version;
+            string versionString = version.ToString();
+            if (version.Revision > 100) {
+                int rcNum = version.Revision - 100;
+                version = new Version(version.Major, version.Minor, version.Build + 1, 0);
+                versionString = version.ToString() + "-rc" + rcNum;
+            }
             string pageURL = Path.Combine(webDirectory, "index.html") + string.Format("?ver={0}&lang={1}",
-                Assembly.GetExecutingAssembly().GetName().Version.ToString(),
+                versionString,
                 I18n.Translate("BlocklyName")
             );
             if (mainWebBrowser == null) {
@@ -96,7 +103,7 @@ namespace BlocklyAts {
                 this.PreviewKeyDown += new PreviewKeyDownEventHandler(mainWebBrowser_PreviewKeyDown);
                 mainWebBrowser.BindTo(this);
             } else {
-                MessageBox.Show("Please reopen browser page to apply language change.");
+                MessageBox.Show(I18n.Translate("Msg.LanguageChange"));
                 return;
             }
         }
@@ -275,7 +282,6 @@ namespace BlocklyAts {
         }
 
         private async void tsbtnDebugWindow_Click(object sender, EventArgs e) {
-                // TODO: Not working on Mono
                 tsbtnDebugWindow.Enabled = false;
                 var codeLua = await mainWebBrowser.BkyExportLua();
                 if (codeLua == null) {
@@ -288,19 +294,10 @@ namespace BlocklyAts {
                     return;
                 }
                 tsbtnDebugWindow.Enabled = true;
-                this.BeginInvoke((Action)(() => {
-
-                    try {
-                        var formDebug = new FormDebug {
-                        codeLua = codeLua.Replace("\n", Environment.NewLine),
-                        codeCSharp = codeCSharp.Replace("\n", Environment.NewLine)
-                    };
+                this.Invoke((Action)(() => {
+                    var formDebug = new FormDebug(codeLua, codeCSharp);
                     formDebug.ShowDialog(this);
-
-                } catch (Exception ex) {
-                MessageBox.Show(ex.ToString());
-            }
-        }));
+                }));
         }
 
         private void tsbtnAbout_Click(object sender, EventArgs e) {

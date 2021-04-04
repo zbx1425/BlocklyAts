@@ -37,6 +37,10 @@
       text-shadow: -1px -1px 0 #FFF, 1px -1px 0 #FFF, -1px 1px 0 #FFF, 1px 1px 0 #FFF;
       pointer-events: none;
     }
+    #overlay select {
+      font-size: 1.4em;
+      pointer-events: auto;
+    }
     #page-overlay {
       position: fixed; z-index: 114514; top: 0; left: 0; right: 0; bottom: 0;
       width: 100%; height: 100%; background-color: rgba(223, 223, 223, 0.8); cursor: not-allowed;
@@ -52,16 +56,30 @@
         "<p>Your Internet Explorer " + ie + " is not modern enough for BlocklyATS to run.<br>" +
         "<b>Please download the CEFSharp component as an alternative</b>, <br>" +
         "or install Internet Explorer 11 (not recommended though).</p>");
-    } else {
-      var ver = getQueryVariable("ver");
-      document.write(
-        '<div id="overlay">BlocklyAts &copy; zbx1425<br><span id="vertext">' + 
-        ((ver != null) ? ('v' + ver + ", ") : "") + '</span>' +
-        uaString + 
-        '</div>'
-      );
     }
   </script>
+  <div id="overlay">
+    <!--<p style="text-align: right; margin: 0;">
+      <select id="page-select">
+          <option value="">--Please choose an option--</option>
+          <option value="dog">Dog</option>
+          <option value="cat">Cat</option>
+          <option value="hamster">Hamster</option>
+          <option value="parrot">Parrot</option>
+          <option value="spider">Spider</option>
+          <option value="goldfish">Goldfish</option>
+      </select>
+    </p>-->
+    <script>
+      if (ieVersion >= 11) {
+        var ver = getQueryVariable("ver");
+        document.write(
+          'BlocklyAts &copy; zbx1425<br><span id="vertext">' + 
+          ((ver != null) ? ('v' + ver + ", ") : "") + '</span>' + uaString
+        );
+      }
+    </script>
+  </div>
   <div id="page-overlay"></div>
   <xml id="toolbox" style="display: none">
     <category id="catBveEvent" colour="200" name="%{BKY_BVE_CAT_EVENT}">
@@ -136,15 +154,28 @@
       <label text="%{BKY_BVE_MSG_SET_BEACON_ONLY}"></label>
       <sep gap="8"></sep>
       <block type="bve_get_beacon"></block>
-      <sep gap="40"></sep>
-      <label text="%{BKY_BVE_MSG_NO_LIMIT}"></label>
+    </category>
+    <category id="catUtility" colour="280" name="%{BKY_BVE_CAT_UTILITY}">
+      <label text="%{BKY_BVE_MSG_HAT_TIMER_SINGLETON}"></label>
       <sep gap="8"></sep>
+      <block type="bve_hat_timer"></block>
+      <block type="bve_timer_set">
+        <value name="INTERVAL">
+          <shadow type="math_number">
+            <field name="NUM">1000</field>
+          </shadow>
+        </value>
+        <value name="CYCLE">
+          <shadow type="logic_boolean">
+            <field name="BOOL">FALSE</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="bve_timer_modify"></block>
+      <sep gap="40"></sep>
       <block type="bve_config_load"></block>
       <block type="bve_get_config"></block>
       <block type="bve_get_config_default"></block>
-      <!-- Implementing default value is trickier than I thought.
-      <block type="bve_get_config_default_text"></block>
-      -->
       <block type="bve_set_config"></block>
       <block type="bve_config_save"></block>
       <sep gap="40"></sep>
@@ -155,9 +186,8 @@
           </shadow>
         </value>
       </block>
-    </category>
-    <category id="catOpenBve" colour="20" name="OpenBVE">
-      <label text="Work in Progress"></label>
+      <sep gap="40"></sep>
+      <block type="bve_comment"></block>
     </category>
     <sep></sep>
     <category id="catLogic" colour="210" name="%{BKY_CAT_LOGIC}">
@@ -408,8 +438,7 @@
     </category>
     <sep></sep>
     <category id="catVariables" colour="330" custom="VARIABLE" name="%{BKY_CAT_VARIABLE}"></category>
-    <!-- Functions are a bit broken. -->
-    <!-- <category id="catFunctions" colour="290" custom="PROCEDURE" name="%{BKY_CAT_FUNCTION}"></category> -->
+    <category id="catFunctions" colour="290" custom="PROCEDURE" name="%{BKY_CAT_FUNCTION}"></category>
   </xml>
   <div id="blocklyArea"><td><div id="blocklyDiv"></div></div>
 </body>

@@ -1,10 +1,14 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using OpenBveApi.Runtime;
 
-internal class AtsCompanion {
+// Start of BlocklyAts boilerplate code.
+internal class BlocklyAtsCompanion {
+    
+    public IRuntime Plugin;
   
     public VehicleSpecs VSpec;
     public ElapseData EData;
@@ -16,6 +20,15 @@ internal class AtsCompanion {
         }
     }
     public bool[] KeyState = new bool[16];
+    
+    public class TimerTuple {
+        public double Interval;
+        public double LastTrigger;
+        public bool Cycle;
+        public bool Enabled;
+    }
+    
+    public Dictionary<string, TimerTuple> TimerState = new Dictionary<string, TimerTuple>();
     public Dictionary<string, Dictionary<string, dynamic>> ConfigData;
     
     private string pluginDir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location).TrimEnd('\\', '/');
@@ -24,10 +37,11 @@ internal class AtsCompanion {
     // To achieve the same behavior as Win32 plugin interface at bve_get_sound_internal
     private int[] emulatedSoundState = new int[256];
     
-    public AtsCompanion(LoadProperties prop) {
+    public BlocklyAtsCompanion(LoadProperties prop, IRuntime plugin) {
         playSoundDelegate = prop.PlaySound;
         prop.Panel = Panel;
         for (int i = 0; i < 256; i++) emulatedSoundState[i] = -10000;
+        this.Plugin = plugin;
     }
   
     public void LoadConfig(string path) {
@@ -123,6 +137,57 @@ internal class AtsCompanion {
             ConfigData[part].Add(key, confValue);
         } else {
             ConfigData[part][key] = confValue;
+        }
+    }
+    
+    private void CallTimerHandler(string name) {
+        var methodInfo = Plugin.GetType().GetMethod("_etimertick_" + name);
+        if (methodInfo != null) methodInfo.Invoke(Plugin, new object[] { });
+    }
+    
+    public void ResetTimer(string name, bool callHandler) {
+        if (!TimerState.ContainsKey(name)) return;
+        if (EData == null) {
+            // Force a timer reset later if the ElapseData is currently not ready.
+            TimerState[name].LastTrigger = double.MaxValue;
+        } else {
+            TimerState[name].LastTrigger = EData.TotalTime.Milliseconds;
+        }
+        TimerState[name].Enabled = true;
+        if (callHandler) CallTimerHandler(name);
+    }
+    
+    public void CancelTimer(string name, bool callHandler) {
+        if (!TimerState.ContainsKey(name)) return;
+        TimerState[name].Enabled = false;
+        if (callHandler) CallTimerHandler(name);
+    }
+    
+    public void SetTimer(string name, double interval, bool cycle) {
+        if (interval > 0) {
+            TimerState[name] = new TimerTuple();
+            TimerState[name].Interval = interval;
+            TimerState[name].Cycle = cycle;
+            ResetTimer(name, false);
+        } else {
+            CancelTimer(name, false);
+        }
+    }
+    
+    public void UpdateTimer() {
+        foreach (var entry in TimerState) {
+            if (!entry.Value.Enabled) continue;
+            if (entry.Value.LastTrigger > EData.TotalTime.Milliseconds) {
+                // From the future? Maybe caused by a station jump, just reset it
+                ResetTimer(entry.Key, false);
+            } else if (EData.TotalTime.Milliseconds >= entry.Value.LastTrigger + entry.Value.Interval) {
+                CallTimerHandler(entry.Key);
+                if (entry.Value.Cycle) {
+                    ResetTimer(entry.Key, false);
+                } else {
+                    CancelTimer(entry.Key, false);
+                }
+            }
         }
     }
 }

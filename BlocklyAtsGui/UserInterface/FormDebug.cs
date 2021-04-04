@@ -14,8 +14,14 @@ namespace BlocklyAts {
         private FastColoredTextBoxNS.FastColoredTextBox tbCode;
         private TextBox fallbackTbCode;
 
-        public FormDebug() {
+        public readonly string codeLua, codeCSharp;
+
+        public FormDebug(string codeLua, string codeCSharp) {
             InitializeComponent();
+            this.codeLua = CompilerFunction.CombineCode(CompilerFunction.BoilerplateLua, codeLua);
+            this.codeCSharp = CompilerFunction.CombineCode(CompilerFunction.BoilerplateCSharp, codeCSharp);
+            this.codeLua = this.codeLua.Replace("\n", Environment.NewLine);
+            this.codeCSharp = this.codeCSharp.Replace("\n", Environment.NewLine);
             ResetTextbox();
         }
 
@@ -36,6 +42,7 @@ namespace BlocklyAts {
                 tbCode.IsReplaceMode = false;
                 tbCode.Name = "tbCode";
                 tbCode.ReadOnly = true;
+                tbCode.TabLength = 2;
                 tbCode.SelectionColor = Color.FromArgb(60, 0, 0, 255);
                 tbCode.ServiceColors = new FastColoredTextBoxNS.ServiceColors();
                 tbCode.Dock = DockStyle.Fill;
@@ -61,25 +68,27 @@ namespace BlocklyAts {
             PerformLayout();
         }
 
-        public string codeLua { get; set; }
-        public string codeCSharp { get; set; }
-
         private void rbLua_CheckedChanged(object sender, EventArgs e) {
             if (tbCode != null) {
                 if (sender == rbLua) {
+                    // TODO: FastColoredTextBox syntax highlighter seems to be mislead by Regex expressions of LIP
                     tbCode.ResetText();
                     tbCode.Language = FastColoredTextBoxNS.Language.Lua;
-                    tbCode.Text = CompilerFunction.BoilerplateLua + Environment.NewLine + codeLua;
+                    tbCode.Text = codeLua;
                 } else {
                     tbCode.ResetText();
                     tbCode.Language = FastColoredTextBoxNS.Language.CSharp;
-                    tbCode.Text = CompilerFunction.BoilerplateCSharp + Environment.NewLine + codeCSharp;
+                    tbCode.Text = codeCSharp;
+                }
+                for (int i = 0; i < tbCode.LinesCount; i++) {
+                    if (tbCode.Lines[i].Contains(CompilerFunction.BoilerplateStartMarker)) break;
+                    tbCode.DoAutoIndent(i);
                 }
             } else {
                 if (sender == rbLua) {
-                    fallbackTbCode.Text = CompilerFunction.BoilerplateLua + Environment.NewLine + codeLua;
+                    fallbackTbCode.Text = codeLua;
                 } else {
-                    fallbackTbCode.Text = CompilerFunction.BoilerplateCSharp + Environment.NewLine + codeCSharp;
+                    fallbackTbCode.Text = codeCSharp;
                 }
             }
         }

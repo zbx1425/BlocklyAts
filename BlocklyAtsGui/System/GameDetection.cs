@@ -11,12 +11,17 @@ namespace BlocklyAts {
     static class GameDetection {
 
         public static readonly string OpenBvePath = null;
+        public static readonly string MonoPath = null;
         public static readonly string BveTs5Path = null;
         public static readonly string BveTs6Path = null;
         
         static GameDetection() {
             if (PlatformFunction.IsMono) {
-
+                const string OpenBveDebPath = "/usr/lib/openbve/OpenBve.exe";
+                MonoPath = GetEnvFullPath("mono");
+                if (MonoPath != null && File.Exists(OpenBveDebPath)) {
+                    OpenBvePath = OpenBveDebPath;
+                }
             } else {
                 const string InnoAppID = "{D617A45D-C2F6-44D1-A85C-CA7FFA91F7FC}_is1";
                 var msiUninstallKeys = new List<RegistryKey>();
@@ -93,6 +98,19 @@ namespace BlocklyAts {
             }
             MsiViewClose(hView);
             return possiblePath;
+        }
+
+        private static string GetEnvFullPath(string fileName) {
+            if (File.Exists(fileName))
+                return Path.GetFullPath(fileName);
+
+            var values = Environment.GetEnvironmentVariable("PATH");
+            foreach (var path in values.Split(Path.PathSeparator)) {
+                var fullPath = Path.Combine(path, fileName);
+                if (File.Exists(fullPath))
+                    return fullPath;
+            }
+            return null;
         }
     }
 }

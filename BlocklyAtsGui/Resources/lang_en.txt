@@ -12,7 +12,7 @@ FormMain.tsbtnDebugWindow = Debug Window
 FormMain.tsbtnHelp = Help
 FormMain.tsbtnAbout = About BlocklyAts
 
-FormCompilerConfig.cbShouldx86 = 32-bit Windows DLL\nFor BVE4/5、OpenBVE
+FormCompilerConfig.cbShouldx86 = 32-bit Windows DLL\nFor BVE4/5&OpenBVE
 FormCompilerConfig.cbShouldx64 = 64-bit Windows DLL\nFor BVE6
 FormCompilerConfig.cbShouldNet = AnyCpu .NET Assembly\nFor OpenBVE
 FormCompilerConfig.lblGamePath = Game Program Path

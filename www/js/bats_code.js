@@ -67,6 +67,7 @@ function batsInit(toolboxNode) {
     }
   }
   document.addEventListener('keydown', onkeydown, false);
+  batsWkspReset();
 
   if (getQueryVariable("ver") == null) hIntervalInit = setInterval(batsRemoteInit, 500);
   if (typeof onBlocklyLoad != 'undefined' && onBlocklyLoad != null) {
@@ -140,7 +141,35 @@ window.addEventListener('load', function() {
   batsInit(document.getElementById("toolbox"));
 });
 
+var pageSeq, pageMap, pageCurrent, shareVariables;
+
+function batsPageSwitchTo(newPage) {
+  var dom = Blockly.Xml.workspaceToDom(workspace);
+  var domVariables = dom.getElementsByTagName("variables");
+  if (domVariables.length > 0) dom.removeChild(domVariables[0]);
+  shareVariables = workspace.variableMap_.getAllVariables();
+  pageMap[pageCurrent] = dom;
+
+  pageCurrent = newPage;
+  workspace.clear();
+  workspace.getToolbox().clearSelection(); // To update the variable category
+  if (pageMap[pageCurrent] != null) {
+    var newDom = pageMap[pageCurrent];
+    Blockly.Xml.domToWorkspace(newDom, workspace);
+  } else {
+    pageSeq.push(pageCurrent);
+  }
+  workspace.variableMap_.clear();
+  for (var i = 0; i < shareVariables.length; i++) {
+    workspace.variableMap_.createVariable(shareVariables[i].name, shareVariables[i].type, shareVariables[i].id);
+  }
+}
+
 function batsWkspReset() {
+  pageSeq = ["Main"];
+  pageMap = {"Main": null};
+  pageCurrent = "Main";
+  shareVariables = [];
   workspace.clear();
 }
 

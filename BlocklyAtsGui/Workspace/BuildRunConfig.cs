@@ -45,6 +45,7 @@ namespace BlocklyAts {
         
         public Process GetGameProcess() {
             string path = null;
+            string args = GameArgs;
 
             switch (GameType) {
                 case BveImpl.Custom:
@@ -57,7 +58,12 @@ namespace BlocklyAts {
                     path = GameDetection.BveTs6Path;
                     break;
                 case BveImpl.OpenBve:
-                    path = GameDetection.OpenBvePath;
+                    if (PlatformFunction.IsMono) {
+                        path = GameDetection.MonoPath;
+                        args = string.Format("\"{0}\" {1}", GameDetection.OpenBvePath, args);
+                    } else {
+                        path = GameDetection.OpenBvePath;
+                    }
                     break;
             }
 
@@ -67,8 +73,8 @@ namespace BlocklyAts {
             return new Process() {
                 StartInfo = new ProcessStartInfo {
                     FileName = path,
+                    Arguments = args,
                     UseShellExecute = false,
-                    Arguments = GameArgs
                 }
             };
         }

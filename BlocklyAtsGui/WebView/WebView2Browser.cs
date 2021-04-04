@@ -23,7 +23,6 @@ namespace BlocklyAts {
             TryLoadWebview2Loader();
 
             browser = new WebView2();
-            browser.PreviewKeyDown += Browser_PreviewKeyDown;
             browser.NavigationCompleted += Browser_DocumentCompleted;
 
             var createTask = CoreWebView2Environment.CreateAsync();
@@ -33,12 +32,33 @@ namespace BlocklyAts {
                 browser.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All);
                 browser.CoreWebView2.WebResourceRequested += CoreWebView2_WebResourceRequested;
                 browser.CoreWebView2.Settings.IsZoomControlEnabled = false;
-                //browser.CoreWebView2.Settings.AreDevToolsEnabled = false;
+#if !DEBUG
+                browser.CoreWebView2.Settings.AreDevToolsEnabled = false;
+#endif
                 browser.CoreWebView2.Settings.IsStatusBarEnabled = false;
                 browser.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
+
+                // Due to a bug in WebView2 (https://github.com/MicrosoftEdge/WebView2Feedback/issues/721)
+                // Setting e.Handled in KeyDown won't work as how Microsoft advertised it.
+                // So reflection has to be used, in order to directly subscribe to the AcceleratorKeyPressed event.
+                // Why can't Microsoft do their things right?
+                CoreWebView2Controller controller = (CoreWebView2Controller)browser.GetType().GetField("_coreWebView2Controller",
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(browser);
+                controller.AcceleratorKeyPressed += Controller_AcceleratorKeyPressed;
             };
+            browser.KeyDown += Browser_KeyDown;
             browser.EnsureCoreWebView2Async(environment);
             Navigate(url);
+        }
+
+        private void Controller_AcceleratorKeyPressed(object sender, CoreWebView2AcceleratorKeyPressedEventArgs e) {
+            if (e.VirtualKey == 0x74) { // VK_F5
+                e.Handled = true;
+            }
+        }
+
+        private void Browser_KeyDown(object sender, KeyEventArgs e) {
+            KeyDown?.Invoke(sender, new PreviewKeyDownEventArgs(e.KeyCode));
         }
 
         private void CoreWebView2_WebResourceRequested(object sender, CoreWebView2WebResourceRequestedEventArgs e) {
@@ -84,10 +104,6 @@ namespace BlocklyAts {
                     404, "Not Found", "Content-Type: text/html;charset=utf-8"
                 );
             }
-        }
-
-        private void Browser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e) {
-            KeyDown?.Invoke(sender, e);
         }
 
         private void Browser_DocumentCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e) {

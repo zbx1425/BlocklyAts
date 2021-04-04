@@ -52,6 +52,9 @@ namespace BlocklyAts {
             using (StreamReader reader = new StreamReader(inStream, Encoding.UTF8)) {
                 var wksp = (Workspace)new XmlSerializer(typeof(Workspace)).Deserialize(reader);
                 wksp.SaveFilePath = path;
+                if (new Version(wksp.EditorVersion) <= new Version(1, 0, 5, 3)) {
+
+                }
                 return wksp;
             }
         }

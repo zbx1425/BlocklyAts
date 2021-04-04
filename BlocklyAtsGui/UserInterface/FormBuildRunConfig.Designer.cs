@@ -64,7 +64,7 @@ namespace BlocklyAts {
             this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlpMain.Controls.Add(this.flpRbGame, 0, 3);
+            this.tlpMain.Controls.Add(this.flpRbGame, 1, 3);
             this.tlpMain.Controls.Add(this.tbGameArgs, 1, 5);
             this.tlpMain.Controls.Add(this.tbGamePath, 1, 4);
             this.tlpMain.Controls.Add(this.btnBrowseNet, 3, 2);
@@ -385,7 +385,7 @@ namespace BlocklyAts {
             this.btnGenerateArgs.UseVisualStyleBackColor = true;
             this.btnGenerateArgs.Click += new System.EventHandler(this.btnGenerateArgs_Click);
             // 
-            // FormCompilerConfig
+            // FormBuildRunConfig
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -399,7 +399,7 @@ namespace BlocklyAts {
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "FormCompilerConfig";
+            this.Name = "FormBuildRunConfig";
             this.Text = "Compiler Configuration";
             this.Load += new System.EventHandler(this.FormCompilerConfig_Load);
             this.tlpMain.ResumeLayout(false);

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "framework.h"
 #include "plugin.h"
+#include "winfile.h"
 
 lua_State *L = NULL;
 
@@ -9,8 +10,16 @@ int phPower, phBrake, phReverser;
 int *bvePanel, *bveSound;
 
 void l_printerr() {
-	const char * err = lua_tostring(L, -1);
-	if (MessageBoxA(NULL, err, "BlocklyAts Lua Script Error", MB_RETRYCANCEL | MB_ICONERROR) == IDCANCEL) {
+	const char * sBuf = lua_tostring(L, -1);
+	DWORD dBufSize = MultiByteToWideChar(CP_UTF8, 0, sBuf, -1, NULL, 0);
+	std::vector<wchar_t> dBuf(dBufSize);
+	int msgBoxResult;
+	if (MultiByteToWideChar(CP_UTF8, 0, sBuf, -1, dBuf.data(), dBufSize) > 0) {
+		msgBoxResult = MessageBoxW(NULL, dBuf.data(), L"BlocklyAts Lua Script Error", MB_RETRYCANCEL | MB_ICONERROR);
+	} else {
+		msgBoxResult = MessageBoxA(NULL, sBuf, "BlocklyAts Lua Script Error", MB_RETRYCANCEL | MB_ICONERROR);
+	}
+	if (msgBoxResult == IDCANCEL) {
 		lua_close(L);
 		L = NULL;
 	}
@@ -63,31 +72,38 @@ static int l_sound_getset(lua_State *L) {
 }
 
 static int l_msgbox(lua_State *L) {
-	const char* msg = luaL_checkstring(L, 1);
-	MessageBoxA(NULL, msg, "BlocklyAts Message", 0);
+	const char * sBuf = luaL_checkstring(L, 1);
+	DWORD dBufSize = MultiByteToWideChar(CP_UTF8, 0, sBuf, -1, NULL, 0);
+	std::vector<wchar_t> dBuf(dBufSize);
+	if (MultiByteToWideChar(CP_UTF8, 0, sBuf, -1, dBuf.data(), dBufSize) > 0) {
+		MessageBoxW(NULL, dBuf.data(), L"BlocklyAts Message", 0);
+	} else {
+		MessageBoxA(NULL, sBuf, "BlocklyAts Message", 0);
+	}
 	return 0;
 }
 
 
-char dllPath[2048], programPath[2048], buffer[4096];
+wchar_t dllPath[2048];
+char buffer[4096];
 DWORD read; char* luaCode;
 
 ATS_API void WINAPI Load() {
 	HMODULE hm = NULL;
 
-	if (GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
-		(LPCSTR)&Dispose, &hm) == 0) {
-		MessageBoxA(NULL, "GetModuleHandle failed, ATS plugin cannot load", "BlocklyAts Error", MB_ICONERROR);
+	if (GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+		(LPCWSTR)&Dispose, &hm) == 0) {
+		MessageBox(NULL, L"GetModuleHandleEx failed, ATS plugin cannot load", L"BlocklyAts Error", MB_ICONERROR);
 		return;
 	}
-	if (GetModuleFileNameA(hm, dllPath, sizeof(dllPath)) == 0) {
-		MessageBoxA(NULL, "GetModuleFileName failed, ATS plugin cannot load", "BlocklyAts Error", MB_ICONERROR);
+	if (GetModuleFileName(hm, dllPath, sizeof(dllPath)) == 0) {
+		MessageBox(NULL, L"GetModuleFileName failed, ATS plugin cannot load", L"BlocklyAts Error", MB_ICONERROR);
 		return;
 	}
 
-	HANDLE hFile = CreateFileA(dllPath, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	HANDLE hFile = CreateFile(dllPath, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (INVALID_HANDLE_VALUE == hFile) {
-		MessageBoxA(NULL, "CreateFileA failed, ATS plugin cannot load", "BlocklyAts Error", MB_ICONERROR);
+		MessageBox(NULL, L"CreateFile failed, ATS plugin cannot load", L"BlocklyAts Error", MB_ICONERROR);
 		return;
 	}
 	ReadFile(hFile, buffer, sizeof(buffer), &read, NULL);
@@ -95,7 +111,7 @@ ATS_API void WINAPI Load() {
 	IMAGE_NT_HEADERS32* header = (IMAGE_NT_HEADERS32*)(buffer + dosheader->e_lfanew);
 	if (dosheader->e_magic != IMAGE_DOS_SIGNATURE || header->Signature != IMAGE_NT_SIGNATURE) {
 		CloseHandle(hFile);
-		MessageBoxA(NULL, "PE header malformed, ATS plugin cannot load", "BlocklyAts Error", MB_ICONERROR);
+		MessageBox(NULL, L"PE header malformed, ATS plugin cannot load", L"BlocklyAts Error", MB_ICONERROR);
 		return;
 	}
 
@@ -112,7 +128,7 @@ ATS_API void WINAPI Load() {
 	DWORD filesize = GetFileSize(hFile, NULL);
 	if (filesize - exesize <= 0) {
 		CloseHandle(hFile);
-		MessageBoxA(NULL, "Cannot locate PE terminal offset, ATS plugin cannot load", "BlocklyAts Error", MB_ICONERROR);
+		MessageBox(NULL, L"Cannot locate PE terminal offset, ATS plugin cannot load", L"BlocklyAts Error", MB_ICONERROR);
 		return;
 	}
 	SetFilePointer(hFile, exesize, NULL, FILE_BEGIN);
@@ -125,18 +141,22 @@ ATS_API void WINAPI Load() {
 	// 2. I couldn't get it to work, don't know exactly why
 	// So there is an very easy xor obfuscation, to prevent retarded people from stealing code
 	char confusion[] = { 0x11, 0x45, 0x14, 0x19, 0x19, 0x81, 0x14, 0x25 };
-	for (int i = 0; i < filesize - exesize; i++) luaCode[i] ^= confusion[i%8];
+	for (DWORD i = 0; i < filesize - exesize; i++) luaCode[i] ^= confusion[i%8];
 
 	L = luaL_newstate();
 	luaL_openlibs(L);
+	luaL_requiref(L, "winfile", luaopen_winfile, 1);
 
 	l_setglobalF("_fpanel", l_panel_getset);
 	l_setglobalF("_fsound", l_sound_getset);
 	l_setglobalF("_fmsgbox", l_msgbox);
 
-	*(strrchr(dllPath, '\\') + 1) = 0;
-	l_setglobalS("_vdlldir", dllPath);
-	//sprintf_s(programPath, "%s\\program.lua", dllPath);
+	*(wcsrchr(dllPath, '\\') + 1) = 0;
+	const char * sBuf = lua_tostring(L, -1);
+	DWORD dBufSize = WideCharToMultiByte(CP_UTF8, 0, dllPath, -1, NULL, 0, NULL, FALSE);
+	char* dllPathMB = new char[dBufSize];
+	WideCharToMultiByte(CP_UTF8, 0, dllPath, -1, dllPathMB, dBufSize, NULL, FALSE);
+	l_setglobalS("_vdlldir", dllPathMB);
 
 	int error = luaL_loadbuffer(L, luaCode, filesize - exesize, "bats") || lua_pcall(L, 0, LUA_MULTRET, 0);
 
@@ -234,7 +254,7 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 		l_printerr();
 		// Apply emergency brake
 		// Lt's hope it'll get the plugin out of the error state by chance
-		return { vSpec.BrakeNotches + 1, 0, 1, 2 };
+		if (L != NULL) return { vSpec.BrakeNotches + 1, 0, 1, 2 }; else return result;
 	} else {
 		result.Power = lua_tointeger(L, -4);
 		result.Brake = lua_tointeger(L, -3);

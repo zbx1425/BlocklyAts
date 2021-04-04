@@ -14,6 +14,8 @@ function removeItemOnce(arr, value) {
   return arr;
 }
 
+Blockly.Lua.bveTimerNameDB = new Blockly.Names();
+
 Blockly.Lua.addReservedWords([
   "_edispose",
   "_edoorchange",
@@ -45,6 +47,11 @@ Blockly.Lua.addReservedWords([
   "_fpanel",
   "_fsound",
   "_fmsgbox",
+  "_ftimerreset",
+  "_ftimercancel",
+  "_ftimerset",
+  "_ftimerupdate",
+  "_ftimercallhandler",
   "_vconfig",
   "_vdlldir",
   "_bEdBcPressure",
@@ -97,7 +104,7 @@ function batsExportLua(workspace) {
 }
 
 Blockly.Lua.bve_hat_elapse=function(block){
-  return "function _eelapse(_ppower, _pbrake, _preverser, _pconstspeed)\n";
+  return "function _eelapse(_ppower, _pbrake, _preverser, _pconstspeed)\n_ftimerupdate()\n";
 }
 Blockly.Lua.bve_hat_initialize=function(block){
   return "function _einitialize(_pinitindex)\n";
@@ -230,3 +237,27 @@ Blockly.Lua.bve_set_config=function(block){
 Blockly.Lua.bve_msgbox=function(block){
   return "_fmsgbox(" + (Blockly.Lua.valueToCode(block, "MSG", Blockly.Lua.ORDER_NONE) || "\"\"") + ")\n";;
 }
+Blockly.Lua.bve_hat_timer=function(block){
+  var timerName = Blockly.Lua.bveTimerNameDB.getName(block.getFieldValue("NAME"), Blockly.Generator.NAME_TYPE);
+  return "function _etimertick_" + timerName + "()\n";
+}
+Blockly.Lua.bve_timer_set=function(block){
+  var timerName = Blockly.Lua.bveTimerNameDB.getName(block.getFieldValue("NAME"), Blockly.Generator.NAME_TYPE);
+  return "_ftimerset(" + Blockly.Lua.quote_(timerName) + ", "
+    + Blockly.Lua.valueToCode(block, "INTERVAL", Blockly.CSharp.ORDER_NONE) + ", "
+    + Blockly.Lua.valueToCode(block, "CYCLE", Blockly.CSharp.ORDER_NONE) + ")\n";
+}
+Blockly.Lua.bve_timer_modify=function(block){
+  var timerName = Blockly.Lua.bveTimerNameDB.getName(block.getFieldValue("NAME"), Blockly.Generator.NAME_TYPE);
+  switch (block.getFieldValue("OPERATION")) {
+    case "Stop":
+      return "_ftimercancel(" + Blockly.Lua.quote_(timerName) + ", false)\n";
+    case "TrigStop":
+      return "_ftimercancel(" + Blockly.Lua.quote_(timerName) + ", true)\n";
+    case "Reset":
+      return "_ftimerreset(" + Blockly.Lua.quote_(timerName) + ", false)\n";
+    case "TrigReset":
+      return "_ftimerreset(" + Blockly.Lua.quote_(timerName) + ", true)\n";
+  }
+}
+Blockly.Lua.bve_comment = function(block) {}

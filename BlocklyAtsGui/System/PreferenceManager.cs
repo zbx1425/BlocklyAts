@@ -36,7 +36,7 @@ namespace BlocklyAts {
         public static bool SavePreference(string path = "Preference.xml") {
             try {
                 CurrentPreference.SaveToFile(path);
-            } catch (Exception ex) {
+            } catch {
                 return false;
             }
             return true;

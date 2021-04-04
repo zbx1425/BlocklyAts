@@ -1,6 +1,7 @@
 Blockly.Msg["BVE_CAT_EVENT"]="BVEイベント";
 Blockly.Msg["BVE_CAT_COMMON"]="BVE慣用";
-Blockly.Msg["BVE_CAT_SPECIALIZE"]="BVEその他";
+Blockly.Msg["BVE_CAT_SPECIALIZE"]="BVE引数";
+Blockly.Msg["BVE_CAT_UTILITY"]="ユーティリティ";
 
 Blockly.Msg["BVE_ELAPSE"]="経過 (1 フレームごと)";
 Blockly.Msg["BVE_INITIALIZE"]="ゲーム開始 (開く/はじめから)";
@@ -81,7 +82,16 @@ Blockly.Msg["BVE_BCN_SIGNAL"]="セクションの信号";
 Blockly.Msg["BVE_BCN_DISTANCE"]="セクションまでの距離/m";
 Blockly.Msg["BVE_BCN_OPTIONAL"]="設定値";
 
+Blockly.Msg["BVE_TIMER_SET"]="タイマー %1 を開始 %4 間隔(ms) %2 繰り返し? %3"
+Blockly.Msg["BVE_TIMER_MODIFY"]="タイマー %1 を %2";
+Blockly.Msg["BVE_TIMER_TRIGGER"]="タイマー %1 がトリガー時";
+Blockly.Msg["BVE_TMRMOD_STOP"]="停止";
+Blockly.Msg["BVE_TMRMOD_TRIGSTOP"]="トリガーと停止";
+Blockly.Msg["BVE_TMRMOD_RESET"]="リセット";
+Blockly.Msg["BVE_TMRMOD_TRIGRESET"]="トリガーとリセット";
+
 Blockly.Msg["BVE_MSG_HAT_SINGLETON"]="イベントはそれぞれ1回のみ使用できます。";
+Blockly.Msg["BVE_MSG_HAT_TIMER_SINGLETON"]="タイマー名ごとに使用できる「トリガー時」は1つだけです。 ";
 Blockly.Msg["BVE_MSG_NO_LIMIT"]="制限なし：";
 Blockly.Msg["BVE_MSG_NULL_LOAD"]="'読み込'の場合は使用しない：";
 Blockly.Msg["BVE_MSG_NULL_LOAD_INIT"]="'読み込'または'ゲーム開始'の場合は使用しない：";
@@ -97,9 +107,11 @@ Blockly.Msg["BVE_GET_CONFIG"]="設定項目 [%1]%2";
 Blockly.Msg["BVE_GET_CONFIG_DEFAULT"]="設定項目 [%1]%2 省略時 %3";
 Blockly.Msg["BVE_SET_CONFIG"]="設定項目 [%1]%2 を %3 に設定";
 Blockly.Msg["BVE_CONFIG_SAVE"]="設定をファイル %1 に保存";
-Blockly.Msg["BVE_PLACEHOLDER_PATH"]="英語のみの名前を付ける.ini";
+Blockly.Msg["BVE_PLACEHOLDER_PATH"]="名前を付ける.ini";
 Blockly.Msg["BVE_PLACEHOLDER_PART"]="部分の名前";
 Blockly.Msg["BVE_PLACEHOLDER_KEY"]="キーの名前";
+Blockly.Msg["BVE_PLACEHOLDER_TIMER"]="タイマーの名前";
+Blockly.Msg["BVE_PLACEHOLDER_COMMENT"]="コメントブロック。効果はありません。説明したい場所に挿入してください。";
 
 Blockly.Msg["BVE_MSGBOX"]="ポップアップ通知 %1";
 

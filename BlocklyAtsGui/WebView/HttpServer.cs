@@ -53,6 +53,8 @@ namespace BlocklyATS {
                 HttpListenerRequest req = ctx.Request;
                 HttpListenerResponse resp = ctx.Response;
                 
+                resp.AddHeader("X-Content-Type-Options", "nosniff");
+                
                 var requestPath = req.Url.AbsolutePath.ToString();
                 if (requestPath == "/") requestPath = "/index.html"; // Not a nice implemention
                 if (requestPath.Contains("..")) {

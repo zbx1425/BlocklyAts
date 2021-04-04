@@ -498,4 +498,83 @@ Blockly.defineBlocksWithJsonArray([
     previousStatement: null,
     nextStatement: null,
   },
+  {
+    type: "bve_hat_timer",
+    style: "bve_blocks",
+    message0: "%{BKY_BVE_TIMER_TRIGGER}",
+    args0: [
+      {
+        type: "field_input",
+        name: "NAME",
+        text: "%{BKY_BVE_PLACEHOLDER_TIMER}"
+      }
+    ],
+    nextStatement: null,
+  },
+  {
+    type: "bve_timer_set",
+    style: "bve_blocks",
+    message0: "%{BKY_BVE_TIMER_SET}",
+    args0: [
+      {
+        type: "field_input",
+        name: "NAME",
+        text: "%{BKY_BVE_PLACEHOLDER_TIMER}"
+      },
+      {
+        type: "input_value",
+        name: "INTERVAL",
+        check: "Number",
+      },
+      {
+        type: "input_value",
+        name: "CYCLE",
+        check: "Boolean",
+      },
+      {
+        type: "input_dummy"
+      }
+    ],
+    inputsInline: false,
+    previousStatement: null,
+    nextStatement: null,
+  },
+  {
+    type: "bve_timer_modify",
+    style: "bve_blocks",
+    message0: "%{BKY_BVE_TIMER_MODIFY}",
+    args0: [
+      {
+        type: "field_input",
+        name: "NAME",
+        text: "%{BKY_BVE_PLACEHOLDER_TIMER}"
+      },
+      {
+        type: "field_dropdown",
+        name: "OPERATION",
+        options: [
+          ["%{BKY_BVE_TMRMOD_STOP}", "Stop"],
+          ["%{BKY_BVE_TMRMOD_TRIGSTOP}", "TrigStop"],
+          ["%{BKY_BVE_TMRMOD_RESET}", "Reset"],
+          ["%{BKY_BVE_TMRMOD_TRIGRESET}", "TrigReset"],
+        ],
+      },
+    ],
+    previousStatement: null,
+    nextStatement: null,
+  },
+  {
+    type: "bve_comment",
+    style: "bve_blocks",
+    message0: "%1",
+    args0: [
+      {
+        type: "field_input",
+        name: "COMMENT",
+        text: "%{BKY_BVE_PLACEHOLDER_COMMENT}"
+      }
+    ],
+    previousStatement: null,
+    nextStatement: null,
+  }
 ]);

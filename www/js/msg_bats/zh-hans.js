@@ -1,6 +1,7 @@
 Blockly.Msg["BVE_CAT_EVENT"]="BVE事件";
 Blockly.Msg["BVE_CAT_COMMON"]="BVE常用";
-Blockly.Msg["BVE_CAT_SPECIALIZE"]="BVE杂项";
+Blockly.Msg["BVE_CAT_SPECIALIZE"]="BVE参数";
+Blockly.Msg["BVE_CAT_UTILITY"]="实用功能";
 
 Blockly.Msg["BVE_ELAPSE"]="当状态更新 (每帧一次)";
 Blockly.Msg["BVE_INITIALIZE"]="当游戏开始 (载入/跳站)";
@@ -81,7 +82,16 @@ Blockly.Msg["BVE_BCN_SIGNAL"]="信号现示";
 Blockly.Msg["BVE_BCN_DISTANCE"]="与相关区间距离/m";
 Blockly.Msg["BVE_BCN_OPTIONAL"]="可选数据";
 
+Blockly.Msg["BVE_TIMER_SET"]="启动定时器 %1 %4 间隔(ms) %2 循环触发? %3"
+Blockly.Msg["BVE_TIMER_MODIFY"]="让定时器 %1 %2";
+Blockly.Msg["BVE_TIMER_TRIGGER"]="当定时器 %1 被触发时";
+Blockly.Msg["BVE_TMRMOD_STOP"]="停止";
+Blockly.Msg["BVE_TMRMOD_TRIGSTOP"]="触发后停止";
+Blockly.Msg["BVE_TMRMOD_RESET"]="重新开始";
+Blockly.Msg["BVE_TMRMOD_TRIGRESET"]="触发后重开始";
+
 Blockly.Msg["BVE_MSG_HAT_SINGLETON"]="事件处理程序每种只可定义一个。";
+Blockly.Msg["BVE_MSG_HAT_TIMER_SINGLETON"]="对于每个名称的定时器只能有一个'当定时器触发'。";
 Blockly.Msg["BVE_MSG_NO_LIMIT"]="以下没有使用场所限制。";
 Blockly.Msg["BVE_MSG_NULL_LOAD"]="以下不可在'插件加载'时使用。";
 Blockly.Msg["BVE_MSG_NULL_LOAD_INIT"]="以下不可在'插件加载'或'游戏开始'时使用。";
@@ -97,9 +107,11 @@ Blockly.Msg["BVE_GET_CONFIG"]="配置项 [%1]%2";
 Blockly.Msg["BVE_GET_CONFIG_DEFAULT"]="配置项 [%1]%2 默认 %3";
 Blockly.Msg["BVE_SET_CONFIG"]="设定配置项 [%1]%2 为 %3";
 Blockly.Msg["BVE_CONFIG_SAVE"]="保存配置到文件 %1";
-Blockly.Msg["BVE_PLACEHOLDER_PATH"]="自己起名只可英文.ini";
+Blockly.Msg["BVE_PLACEHOLDER_PATH"]="配置文件.ini";
 Blockly.Msg["BVE_PLACEHOLDER_PART"]="部分名称";
 Blockly.Msg["BVE_PLACEHOLDER_KEY"]="键值名称";
+Blockly.Msg["BVE_PLACEHOLDER_TIMER"]="定时器名称";
+Blockly.Msg["BVE_PLACEHOLDER_COMMENT"]="注释块。无任何效果。放在你需要解释的地方。";
 
 Blockly.Msg["BVE_MSGBOX"]="弹窗 %1";
 
