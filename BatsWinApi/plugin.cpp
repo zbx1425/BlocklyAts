@@ -106,40 +106,27 @@ ATS_API void WINAPI Load() {
 		MessageBox(NULL, L"CreateFile failed, ATS plugin cannot load", L"BlocklyAts Error", MB_ICONERROR);
 		return;
 	}
+
 	ReadFile(hFile, buffer, sizeof(buffer), &read, NULL);
-	IMAGE_DOS_HEADER* dosheader = (IMAGE_DOS_HEADER*)buffer;
-	IMAGE_NT_HEADERS32* header = (IMAGE_NT_HEADERS32*)(buffer + dosheader->e_lfanew);
-	if (dosheader->e_magic != IMAGE_DOS_SIGNATURE || header->Signature != IMAGE_NT_SIGNATURE) {
-		CloseHandle(hFile);
-		MessageBox(NULL, L"PE header malformed, ATS plugin cannot load", L"BlocklyAts Error", MB_ICONERROR);
-		return;
-	}
-
-	IMAGE_SECTION_HEADER* sectiontable = (IMAGE_SECTION_HEADER*)((BYTE*)header + sizeof(IMAGE_NT_HEADERS32));
-	DWORD maxpointer = 0, exesize = 0;
-	for (int i = 0; i < header->FileHeader.NumberOfSections; i++) {
-		if (sectiontable->PointerToRawData > maxpointer) {
-			maxpointer = sectiontable->PointerToRawData;
-			exesize = sectiontable->PointerToRawData + sectiontable->SizeOfRawData;
-		}
-		sectiontable++;
-	}
-
+	// The previous solution of calculating PE section size doesn't seem to work on 64-bit DLL
+	// I should've tried to find out why, but I cannot find how to solve this problem
+	DWORD exesize = *(int*)(buffer + 0x6C); // the word "DOS " in DOS stub will be replaced to describe the size
 	DWORD filesize = GetFileSize(hFile, NULL);
 	if (filesize - exesize <= 0) {
 		CloseHandle(hFile);
-		MessageBox(NULL, L"Cannot locate PE terminal offset, ATS plugin cannot load", L"BlocklyAts Error", MB_ICONERROR);
+		MessageBox(NULL, L"No extra code, ATS plugin cannot load", L"BlocklyAts Error", MB_ICONERROR);
 		return;
 	}
+
 	SetFilePointer(hFile, exesize, NULL, FILE_BEGIN);
 	luaCode = new char[filesize - exesize + 1];
 	ReadFile(hFile, luaCode, filesize - exesize, &read, NULL);
 	CloseHandle(hFile);
 
 	// I knew I should've used bytecode, but then
-	// 1. it'll be more difficult to compile on Mono, because you'll need to ship luac with different arch
-	// 2. I couldn't get it to work, don't know exactly why
-	// So there is an very easy xor obfuscation, to prevent retarded people from stealing code
+	// it'll be more difficult to compile on Mono, because you'll need to ship luac with different arch
+	// and somehow I could not get it to work, and I could not find out why
+	// So there is a quite easy xor obfuscation, to prevent the code from being stolen too easily
 	char confusion[] = { 0x11, 0x45, 0x14, 0x19, 0x19, 0x81, 0x14, 0x25 };
 	for (DWORD i = 0; i < filesize - exesize; i++) luaCode[i] ^= confusion[i%8];
 

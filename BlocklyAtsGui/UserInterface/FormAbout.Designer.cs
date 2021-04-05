@@ -24,15 +24,19 @@ namespace BlocklyAts {
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAbout));
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.logoPictureBox = new System.Windows.Forms.PictureBox();
             this.labelProductName = new System.Windows.Forms.Label();
             this.labelVersion = new System.Windows.Forms.Label();
             this.labelCopyright = new System.Windows.Forms.Label();
             this.textBoxDescription = new System.Windows.Forms.TextBox();
             this.okButton = new System.Windows.Forms.Button();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.flpLogos = new System.Windows.Forms.FlowLayoutPanel();
+            this.pbLogoBats = new System.Windows.Forms.PictureBox();
+            this.pbLogoAuthor = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
+            this.flpLogos.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLogoBats)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLogoAuthor)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel
@@ -40,13 +44,13 @@ namespace BlocklyAts {
             this.tableLayoutPanel.ColumnCount = 2;
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel.Controls.Add(this.logoPictureBox, 0, 0);
             this.tableLayoutPanel.Controls.Add(this.labelProductName, 1, 0);
             this.tableLayoutPanel.Controls.Add(this.labelVersion, 1, 1);
             this.tableLayoutPanel.Controls.Add(this.labelCopyright, 1, 2);
             this.tableLayoutPanel.Controls.Add(this.textBoxDescription, 1, 4);
             this.tableLayoutPanel.Controls.Add(this.okButton, 1, 5);
             this.tableLayoutPanel.Controls.Add(this.linkLabel1, 1, 3);
+            this.tableLayoutPanel.Controls.Add(this.flpLogos, 0, 0);
             this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel.Location = new System.Drawing.Point(9, 8);
             this.tableLayoutPanel.Name = "tableLayoutPanel";
@@ -57,19 +61,14 @@ namespace BlocklyAts {
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.Size = new System.Drawing.Size(466, 295);
             this.tableLayoutPanel.TabIndex = 0;
-            // 
-            // logoPictureBox
-            // 
-            this.logoPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logoPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("logoPictureBox.Image")));
-            this.logoPictureBox.Location = new System.Drawing.Point(3, 3);
-            this.logoPictureBox.Name = "logoPictureBox";
-            this.tableLayoutPanel.SetRowSpan(this.logoPictureBox, 6);
-            this.logoPictureBox.Size = new System.Drawing.Size(94, 289);
-            this.logoPictureBox.TabIndex = 12;
-            this.logoPictureBox.TabStop = false;
             // 
             // labelProductName
             // 
@@ -149,6 +148,37 @@ namespace BlocklyAts {
             this.linkLabel1.UseCompatibleTextRendering = true;
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
+            // flpLogos
+            // 
+            this.flpLogos.Controls.Add(this.pbLogoBats);
+            this.flpLogos.Controls.Add(this.pbLogoAuthor);
+            this.flpLogos.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flpLogos.Location = new System.Drawing.Point(3, 3);
+            this.flpLogos.Name = "flpLogos";
+            this.tableLayoutPanel.SetRowSpan(this.flpLogos, 6);
+            this.flpLogos.Size = new System.Drawing.Size(94, 289);
+            this.flpLogos.TabIndex = 26;
+            // 
+            // pbLogoBats
+            // 
+            this.pbLogoBats.Image = ((System.Drawing.Image)(resources.GetObject("pbLogoBats.Image")));
+            this.pbLogoBats.Location = new System.Drawing.Point(3, 3);
+            this.pbLogoBats.Name = "pbLogoBats";
+            this.pbLogoBats.Size = new System.Drawing.Size(80, 80);
+            this.pbLogoBats.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbLogoBats.TabIndex = 0;
+            this.pbLogoBats.TabStop = false;
+            // 
+            // pbLogoAuthor
+            // 
+            this.pbLogoAuthor.Image = ((System.Drawing.Image)(resources.GetObject("pbLogoAuthor.Image")));
+            this.pbLogoAuthor.Location = new System.Drawing.Point(3, 89);
+            this.pbLogoAuthor.Name = "pbLogoAuthor";
+            this.pbLogoAuthor.Size = new System.Drawing.Size(90, 90);
+            this.pbLogoAuthor.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbLogoAuthor.TabIndex = 1;
+            this.pbLogoAuthor.TabStop = false;
+            // 
             // FormAbout
             // 
             this.AcceptButton = this.okButton;
@@ -163,10 +193,12 @@ namespace BlocklyAts {
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "FormAbout";
+            this.Text = "About BlocklyAts";
             this.tableLayoutPanel.ResumeLayout(false);
             this.tableLayoutPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).EndInit();
+            this.flpLogos.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbLogoBats)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLogoAuthor)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -174,12 +206,14 @@ namespace BlocklyAts {
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel;
-        private System.Windows.Forms.PictureBox logoPictureBox;
         private System.Windows.Forms.Label labelProductName;
         private System.Windows.Forms.Label labelVersion;
         private System.Windows.Forms.Label labelCopyright;
         private System.Windows.Forms.TextBox textBoxDescription;
         private System.Windows.Forms.Button okButton;
         private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.FlowLayoutPanel flpLogos;
+        private System.Windows.Forms.PictureBox pbLogoBats;
+        private System.Windows.Forms.PictureBox pbLogoAuthor;
     }
 }

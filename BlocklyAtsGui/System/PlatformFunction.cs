@@ -25,6 +25,19 @@ namespace BlocklyAts {
             MessageBox.Show(url, "Failed to call a browser", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        public static string VersionString {
+            get {
+                var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+                string versionString = version.ToString();
+                if (version.Revision > 100) {
+                    int rcNum = version.Revision - 100;
+                    version = new Version(version.Major, version.Minor, version.Build + 1, 0);
+                    versionString = version.ToString() + "-rc" + rcNum;
+                }
+                return versionString;
+            }
+        }
+
         public static void SetWebBrowserFeatures() {
             if (IsMono) return;
             // don't change the registry if running in-proc inside Visual Studio

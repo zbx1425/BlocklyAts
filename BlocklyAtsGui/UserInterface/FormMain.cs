@@ -60,15 +60,9 @@ namespace BlocklyAts {
 #else
             string webDirectory = Path.Combine(CompilerFunction.appDir, "www");
 #endif
-            var version = Assembly.GetExecutingAssembly().GetName().Version;
-            string versionString = version.ToString();
-            if (version.Revision > 100) {
-                int rcNum = version.Revision - 100;
-                version = new Version(version.Major, version.Minor, version.Build + 1, 0);
-                versionString = version.ToString() + "-rc" + rcNum;
-            }
+            
             string pageURL = Path.Combine(webDirectory, "index.html") + string.Format("?ver={0}&lang={1}",
-                versionString,
+                PlatformFunction.VersionString,
                 I18n.Translate("BlocklyName")
             );
             if (mainWebBrowser == null) {

@@ -53,14 +53,27 @@ namespace BlocklyAts {
                 + boilerplate.Substring(insertPosition)).Trim();
         }
 
+        private static void CopySectionTo(this Stream input, Stream output, int bytes) {
+            byte[] buffer = new byte[32768];
+            int read;
+            while (bytes > 0 &&
+                   (read = input.Read(buffer, 0, Math.Min(buffer.Length, bytes))) > 0) {
+                output.Write(buffer, 0, read);
+                bytes -= read;
+            }
+        }
+
         public static async Task CompileLua(string script, string outputPath, string arch) {
             var sourceCode = CombineCode(BoilerplateLua, script);
 
-            var boilerplateStream = new FileStream(
-                Path.Combine(appDir, "lib", "batswinapi_" + arch + ".dll"), 
-                FileMode.Open, FileAccess.Read
-            );
+            var boilerplateFile = Path.Combine(appDir, "lib", "batswinapi_" + arch + ".dll");
+            var boilerplateStream = new FileStream(boilerplateFile, FileMode.Open, FileAccess.Read);
             var outStream = new FileStream(outputPath, FileMode.Create, FileAccess.Write);
+
+            // Write PE length to DOS stub
+            boilerplateStream.CopySectionTo(outStream, 0x6C);
+            outStream.Write(BitConverter.GetBytes(boilerplateStream.Length), 0, 4);
+            boilerplateStream.Seek(4, SeekOrigin.Current);
             await boilerplateStream.CopyToAsync(outStream);
 
             byte[] confusion = { 0x11, 0x45, 0x14, 0x19, 0x19, 0x81, 0x14, 0x25 };

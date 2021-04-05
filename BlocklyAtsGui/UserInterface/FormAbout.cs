@@ -35,7 +35,7 @@ namespace BlocklyAts {
 
         public string AssemblyVersion {
             get {
-                return Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                return PlatformFunction.VersionString;
             }
         }
 

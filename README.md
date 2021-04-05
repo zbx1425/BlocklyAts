@@ -42,3 +42,8 @@ https://alertifyjs.com/
 JavaScript を実行しているブラウザの種類およびそのレンダリングエンジン・ オペレーティングシステムの種類を判別します。  
 Copyright © 2006-2020 Magicant. uai.js は自由に使用していただいて構いません。  
 https://magicant.github.io/sjavascript/uai-spec.html
+
+- Codepage conversion for Lua Windows IO: luawinfile  
+Support UTF-8 filename in Windows. It's similar to lfs but support utf-8 filename.  
+Copyright 2017 云风/Cloud Wu cloudwu@gmail.com. This project is under MIT Licence.  
+https://github.com/cloudwu/luawinfile
