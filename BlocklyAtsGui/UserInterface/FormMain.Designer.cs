@@ -34,6 +34,7 @@ namespace BlocklyAts {
             this.tsbtnCompileRun = new System.Windows.Forms.ToolStripButton();
             this.tsbtnCompileSetting = new System.Windows.Forms.ToolStripButton();
             this.tsbtnAbout = new System.Windows.Forms.ToolStripButton();
+            this.tsbtnBugReport = new System.Windows.Forms.ToolStripButton();
             this.tsbtnHelp = new System.Windows.Forms.ToolStripButton();
             this.tsbtnDebugWindow = new System.Windows.Forms.ToolStripButton();
             this.tss2 = new System.Windows.Forms.ToolStripSeparator();
@@ -55,6 +56,7 @@ namespace BlocklyAts {
             this.tsbtnCompileRun,
             this.tsbtnCompileSetting,
             this.tsbtnAbout,
+            this.tsbtnBugReport,
             this.tsbtnHelp,
             this.tsbtnDebugWindow,
             this.tss2,
@@ -156,7 +158,18 @@ namespace BlocklyAts {
             this.tsbtnAbout.Name = "tsbtnAbout";
             this.tsbtnAbout.Size = new System.Drawing.Size(23, 22);
             this.tsbtnAbout.Text = "About BlocklyAts";
-            this.tsbtnAbout.Click += new System.EventHandler(this.tsbtnAbout_Click);
+            // 
+            // tsbtnBugReport
+            // 
+            this.tsbtnBugReport.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tsbtnBugReport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbtnBugReport.Image = ((System.Drawing.Image)(resources.GetObject("tsbtnBugReport.Image")));
+            this.tsbtnBugReport.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbtnBugReport.Margin = new System.Windows.Forms.Padding(0, 1, 4, 2);
+            this.tsbtnBugReport.Name = "tsbtnBugReport";
+            this.tsbtnBugReport.Size = new System.Drawing.Size(23, 22);
+            this.tsbtnBugReport.Text = "Report a Bug";
+            this.tsbtnBugReport.Click += new System.EventHandler(this.tsbtnBugReport_Click);
             // 
             // tsbtnHelp
             // 
@@ -230,10 +243,11 @@ namespace BlocklyAts {
         private System.Windows.Forms.ToolStripButton tsbtnCompileRun;
         private System.Windows.Forms.ToolStripButton tsbtnCompileSetting;
         private System.Windows.Forms.ToolStripButton tsbtnSave;
-        private System.Windows.Forms.ToolStripButton tsbtnAbout;
         private System.Windows.Forms.ToolStripSeparator tss2;
         private System.Windows.Forms.ToolStripComboBox tscbLanguage;
         private System.Windows.Forms.ToolStripButton tsbtnHelp;
+        private System.Windows.Forms.ToolStripButton tsbtnAbout;
+        private System.Windows.Forms.ToolStripButton tsbtnBugReport;
     }
 }
 

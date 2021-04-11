@@ -34,6 +34,13 @@ namespace BlocklyAts {
         private async void FormMain_Load(object sender, EventArgs e) {
             ApplyLanguage();
 
+            if (PreferenceManager.FirstStartup) {
+                this.Shown += (s2, e2) => {
+                    MessageBox.Show(I18n.TranslateAllLang("Msg.BugReport"), "BlocklyAts",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                };
+            }
+
             await Task.Run(async () => {
                 var info = await UpgradeInfo.FetchOnline(
                     "https://www.zbx1425.cn/nautilus/projectmeta.xml",
@@ -70,8 +77,8 @@ namespace BlocklyAts {
                 int tsbSize;
                 if (mainWebBrowser is ExternalBrowser) {
                     this.TopMost = true;
-                    this.MinimumSize = Size.Empty;
-                    this.Size = new Size(600, 200);
+                    this.MinimumSize = new Size(700, 70);
+                    this.Size = new Size(700, 200);
                     tsbSize = 40;
                 } else {
                     tsbSize = 30;
@@ -107,6 +114,7 @@ namespace BlocklyAts {
                 if (ModifierKeys.HasFlag(Keys.Control) && ModifierKeys.HasFlag(Keys.Shift)) {
                     // Debug function.
                     ApplyLanguage();
+                    mainWebBrowser.Reload();
                 } else {
                     tsbtnCompileRun_Click(null, null);
                 }
@@ -308,6 +316,10 @@ namespace BlocklyAts {
 
         private void tsbtnHelp_Click(object sender, EventArgs e) {
             PlatformFunction.CallBrowser("https://github.com/zbx1425/BlocklyAts/wiki");
+        }
+
+        private void tsbtnBugReport_Click(object sender, EventArgs e) {
+            new FormBugReport().ShowDialog();
         }
     }
 }

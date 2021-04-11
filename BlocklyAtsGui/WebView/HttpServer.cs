@@ -80,6 +80,7 @@ namespace BlocklyATS {
                 }
 #if DEBUG
                 var requestFile = Path.GetFullPath("../www" + requestPath);
+                if (!File.Exists(requestFile)) requestFile = Path.GetFullPath("www" + requestPath);
 #else
                 var requestFile = Path.GetFullPath("www" + requestPath);
 #endif
@@ -90,7 +91,7 @@ namespace BlocklyATS {
                         case ".html":
                             resp.ContentType = "text/html";
                             resp.ContentEncoding = Encoding.UTF8;
-                            resp.AddHeader("X-UA-Compatible", "IE-edge");
+                            resp.AddHeader("X-UA-Compatible", "IE=edge");
                             break;
                         case ".js":
                             resp.ContentType = "application/javascript";

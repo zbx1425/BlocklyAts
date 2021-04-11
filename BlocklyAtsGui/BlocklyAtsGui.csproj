@@ -92,6 +92,12 @@
   <ItemGroup>
     <Compile Include="System\Preference.cs" />
     <Compile Include="System\PreferenceManager.cs" />
+    <Compile Include="UserInterface\FormBugReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterface\FormBugReport.Designer.cs">
+      <DependentUpon>FormBugReport.cs</DependentUpon>
+    </Compile>
     <Compile Include="WebView\HttpServer.cs" />
     <Compile Include="WebView\WebView2Browser.Reflection.cs" />
     <Compile Include="Workspace\CompilerFunction.cs" />
@@ -134,6 +140,9 @@
     <Compile Include="Workspace\Workspace.cs" />
     <EmbeddedResource Include="UserInterface\FormAbout.resx">
       <DependentUpon>FormAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\FormBugReport.resx">
+      <DependentUpon>FormBugReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserInterface\FormBuildRunConfig.resx">
       <DependentUpon>FormBuildRunConfig.cs</DependentUpon>

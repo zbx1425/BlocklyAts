@@ -50,5 +50,19 @@ namespace BlocklyAts {
                 return string.Format(languages[PreferenceManager.CurrentPreference.Language][key], param);
             }
         }
+
+        public static string TranslateAllLang(string key, object param = null) {
+            var sb = new StringBuilder();
+            foreach (var lang in LanguageDisplayList) {
+                if (param == null) {
+                    sb.AppendLine(languages[lang.Key][key]);
+                    sb.AppendLine();
+                } else {
+                    sb.AppendLine(string.Format(languages[lang.Key][key], param));
+                    sb.AppendLine();
+                }
+            }
+            return sb.ToString().Trim();
+        }
     }
 }

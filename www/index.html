@@ -47,6 +47,17 @@
       line-height: 100vh; font-size: 2em; font-weight: bold; text-align: center;
       display: none;
     }
+    #hotkey-hint-overlay {
+      position: absolute; z-index: 10000; pointer-events: none !important; background-color: transparent !important;
+    }
+    .bats-key-hint::before {
+      content:"+"; font-size: 4px;
+    }
+    .bats-key-hint {
+      width: 16px; color: black; padding-right: 4px; padding-left: 4px; vertical-align: bottom;
+      background: #ffffff80; text-align: right; box-shadow:0 0 0 1px gray inset;
+      font-family: 'Courier New', Courier, monospace !important; font-weight: bold;
+    }
   </style>
 </head>
 <body style="background: white;">
@@ -54,7 +65,7 @@
     if (ieVersion < 11) {
       document.write("<h1>System browser too old</h1>" + 
         "<p>Your Internet Explorer " + ie + " is not modern enough for BlocklyATS to run.<br>" +
-        "<b>Please download the CEFSharp component as an alternative</b>, <br>" +
+        "<b>Please download the WebView2 component as an alternative</b>, <br>" +
         "or install Internet Explorer 11 (not recommended though).</p>");
     }
   </script>
@@ -81,6 +92,24 @@
     </script>
   </div>
   <div id="page-overlay"></div>
+  <div id="hotkey-hint-overlay" class="blocklyToolboxDiv" style="display:none">
+      <div class="blocklyToolboxContents">
+        <div class="blocklyToolboxCategory"><div class="blocklyTreeRow bats-key-hint">Q</div></div>
+        <div class="blocklyToolboxCategory"><div class="blocklyTreeRow bats-key-hint">W</div></div>
+        <div class="blocklyToolboxCategory"><div class="blocklyTreeRow bats-key-hint">E</div></div>
+        <div class="blocklyToolboxCategory"><div class="blocklyTreeRow bats-key-hint">R</div></div>
+        <div class="blocklyTreeSeparator"></div>
+        <div class="blocklyToolboxCategory"><div class="blocklyTreeRow bats-key-hint">A</div></div>
+        <div class="blocklyToolboxCategory"><div class="blocklyTreeRow bats-key-hint">S</div></div>
+        <div class="blocklyToolboxCategory"><div class="blocklyTreeRow bats-key-hint">D</div></div>
+        <div class="blocklyToolboxCategory"><div class="blocklyTreeRow bats-key-hint">F</div></div>
+        <div class="blocklyToolboxCategory"><div class="blocklyTreeRow bats-key-hint">Z</div></div>
+        <div class="blocklyTreeSeparator"></div>
+        <div class="blocklyToolboxCategory"><div class="blocklyTreeRow bats-key-hint">X</div></div>
+        <div class="blocklyToolboxCategory"><div class="blocklyTreeRow bats-key-hint">C</div></div>
+      </div>
+    </div>
+  </div>
   <xml id="toolbox" style="display: none">
     <category id="catBveEvent" colour="200" name="%{BKY_BVE_CAT_EVENT}">
       <label text="%{BKY_BVE_MSG_HAT_SINGLETON}"></label>

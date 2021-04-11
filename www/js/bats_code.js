@@ -26,6 +26,8 @@ function getQueryVariable(variable) {
 
 var hIntervalInit;
 
+var shortcutKeyMap = ["Q", "W", "E", "R", "", "A", "S", "D", "F", "Z", "", "X", "C"];
+
 function batsInit(toolboxNode) {
   Blockly.prompt = function(msg, defaultValue, callback) {
     alertify.prompt(msg, defaultValue, function(evt, value){callback(value)});
@@ -58,15 +60,21 @@ function batsInit(toolboxNode) {
   var toolboxMap = [11,0,1,2,3,5,6,7,8,9];
   var onkeydown = function(e) {
     if (e.shiftKey) {
-      if (e.code && (e.code[5] >= '0' && e.code[5] <= '9')) {
-        workspace.getToolbox().selectItemByPosition(toolboxMap[parseInt(e.code[5])]);
+      if (e.key) {
+        var selIndex = shortcutKeyMap.indexOf(e.key);
+        if (selIndex >= 0) workspace.getToolbox().selectItemByPosition(selIndex);
       } else if (e.keyCode && (e.keyCode >= 0x30 && e.keyCode <= 0x39)) {
         // Damn Microsoft!
         workspace.getToolbox().selectItemByPosition(toolboxMap[e.keyCode - 0x30]);
       }
     }
+    if (e.key == "Shift") document.getElementById("hotkey-hint-overlay").style.display = "block";
+  }
+  var onkeyup = function(e) {
+    if (e.key == "Shift") document.getElementById("hotkey-hint-overlay").style.display = "none";
   }
   document.addEventListener('keydown', onkeydown, false);
+  document.addEventListener('keyup', onkeyup, false);
   batsWkspReset();
 
   if (getQueryVariable("ver") == null) hIntervalInit = setInterval(batsRemoteInit, 500);

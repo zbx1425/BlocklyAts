@@ -11,6 +11,8 @@ namespace BlocklyAts {
 
         public static Preference CurrentPreference;
 
+        public static bool FirstStartup = true;
+
         public static void ResetPreference() {
             CurrentPreference = new Preference() {
                 Language = "en",
@@ -22,6 +24,7 @@ namespace BlocklyAts {
             if (File.Exists(path)) {
                 try {
                     CurrentPreference = Preference.LoadFromFile(path);
+                    FirstStartup = false;
                 } catch {
                     ResetPreference();
                     return false;
@@ -29,6 +32,7 @@ namespace BlocklyAts {
                 return true;
             } else {
                 ResetPreference();
+                FirstStartup = true;
                 return false;
             }
         }

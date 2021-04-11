@@ -10,6 +10,7 @@ FormMain.tsbtnCompileRun = 编译并运行 (F5)
 FormMain.tsbtnCompileSetting = 编译与运行设置
 FormMain.tsbtnDebugWindow = 调试窗口
 FormMain.tsbtnHelp = 帮助
+FormMain.tsbtnBugReport = 报告软件问题
 FormMain.tsbtnAbout = 关于 BlocklyAts
 
 FormCompilerConfig.cbShouldx86 = 32位 Windows DLL\n用于 BVE4/5、OpenBVE
@@ -38,3 +39,4 @@ Msg.GenArgInvalidSelect = 选择的文件或目录并不符合所要求的场景
 Msg.DiscardChange = 未保存的更改将被放弃。确认？
 Msg.LanguageChange = 重新启动程序以应用语言更改。 
 Msg.UpgradeAvailable = 新版本 {0} 已推出。\n建议您使用新版本，以避免问题。\n下载链接: {1} (按确认键打开)\n\n{2}
+Msg.BugReport = BlocklyAts 现仍处于开发测试阶段。\n请将使用过程中遇到的问题向开发者汇报，以便做出相应修复。
