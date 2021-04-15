@@ -208,6 +208,7 @@ COPY /Y "$(SolutionDir)BatsWinApi\Release\batswinapi_x64.dll" "$(TargetDir)\lib"
 ERASE "$(TargetDir)\WebView2Loader.dll"
 RMDIR /S /Q "${TargetDir)\BlocklyATS.exe.WebView2"
 DEL "$(TargetDir)\*.xml"
+DEL "$(TargetDir)\*.zip"
 "C:\Program Files\7-zip\7z.exe" a BlocklyAts.zip .
 )</PostBuildEvent>
   </PropertyGroup>

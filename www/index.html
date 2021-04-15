@@ -25,6 +25,9 @@
     if (language == null) language = "en";
     var script = document.createElement('script'); script.src = "js/msg/" + language + ".js"; document.head.appendChild(script);
     script = document.createElement('script'); script.src = "js/msg_bats/" + language + ".js"; document.head.appendChild(script);
+    if (!isIE) {
+      script = document.createElement('script'); script.src = "js/workspace_search.js"; document.head.appendChild(script);
+    }
   </script>
   
   <style>
@@ -105,8 +108,17 @@
         <div class="blocklyToolboxCategory"><div class="blocklyTreeRow bats-key-hint">F</div></div>
         <div class="blocklyToolboxCategory"><div class="blocklyTreeRow bats-key-hint">Z</div></div>
         <div class="blocklyTreeSeparator"></div>
-        <div class="blocklyToolboxCategory"><div class="blocklyTreeRow bats-key-hint">X</div></div>
         <div class="blocklyToolboxCategory"><div class="blocklyTreeRow bats-key-hint">C</div></div>
+        <div class="blocklyToolboxCategory"><div class="blocklyTreeRow bats-key-hint">V</div></div>
+        <div class="blocklyTreeSeparator"></div>
+        <div style="padding: 0 10px">
+          <table cellspacing="4px">
+            <script>
+              if (!isIE) document.write('<tr><td style="text-align: center;">🔍</td><td>Ctrl+F</td></tr>');
+              if (getQueryVariable("ver") != null) document.write('<tr><td style="text-align: center;">▷</td><td>F5</td></tr>');
+            </script>
+          </table>
+        </div>
       </div>
     </div>
   </div>

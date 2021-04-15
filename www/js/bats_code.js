@@ -8,7 +8,12 @@ var themeWithHat = Blockly.Theme.defineTheme('themeWithHat', {
        "colourSecondary":"#90a4ae",
        "colourTertiary":"#aed581",
        "hat": "cap"
-    }
+    }, 
+    "comment_block": {
+      "colourPrimary": "#cccccc",
+      "colourSecondary":"#cccccc",
+      "colourTertiary":"#cccccc"
+   }
   }
 });
 
@@ -26,7 +31,7 @@ function getQueryVariable(variable) {
 
 var hIntervalInit;
 
-var shortcutKeyMap = ["Q", "W", "E", "R", "", "A", "S", "D", "F", "Z", "", "X", "C"];
+var shortcutKeyMap = ["Q", "W", "E", "R", "", "A", "S", "D", "F", "Z", "", "C", "V"];
 
 function batsInit(toolboxNode) {
   Blockly.prompt = function(msg, defaultValue, callback) {
@@ -76,6 +81,11 @@ function batsInit(toolboxNode) {
   document.addEventListener('keydown', onkeydown, false);
   document.addEventListener('keyup', onkeyup, false);
   batsWkspReset();
+
+  if (typeof WorkspaceSearch != 'undefined' && WorkspaceSearch != null) {
+    var workspaceSearch = new WorkspaceSearch(workspace);
+    workspaceSearch.init();
+  }
 
   if (getQueryVariable("ver") == null) hIntervalInit = setInterval(batsRemoteInit, 500);
   if (typeof onBlocklyLoad != 'undefined' && onBlocklyLoad != null) {

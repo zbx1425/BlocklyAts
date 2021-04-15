@@ -97,7 +97,7 @@ namespace BlocklyAts {
                 do { browserID = random.Next(100000, 1000000); } while (heartbeat.ContainsKey(browserID));
                 return string.Format(
                     "<xml><version>{0}</version><id>{1}</id></xml>",
-                    System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(),
+                    PlatformFunction.VersionString,
                     browserID
                 );
             } else if (endpoint == "heartbeat") {

@@ -230,3 +230,4 @@ UAIdentifier.prototype.toString = function() {
 };
 
 var uaString = new UAIdentifier().toString();
+var isIE = new UAIdentifier().ie;

@@ -158,6 +158,7 @@ namespace BlocklyAts {
             this.tsbtnAbout.Name = "tsbtnAbout";
             this.tsbtnAbout.Size = new System.Drawing.Size(23, 22);
             this.tsbtnAbout.Text = "About BlocklyAts";
+            this.tsbtnAbout.Click += new System.EventHandler(this.tsbtnAbout_Click);
             // 
             // tsbtnBugReport
             // 

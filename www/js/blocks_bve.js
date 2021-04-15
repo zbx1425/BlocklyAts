@@ -565,7 +565,7 @@ Blockly.defineBlocksWithJsonArray([
   },
   {
     type: "bve_comment",
-    style: "bve_blocks",
+    style: "comment_block",
     message0: "%1",
     args0: [
       {
