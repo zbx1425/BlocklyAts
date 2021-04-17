@@ -143,7 +143,7 @@ namespace BlocklyAts {
             this.linkLabel1.Size = new System.Drawing.Size(357, 19);
             this.linkLabel1.TabIndex = 25;
             this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "zbx1425@outlook.com; www.zbx1425.cn";
+            this.linkLabel1.Text = "feedback@zbx1425.cn; www.zbx1425.cn";
             this.linkLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.linkLabel1.UseCompatibleTextRendering = true;
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
@@ -194,6 +194,7 @@ namespace BlocklyAts {
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "About BlocklyAts";
+            this.Load += new System.EventHandler(this.FormAbout_Load);
             this.tableLayoutPanel.ResumeLayout(false);
             this.tableLayoutPanel.PerformLayout();
             this.flpLogos.ResumeLayout(false);

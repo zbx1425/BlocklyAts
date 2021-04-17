@@ -85,7 +85,7 @@ namespace BlocklyAts {
             this.llbEmail.Size = new System.Drawing.Size(270, 24);
             this.llbEmail.TabIndex = 7;
             this.llbEmail.TabStop = true;
-            this.llbEmail.Text = "zbx1425@outlook.com (As of 2021)";
+            this.llbEmail.Text = "feedback@zbx1425.cn (As of 2021)";
             this.llbEmail.UseCompatibleTextRendering = true;
             this.llbEmail.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llbEmail_LinkClicked);
             // 

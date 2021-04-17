@@ -30,10 +30,13 @@
     <ClInclude Include="atsplugin.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="plugin.h">
+    <ClInclude Include="winfile.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="winfile.h">
+    <ClInclude Include="globals.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="luainterop.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -48,6 +51,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="winfile.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="globals.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="luainterop.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="loader.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

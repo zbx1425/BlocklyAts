@@ -70,10 +70,12 @@ namespace BlocklyAts {
             var boilerplateStream = new FileStream(boilerplateFile, FileMode.Open, FileAccess.Read);
             var outStream = new FileStream(outputPath, FileMode.Create, FileAccess.Write);
 
-            // Write PE length to DOS stub
-            boilerplateStream.CopySectionTo(outStream, 0x6C);
+            // Write Identifier and PE length to DOS stub
+            byte[] identifier = Encoding.UTF8.GetBytes("BATSLUA1");
+            boilerplateStream.CopySectionTo(outStream, 0x6C - identifier.Length);
+            outStream.Write(identifier, 0, identifier.Length);
             outStream.Write(BitConverter.GetBytes(boilerplateStream.Length), 0, 4);
-            boilerplateStream.Seek(4, SeekOrigin.Current);
+            boilerplateStream.Seek(4 + identifier.Length, SeekOrigin.Current);
             await boilerplateStream.CopyToAsync(outStream);
 
             byte[] confusion = { 0x11, 0x45, 0x14, 0x19, 0x19, 0x81, 0x14, 0x25 };

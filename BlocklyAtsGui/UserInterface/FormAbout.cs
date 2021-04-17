@@ -83,5 +83,10 @@ namespace BlocklyAts {
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
             PlatformFunction.CallBrowser("https://www.zbx1425.cn");
         }
+
+        private void FormAbout_Load(object sender, EventArgs e) {
+            // heheh
+            pbLogoAuthor.Visible = new Random().Next(0, 3) == 0;
+        }
     }
 }

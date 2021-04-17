@@ -179,11 +179,15 @@
   <ItemGroup>
     <ClInclude Include="atsplugin.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="globals.h" />
+    <ClInclude Include="luainterop.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="plugin.h" />
     <ClInclude Include="winfile.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="globals.cpp" />
+    <ClCompile Include="loader.cpp" />
+    <ClCompile Include="luainterop.cpp" />
     <ClCompile Include="plugin.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="pch.cpp">
