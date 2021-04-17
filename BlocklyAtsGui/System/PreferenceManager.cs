@@ -11,6 +11,13 @@ namespace BlocklyAts {
 
         public static Preference CurrentPreference;
 
+        public static string DataDirectory = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "zbx1425", "BlocklyAts"
+        );
+        public static string PreferencePath = Path.Combine(DataDirectory, "Preference.xml");
+        public static string WebView2UserDataPath = Path.Combine(DataDirectory, "WebView2UserData");
+
         public static bool FirstStartup = true;
 
         public static void ResetPreference() {
@@ -20,10 +27,15 @@ namespace BlocklyAts {
             };
         }
 
-        public static bool LoadPreference(string path = "Preference.xml") {
-            if (File.Exists(path)) {
+        public static bool LoadPreference() {
+            try {
+                if (!Directory.Exists(DataDirectory)) Directory.CreateDirectory(DataDirectory);
+            } catch {
+                return false;
+            }
+            if (File.Exists(PreferencePath)) {
                 try {
-                    CurrentPreference = Preference.LoadFromFile(path);
+                    CurrentPreference = Preference.LoadFromFile(PreferencePath);
                     FirstStartup = false;
                 } catch {
                     ResetPreference();
@@ -37,9 +49,10 @@ namespace BlocklyAts {
             }
         }
 
-        public static bool SavePreference(string path = "Preference.xml") {
+        public static bool SavePreference() {
             try {
-                CurrentPreference.SaveToFile(path);
+                if (!Directory.Exists(DataDirectory)) Directory.CreateDirectory(DataDirectory);
+                CurrentPreference.SaveToFile(PreferencePath);
             } catch {
                 return false;
             }

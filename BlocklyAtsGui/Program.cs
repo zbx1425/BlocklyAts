@@ -18,7 +18,12 @@ namespace BlocklyAts {
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormMain());
 
-            PreferenceManager.SavePreference();
+            if (!PreferenceManager.SavePreference()) {
+                MessageBox.Show(
+                    I18n.TranslateAllLang("Msg.PreferenceWriteFail"), "Cannot Write Preference",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error
+                );
+            }
         }
     }
 }

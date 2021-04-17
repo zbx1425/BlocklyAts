@@ -117,7 +117,7 @@ namespace BlocklyATS {
                     resp.StatusCode = 404;
                     string errorMessageTemplate = @"
 <h2>Error: 404 Not Found</h2>
-<p>Please inform developer with these information: <a href='mailto:zbx1425@outlook.com'>zbx1425@outlook.com</a></p>
+<p>Please inform developer with these information.
 <hr/>
 <table>
     <tr><th>Missing Path</th><td>{0}</td></tr>

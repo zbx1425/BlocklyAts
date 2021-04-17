@@ -18,14 +18,10 @@ namespace BlocklyAts {
         private WebView2 browser;
 
         public WebView2Browser(string url = "about:blank") {
-            // Use an alternative path for WebView2 Loader, for a better appearance
-            // Might remove it if it causes troubles
-            TryLoadWebview2Loader();
-
             browser = new WebView2();
             browser.NavigationCompleted += Browser_DocumentCompleted;
 
-            var createTask = CoreWebView2Environment.CreateAsync();
+            var createTask = CoreWebView2Environment.CreateAsync(null, PreferenceManager.WebView2UserDataPath, null);
             createTask.Wait();
             environment = createTask.Result;
             browser.CoreWebView2Ready += (sender, e) => {
@@ -86,7 +82,7 @@ namespace BlocklyAts {
             } else {
                 string errorMessageTemplate = @"
 <h2>Error: 404 Not Found</h2>
-<p>Please inform developer with these information: <a href='mailto:zbx1425@outlook.com'>zbx1425@outlook.com</a></p>
+<p>Please inform developer with these information.</p>
 <hr/>
 <table>
     <tr><th>Missing Path</th><td>{0}</td></tr>

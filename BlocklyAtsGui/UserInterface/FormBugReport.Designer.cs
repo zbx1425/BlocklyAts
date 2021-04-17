@@ -78,14 +78,14 @@ namespace BlocklyAts {
             // llbEmail
             // 
             this.llbEmail.AutoSize = true;
-            this.llbEmail.LinkArea = new System.Windows.Forms.LinkArea(0, 19);
+            this.llbEmail.LinkArea = new System.Windows.Forms.LinkArea(0, 18);
             this.llbEmail.Location = new System.Drawing.Point(94, 158);
             this.llbEmail.Margin = new System.Windows.Forms.Padding(10);
             this.llbEmail.Name = "llbEmail";
-            this.llbEmail.Size = new System.Drawing.Size(270, 24);
+            this.llbEmail.Size = new System.Drawing.Size(261, 24);
             this.llbEmail.TabIndex = 7;
             this.llbEmail.TabStop = true;
-            this.llbEmail.Text = "feedback@zbx1425.cn (As of 2021)";
+            this.llbEmail.Text = "support@zbx1425.cn (As of 2021)";
             this.llbEmail.UseCompatibleTextRendering = true;
             this.llbEmail.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llbEmail_LinkClicked);
             // 

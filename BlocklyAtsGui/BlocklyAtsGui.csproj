@@ -99,7 +99,6 @@
       <DependentUpon>FormBugReport.cs</DependentUpon>
     </Compile>
     <Compile Include="WebView\HttpServer.cs" />
-    <Compile Include="WebView\WebView2Browser.Reflection.cs" />
     <Compile Include="Workspace\CompilerFunction.cs" />
     <Compile Include="Workspace\BuildRunConfig.cs" />
     <Compile Include="WebView\ExternalBrowser.cs" />
@@ -196,19 +195,13 @@
   <PropertyGroup>
     <PostBuildEvent>XCOPY "$(SolutionDir)www" "$(TargetDir)\www\" /E /Y
 XCOPY "$(SolutionDir)assets" "$(TargetDir)\" /E /Y
-COPY /Y "$(TargetDir)\x86\WebView2Loader.dll" "$(TargetDir)\WebView2Loader.x86.dll"
-RMDIR /S /Q "$(TargetDir)\x86"
-COPY /Y "$(TargetDir)\x64\WebView2Loader.dll" "$(TargetDir)\WebView2Loader.x64.dll"
-RMDIR /S /Q "$(TargetDir)\x64"
-COPY /Y "$(TargetDir)\arm64\WebView2Loader.dll" "$(TargetDir)\WebView2Loader.arm64.dll"
-RMDIR /S /Q "$(TargetDir)\arm64"
 IF $(ConfigurationName)==Release (
 COPY /Y "$(SolutionDir)BatsWinApi\Release\batswinapi_x86.dll" "$(TargetDir)\lib"
 COPY /Y "$(SolutionDir)BatsWinApi\Release\batswinapi_x64.dll" "$(TargetDir)\lib"
 ERASE "$(TargetDir)\WebView2Loader.dll"
 RMDIR /S /Q "${TargetDir)\BlocklyATS.exe.WebView2"
-DEL "$(TargetDir)\*.xml"
-DEL "$(TargetDir)\*.zip"
+ERASE "$(TargetDir)\*.xml"
+ERASE "$(TargetDir)\*.zip"
 "C:\Program Files\7-zip\7z.exe" a BlocklyAts.zip .
 )</PostBuildEvent>
   </PropertyGroup>

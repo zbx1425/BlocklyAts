@@ -136,14 +136,14 @@ namespace BlocklyAts {
             // 
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.linkLabel1.LinkArea = new System.Windows.Forms.LinkArea(21, 14);
+            this.linkLabel1.LinkArea = new System.Windows.Forms.LinkArea(20, 14);
             this.linkLabel1.Location = new System.Drawing.Point(106, 58);
             this.linkLabel1.Margin = new System.Windows.Forms.Padding(6, 0, 3, 5);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(357, 19);
             this.linkLabel1.TabIndex = 25;
             this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "feedback@zbx1425.cn; www.zbx1425.cn";
+            this.linkLabel1.Text = "support@zbx1425.cn; www.zbx1425.cn";
             this.linkLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.linkLabel1.UseCompatibleTextRendering = true;
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);

@@ -168,12 +168,8 @@ namespace BlocklyAts {
                 Title = "Save Workspace"
             };
             if (sfd.ShowDialog() != DialogResult.OK) return;
-
-            var workspaceState = await mainWebBrowser.BkySaveWorkspace();
-            if (workspaceState == null) return;
-            currentWorkspace.BlocklyXml = new FPXElement(workspaceState);
-            currentWorkspace.SaveToFile(sfd.FileName);
-            updateSaveFileState();
+            
+            await saveWorkspace(sfd.FileName);
         }
 
         private async void tsbtnOpen_Click(object sender, EventArgs e) {
@@ -192,7 +188,18 @@ namespace BlocklyAts {
             }
         }
 
+        private async Task saveWorkspace(string path = null) {
+            if (path == null && string.IsNullOrEmpty(currentWorkspace.SaveFilePath)) return;
+            var workspaceState = await mainWebBrowser.BkySaveWorkspace();
+            if (workspaceState == null) return;
+            currentWorkspace.BlocklyXml = new FPXElement(workspaceState);
+            currentWorkspace.SaveToFile(path);
+            updateSaveFileState();
+        }
+
         private async Task<string> buildAllPlatforms() {
+            await saveWorkspace(); // Autosave
+
             var luaCode = await mainWebBrowser.BkyExportLua();
             var outputList = new List<Tuple<string, string>>();
             if (currentWorkspace.Config.ShouldCompilex86) {
@@ -241,11 +248,7 @@ namespace BlocklyAts {
         }
 
         private async void tsbtnSave_Click(object sender, EventArgs e) {
-            if (string.IsNullOrEmpty(currentWorkspace.SaveFilePath)) return;
-            var workspaceState = await mainWebBrowser.BkySaveWorkspace();
-            if (workspaceState == null) return;
-            currentWorkspace.BlocklyXml = new FPXElement(workspaceState);
-            currentWorkspace.SaveToFile();
+            await saveWorkspace();
         }
 
         private async void tsbtnCompileRun_Click(object sender, EventArgs e) {

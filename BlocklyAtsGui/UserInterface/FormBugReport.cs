@@ -27,7 +27,7 @@ namespace BlocklyAts {
         }
 
         private void llbEmail_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
-            PlatformFunction.CallBrowser("mailto:feedback@zbx1425.cn?subject=BlocklyAts%20Bug%20Report");
+            PlatformFunction.CallBrowser("mailto:support@zbx1425.cn?subject=BlocklyAts%20Bug%20Report");
         }
 
         private void FormBugReport_Load(object sender, EventArgs e) {
