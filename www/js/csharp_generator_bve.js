@@ -250,4 +250,4 @@ Blockly.CSharp.bve_timer_modify=function(block){
       return "_c.ResetTimer(" + Blockly.CSharp.quote_(timerName) + ", true);\n";
   }
 }
-Blockly.CSharp.bve_comment = function(block) {}
+Blockly.CSharp.bve_comment = function(block) { return ""; }

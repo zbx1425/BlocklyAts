@@ -198,8 +198,8 @@ XCOPY "$(SolutionDir)assets" "$(TargetDir)\" /E /Y
 IF $(ConfigurationName)==Release (
 COPY /Y "$(SolutionDir)BatsWinApi\Release\batswinapi_x86.dll" "$(TargetDir)\lib"
 COPY /Y "$(SolutionDir)BatsWinApi\Release\batswinapi_x64.dll" "$(TargetDir)\lib"
-ERASE "$(TargetDir)\WebView2Loader.dll"
-RMDIR /S /Q "${TargetDir)\BlocklyATS.exe.WebView2"
+COPY /Y "$(SolutionDir)README.md" "$(TargetDir)"
+COPY /Y "$(SolutionDir)LICENSE" "$(TargetDir)"
 ERASE "$(TargetDir)\*.xml"
 ERASE "$(TargetDir)\*.zip"
 "C:\Program Files\7-zip\7z.exe" a BlocklyAts.zip .

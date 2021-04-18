@@ -88,8 +88,6 @@ namespace BlocklyAts {
                     item.AutoSize = false;
                     item.Size = new Size(tsbSize, tsbSize);
                     if (item.Image == null) continue;
-                    int sourceWidth = item.Image.Width;
-                    int sourceHeight = item.Image.Height;
                     Bitmap b = new Bitmap(tsbSize, tsbSize);
                     using (Graphics g = Graphics.FromImage((Image)b)) {
                         g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
@@ -249,6 +247,32 @@ namespace BlocklyAts {
 
         private async void tsbtnSave_Click(object sender, EventArgs e) {
             await saveWorkspace();
+            new System.Threading.Thread(() => {
+                var resources = new ComponentResourceManager(typeof(FormMain));
+                Image sourceIcon = (Image)resources.GetObject("tsbtnSave.Image");
+                Bitmap originalIcon = new Bitmap(tsbtnSave.Width, tsbtnSave.Height);
+                using (Graphics g = Graphics.FromImage(originalIcon)) {
+                    g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+                    g.DrawImage(sourceIcon, 0, 0, tsbtnSave.Width, tsbtnSave.Height);
+                }
+                Bitmap flashingIcon = new Bitmap(originalIcon);
+                using (Graphics g = Graphics.FromImage(flashingIcon)) {
+                    g.FillRectangle(
+                        new SolidBrush(Color.FromArgb(150, 0, 200, 50)),
+                        new Rectangle(0, 0, flashingIcon.Width, flashingIcon.Height)
+                    );
+                }
+                for (int i = 0; i <= 7; i++) {
+                    this.BeginInvoke((Action)(() => {
+                        if (i % 2 == 0) {
+                            tsbtnSave.Image = flashingIcon;
+                        } else {
+                            tsbtnSave.Image = originalIcon;
+                        }
+                    }));
+                    System.Threading.Thread.Sleep(60);
+                }
+            }).Start();
         }
 
         private async void tsbtnCompileRun_Click(object sender, EventArgs e) {

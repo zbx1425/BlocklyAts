@@ -42,36 +42,46 @@ function batsInit(toolboxNode) {
   window.workspace = Blockly.inject(blocklyDiv, {
     toolbox: toolboxNode,
     media: "media/",
-    grid: {spacing: 40, length: 3, colour: '#ccc', snap: true},
+    grid: { spacing: 40, length: 3, colour: "#ccc", snap: true },
+    zoom: {
+      controls: true,
+      wheel: false,
+      startScale: 1.0,
+      maxScale: 3,
+      minScale: 0.3,
+      scaleSpeed: 1.2,
+      pinch: false,
+    },
+    move:{
+      scrollbars: {
+        horizontal: true,
+        vertical: true
+      },
+      drag: true,
+      wheel: true
+    },
     maxInstances: {
-      "bve_hat_elapse": 1,
-      "bve_hat_initialize": 1,
-      "bve_hat_keydown_any": 1,
-      "bve_hat_keyup_any": 1,
-      "bve_hat_horn_blow": 1,
-      "bve_hat_door_change": 1,
-      "bve_hat_set_signal": 1,
-      "bve_hat_set_beacon": 1,
-      "bve_hat_load": 1,
-      "bve_hat_dispose": 1,
+      bve_hat_elapse: 1,
+      bve_hat_initialize: 1,
+      bve_hat_keydown_any: 1,
+      bve_hat_keyup_any: 1,
+      bve_hat_horn_blow: 1,
+      bve_hat_door_change: 1,
+      bve_hat_set_signal: 1,
+      bve_hat_set_beacon: 1,
+      bve_hat_load: 1,
+      bve_hat_dispose: 1,
     },
   });
   workspace.setTheme(themeWithHat);
-  //workspace.addChangeListener(onWkspChange);
   var onresize = function(e) { Blockly.svgResize(workspace); };
   window.addEventListener('resize', onresize, false);
   Blockly.svgResize(workspace);
 
-  var toolboxMap = [11,0,1,2,3,5,6,7,8,9];
   var onkeydown = function(e) {
-    if (e.shiftKey) {
-      if (e.key) {
-        var selIndex = shortcutKeyMap.indexOf(e.key);
-        if (selIndex >= 0) workspace.getToolbox().selectItemByPosition(selIndex);
-      } else if (e.keyCode && (e.keyCode >= 0x30 && e.keyCode <= 0x39)) {
-        // Damn Microsoft!
-        workspace.getToolbox().selectItemByPosition(toolboxMap[e.keyCode - 0x30]);
-      }
+    if (e.shiftKey && e.key && document.activeElement.tagName.toUpperCase() != "INPUT") {
+      var selIndex = shortcutKeyMap.indexOf(e.key);
+      if (selIndex >= 0) workspace.getToolbox().selectItemByPosition(selIndex);
     }
     if (e.key == "Shift") document.getElementById("hotkey-hint-overlay").style.display = "block";
   }

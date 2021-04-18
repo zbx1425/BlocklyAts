@@ -260,4 +260,4 @@ Blockly.Lua.bve_timer_modify=function(block){
       return "_ftimerreset(" + Blockly.Lua.quote_(timerName) + ", true)\n";
   }
 }
-Blockly.Lua.bve_comment = function(block) {}
+Blockly.Lua.bve_comment = function(block) { return ""; }
