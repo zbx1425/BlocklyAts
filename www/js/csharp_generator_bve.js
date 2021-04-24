@@ -137,11 +137,11 @@ Blockly.CSharp.bve_get_handle=function(block){
 Blockly.CSharp.bve_set_handle=function(block){
   var handleName = block.getFieldValue("FIELD_SEL"); if (handleName == "Power" || handleName == "Brake") handleName += "Notch";
   if (handleName == "ConstSpeed") {
-    return "_c.EData.Handles.ConstSpeed = new bool[] {false, true, _c.EData.Handles.ConstSpeed}["
-    + (Blockly.CSharp.valueToCode(block, "VALUE", Blockly.CSharp.ORDER_NONE) || "0") + "];\n";
+    return "_c.EData.Handles.ConstSpeed = new bool[] {false, true, _c.EData.Handles.ConstSpeed}[(int)("
+    + (Blockly.CSharp.valueToCode(block, "VALUE", Blockly.CSharp.ORDER_NONE) || "0") + ")];\n";
   } else {
-    return "_c.EData.Handles." + handleName + " = "
-      + (Blockly.CSharp.valueToCode(block, "VALUE", Blockly.CSharp.ORDER_NONE) || "0") + ";\n";
+    return "_c.EData.Handles." + handleName + " = (int)("
+      + (Blockly.CSharp.valueToCode(block, "VALUE", Blockly.CSharp.ORDER_NONE) || "0") + ");\n";
   }
 }
 Blockly.CSharp.bve_sound_stop=function(block){
@@ -151,19 +151,19 @@ Blockly.CSharp.bve_sound_play_once=function(block){
   return "_c.AccessLegacySound(" + block.getFieldValue("ID") + ", 1);\n";
 }
 Blockly.CSharp.bve_sound_play_loop=function(block){
-  return "_c.AccessLegacySound(" + block.getFieldValue("ID") + ", 0, " + 
-    Blockly.CSharp.valueToCode(block, "VOLUME", Blockly.CSharp.ORDER_NONE) + ");\n";
+  return "_c.AccessLegacySound(" + block.getFieldValue("ID") + ", 0, (int)(" + 
+    Blockly.CSharp.valueToCode(block, "VOLUME", Blockly.CSharp.ORDER_NONE) + "));\n";
 }
 Blockly.CSharp.bve_get_sound_internal=function(block){
   return ["_c.AccessLegacySound(" + block.getFieldValue("ID") + ")", Blockly.CSharp.ORDER_ATOMIC];
 }
 Blockly.CSharp.bve_set_sound_internal=function(block){
-  return "_c.AccessLegacySound(" + block.getFieldValue("ID") + ", " + 
-    Blockly.CSharp.valueToCode(block, "INTERNAL_VAL", Blockly.CSharp.ORDER_NONE) + ");\n";
+  return "_c.AccessLegacySound(" + block.getFieldValue("ID") + ", (int)(" + 
+    Blockly.CSharp.valueToCode(block, "INTERNAL_VAL", Blockly.CSharp.ORDER_NONE) + "));\n";
 }
 Blockly.CSharp.bve_set_panel=function(block){
-  return "_c.Panel[" + block.getFieldValue("ID") + "] = " + 
-    Blockly.CSharp.valueToCode(block, "VALUE", Blockly.CSharp.ORDER_NONE) + ";\n";
+  return "_c.Panel[" + block.getFieldValue("ID") + "] = (int)(" + 
+    Blockly.CSharp.valueToCode(block, "VALUE", Blockly.CSharp.ORDER_NONE) + ");\n";
 }
 Blockly.CSharp.bve_get_panel=function(block){
   return ["_c.Panel[" + block.getFieldValue("ID") + "]", Blockly.CSharp.ORDER_MEMBER];
@@ -173,7 +173,7 @@ Blockly.CSharp.bve_key=function(block){
     Blockly.CSharp.ORDER_ATOMIC];
 }
 Blockly.CSharp.bve_get_key=function(block){
-  return ["_c.KeyState[" + Blockly.CSharp.valueToCode(block, "KEY_TYPE", Blockly.CSharp.ORDER_NONE) + "]",
+  return ["_c.KeyState[(int)(" + Blockly.CSharp.valueToCode(block, "KEY_TYPE", Blockly.CSharp.ORDER_NONE) + ")]",
     Blockly.CSharp.ORDER_MEMBER];
 }
 Blockly.CSharp.bve_horn=function(block){
@@ -219,8 +219,8 @@ Blockly.CSharp.bve_get_config_default=function(block){ // TODO
 }
 Blockly.CSharp.bve_set_config=function(block){
   return "_c.SetConfig(" + Blockly.CSharp.quote_(block.getFieldValue("PART")) + ", " 
-    + Blockly.CSharp.quote_(block.getFieldValue("KEY")) + ", "
-    + (Blockly.CSharp.valueToCode(block, "VALUE", Blockly.CSharp.ORDER_NONE) || "\"\"") + ");\n";
+    + Blockly.CSharp.quote_(block.getFieldValue("KEY")) + ", ("
+    + (Blockly.CSharp.valueToCode(block, "VALUE", Blockly.CSharp.ORDER_NONE) || "\"\"") + "));\n";
 }
 Blockly.CSharp.bve_msgbox=function(block){
   return "MessageBox.Show(" + (Blockly.CSharp.valueToCode(block, "MSG", Blockly.CSharp.ORDER_NONE) || "\"\"") 
@@ -233,9 +233,9 @@ Blockly.CSharp.bve_hat_timer=function(block){
 Blockly.CSharp.bve_timer_set=function(block){
   var timerName = Blockly.CSharp.bveTimerNameDB.getName(block.getFieldValue("NAME"), Blockly.Generator.NAME_TYPE);
   return "_c.SetTimer(" 
-    + Blockly.CSharp.quote_(timerName) + ", "
-    + Blockly.CSharp.valueToCode(block, "INTERVAL", Blockly.CSharp.ORDER_NONE) + ", "
-    + Blockly.CSharp.valueToCode(block, "CYCLE", Blockly.CSharp.ORDER_NONE) + ");\n";
+    + Blockly.CSharp.quote_(timerName) + ", (int)("
+    + Blockly.CSharp.valueToCode(block, "INTERVAL", Blockly.CSharp.ORDER_NONE) + "), (int)("
+    + Blockly.CSharp.valueToCode(block, "CYCLE", Blockly.CSharp.ORDER_NONE) + "));\n";
 }
 Blockly.CSharp.bve_timer_modify=function(block){
   var timerName = Blockly.CSharp.bveTimerNameDB.getName(block.getFieldValue("NAME"), Blockly.Generator.NAME_TYPE);

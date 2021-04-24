@@ -54,14 +54,14 @@ namespace BlocklyAts {
             this.tlpMain.ColumnCount = 2;
             this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpMain.Controls.Add(this.llbEmail, 1, 3);
-            this.tlpMain.Controls.Add(this.llbTwitter, 1, 2);
             this.tlpMain.Controls.Add(this.lblHintText, 0, 0);
             this.tlpMain.Controls.Add(this.lblGithub, 0, 1);
-            this.tlpMain.Controls.Add(this.lblTwitter, 0, 2);
-            this.tlpMain.Controls.Add(this.lblEmail, 0, 3);
             this.tlpMain.Controls.Add(this.btnOK, 1, 4);
+            this.tlpMain.Controls.Add(this.llbEmail, 1, 2);
+            this.tlpMain.Controls.Add(this.llbTwitter, 1, 3);
             this.tlpMain.Controls.Add(this.llbGithub, 1, 1);
+            this.tlpMain.Controls.Add(this.lblEmail, 0, 2);
+            this.tlpMain.Controls.Add(this.lblTwitter, 0, 3);
             this.tlpMain.Location = new System.Drawing.Point(12, 12);
             this.tlpMain.MaximumSize = new System.Drawing.Size(500, 0);
             this.tlpMain.MinimumSize = new System.Drawing.Size(500, 0);
@@ -79,7 +79,7 @@ namespace BlocklyAts {
             // 
             this.llbEmail.AutoSize = true;
             this.llbEmail.LinkArea = new System.Windows.Forms.LinkArea(0, 18);
-            this.llbEmail.Location = new System.Drawing.Point(94, 158);
+            this.llbEmail.Location = new System.Drawing.Point(94, 114);
             this.llbEmail.Margin = new System.Windows.Forms.Padding(10);
             this.llbEmail.Name = "llbEmail";
             this.llbEmail.Size = new System.Drawing.Size(261, 24);
@@ -93,7 +93,7 @@ namespace BlocklyAts {
             // 
             this.llbTwitter.AutoSize = true;
             this.llbTwitter.LinkArea = new System.Windows.Forms.LinkArea(0, 9);
-            this.llbTwitter.Location = new System.Drawing.Point(94, 114);
+            this.llbTwitter.Location = new System.Drawing.Point(94, 158);
             this.llbTwitter.Margin = new System.Windows.Forms.Padding(10);
             this.llbTwitter.Name = "llbTwitter";
             this.llbTwitter.Size = new System.Drawing.Size(187, 24);
@@ -116,7 +116,7 @@ namespace BlocklyAts {
             // lblTwitter
             // 
             this.lblTwitter.AutoSize = true;
-            this.lblTwitter.Location = new System.Drawing.Point(10, 114);
+            this.lblTwitter.Location = new System.Drawing.Point(10, 158);
             this.lblTwitter.Margin = new System.Windows.Forms.Padding(10);
             this.lblTwitter.Name = "lblTwitter";
             this.lblTwitter.Size = new System.Drawing.Size(64, 16);
@@ -126,7 +126,7 @@ namespace BlocklyAts {
             // lblEmail
             // 
             this.lblEmail.AutoSize = true;
-            this.lblEmail.Location = new System.Drawing.Point(10, 158);
+            this.lblEmail.Location = new System.Drawing.Point(10, 114);
             this.lblEmail.Margin = new System.Windows.Forms.Padding(10);
             this.lblEmail.Name = "lblEmail";
             this.lblEmail.Size = new System.Drawing.Size(48, 16);
