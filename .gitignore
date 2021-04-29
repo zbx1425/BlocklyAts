@@ -4,6 +4,7 @@
 bfg-1.13.1.jar
 bin_debug/
 bin_release/
+DllExport.bat
 
 # User-specific files
 *.suo

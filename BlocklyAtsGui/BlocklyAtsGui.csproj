@@ -196,8 +196,6 @@
     <PostBuildEvent>XCOPY "$(SolutionDir)www" "$(TargetDir)\www\" /E /Y
 XCOPY "$(SolutionDir)assets" "$(TargetDir)\" /E /Y
 IF $(ConfigurationName)==Release (
-COPY /Y "$(SolutionDir)BatsWinApi\Release\batswinapi_x86.dll" "$(TargetDir)\lib"
-COPY /Y "$(SolutionDir)BatsWinApi\Release\batswinapi_x64.dll" "$(TargetDir)\lib"
 COPY /Y "$(SolutionDir)BatsUnmanaged\bin\Release\x86\BlocklyAtsUnmanaged.dll" "$(TargetDir)\lib\batsdllexport_x86.dll"
 COPY /Y "$(SolutionDir)BatsUnmanaged\bin\Release\x64\BlocklyAtsUnmanaged.dll" "$(TargetDir)\lib\batsdllexport_x64.dll"
 COPY /Y "$(SolutionDir)README.md" "$(TargetDir)"
