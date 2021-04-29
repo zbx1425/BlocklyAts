@@ -1,2 +1,0 @@
-#define BATSWINAPI_API __declspec(dllexport)
-#define BATSWINAPI_API __declspec(dllimport)
