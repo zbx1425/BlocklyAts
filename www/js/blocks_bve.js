@@ -164,11 +164,9 @@ Blockly.defineBlocksWithJsonArray([
     message0: "%{BKY_BVE_SOUND_STOP}",
     args0: [
       {
-        type: "field_number",
+        type: "input_value",
         name: "ID",
-        value: 0,
-        min: 0,
-        max: 255
+        check: "Number",
       },
     ],
     previousStatement: null,
@@ -180,11 +178,9 @@ Blockly.defineBlocksWithJsonArray([
     message0: "%{BKY_BVE_SOUND_PLAY_ONCE}",
     args0: [
       {
-        type: "field_number",
+        type: "input_value",
         name: "ID",
-        value: 0,
-        min: 0,
-        max: 255
+        check: "Number",
       },
     ],
     previousStatement: null,
@@ -196,11 +192,9 @@ Blockly.defineBlocksWithJsonArray([
     message0: "%{BKY_BVE_SOUND_PLAY_LOOP}",
     args0: [
       {
-        type: "field_number",
+        type: "input_value",
         name: "ID",
-        value: 0,
-        min: 0,
-        max: 255
+        check: "Number",
       },
       {
         type: "input_value",
@@ -217,11 +211,9 @@ Blockly.defineBlocksWithJsonArray([
     message0: "%{BKY_BVE_GET_SOUND_INTERNAL}",
     args0: [
       {
-        type: "field_number",
+        type: "input_value",
         name: "ID",
-        value: 0,
-        min: 0,
-        max: 255
+        check: "Number",
       },
     ],
     output: "Number",
@@ -232,11 +224,9 @@ Blockly.defineBlocksWithJsonArray([
     message0: "%{BKY_BVE_SET_SOUND_INTERNAL}",
     args0: [
       {
-        type: "field_number",
+        type: "input_value",
         name: "ID",
-        value: 0,
-        min: 0,
-        max: 255
+        check: "Number",
       },
       {
         type: "input_value",
@@ -253,11 +243,9 @@ Blockly.defineBlocksWithJsonArray([
     message0: "%{BKY_BVE_SET_PANEL}",
     args0: [
       {
-        type: "field_number",
+        type: "input_value",
         name: "ID",
-        value: 0,
-        min: 0,
-        max: 255
+        check: "Number",
       },
       {
         type: "input_value",
@@ -274,12 +262,10 @@ Blockly.defineBlocksWithJsonArray([
     message0: "%{BKY_BVE_GET_PANEL}",
     args0: [
       {
-        type: "field_number",
+        type: "input_value",
         name: "ID",
-        value: 0,
-        min: 0,
-        max: 255
-      },
+        check: "Number",
+      }
     ],
     output: "Number",
   },
@@ -569,7 +555,8 @@ Blockly.defineBlocksWithJsonArray([
     message0: "%1",
     args0: [
       {
-        type: "field_input",
+        type: "field_multilinetext",
+        max_display_length: "999",
         name: "COMMENT",
         text: "%{BKY_BVE_PLACEHOLDER_COMMENT}"
       }

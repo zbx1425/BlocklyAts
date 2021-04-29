@@ -1,53 +1,26 @@
-using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using OpenBveApi.Runtime;
-
-// Start of BlocklyAts boilerplate code.
-internal class BlocklyAtsCompanion {
+public class FunctionCompanion {
     
-    public IRuntime Plugin;
-  
-    public VehicleSpecs VSpec;
-    public ElapseData EData;
-    public int[] Panel = new int[256];
-    public DoorStates DoorState;
-    public bool LegacyDoorState {
-        get {
-            return this.DoorState != DoorStates.None;
-        }
+    private ApiProxy _c;
+    
+    public FunctionCompanion(ApiProxy c) {
+        _c = c;
     }
-    public bool[] KeyState = new bool[16];
     
-    public class TimerTuple {
+    private class TimerTuple {
         public double Interval;
         public double LastTrigger;
         public bool Cycle;
         public bool Enabled;
     }
     
-    public Dictionary<string, TimerTuple> TimerState = new Dictionary<string, TimerTuple>();
-    public Dictionary<string, Dictionary<string, dynamic>> ConfigData;
+    private Dictionary<string, TimerTuple> TimerState = new Dictionary<string, TimerTuple>();
+    private Dictionary<string, Dictionary<string, dynamic>> ConfigData;
     
-    private string pluginDir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location).TrimEnd('\\', '/');
-    private PlaySoundDelegate playSoundDelegate;
-    private SoundHandle[] soundHandles = new SoundHandle[256];
-    // To achieve the same behavior as Win32 plugin interface at bve_get_sound_internal
-    private int[] emulatedSoundState = new int[256];
-    
-    public BlocklyAtsCompanion(LoadProperties prop, IRuntime plugin) {
-        playSoundDelegate = prop.PlaySound;
-        prop.Panel = Panel;
-        for (int i = 0; i < 256; i++) emulatedSoundState[i] = -10000;
-        this.Plugin = plugin;
-    }
-  
     public void LoadConfig(string path) {
-      if (!File.Exists(Path.Combine(pluginDir, path))) return;
+      if (!File.Exists(Path.Combine(_c.PluginDirectory, path))) return;
       ConfigData = new Dictionary<string, Dictionary<string, dynamic>>();
       var section = "";
-      foreach (var line in System.IO.File.ReadAllLines(Path.Combine(pluginDir, path))) {
+      foreach (var line in System.IO.File.ReadAllLines(Path.Combine(_c.PluginDirectory, path))) {
           var tline = line.Trim();
           if (tline.StartsWith("[") && tline.EndsWith("]")) {
               section = tline.Substring(1, tline.Length - 2).Trim().ToLowerInvariant();
@@ -75,46 +48,7 @@ internal class BlocklyAtsCompanion {
           }
           sb.AppendLine();
       }
-      System.IO.File.WriteAllText(Path.Combine(pluginDir, path), sb.ToString());
-    }
-
-    public int AccessLegacySound(int id, int state = int.MaxValue, double volume = double.NaN) {
-      if (state == 0 && double.IsNaN(volume)) {
-          if (volume <= 0) {
-              state = -10000;
-          } else if (volume >= 100) {
-              state = 0;
-          } else {
-              state = (int)(volume * 100) - 10000;
-          }
-      }
-      if (state == -10000) {
-          if (soundHandles[id] != null && soundHandles[id].Playing) {
-              soundHandles[id].Stop();
-              soundHandles[id] = null;
-          }
-          emulatedSoundState[id] = state;
-      } else if (state > -10000 && state <= 0) {
-          if (soundHandles[id] != null && soundHandles[id].Playing) {
-              soundHandles[id].Volume = (state + 10000) / 10000;
-          } else {
-              soundHandles[id] = playSoundDelegate(id, (state + 10000) / 10000, 1, true);
-          }
-          emulatedSoundState[id] = state;
-      } else if (state == 1) {
-          if (soundHandles[id] != null && soundHandles[id].Playing) {
-              soundHandles[id].Stop();
-          }
-          soundHandles[id] = playSoundDelegate(id, 1, 1, false);
-          emulatedSoundState[id] = 2;
-      } else if (state == 2) {
-          emulatedSoundState[id] = state;
-      } else if (state > 10000) {
-          return emulatedSoundState[id];
-      } else {
-          throw new ArgumentOutOfRangeException();
-      }
-      return 0;
+      System.IO.File.WriteAllText(Path.Combine(_c.PluginDirectory, path), sb.ToString());
     }
     
     public dynamic GetConfig(string part, string key, dynamic defaultValue = null) {
@@ -140,17 +74,16 @@ internal class BlocklyAtsCompanion {
     }
     
     private void CallTimerHandler(string name) {
-        var methodInfo = Plugin.GetType().GetMethod("_etimertick_" + name);
-        if (methodInfo != null) methodInfo.Invoke(Plugin, new object[] { });
+        _c.CallImplFunc(name);
     }
     
     public void ResetTimer(string name, bool callHandler) {
         if (!TimerState.ContainsKey(name)) return;
-        if (EData == null) {
+        if (!_c.EData_Ready) {
             // Force a timer reset later if the ElapseData is currently not ready.
             TimerState[name].LastTrigger = double.MaxValue;
         } else {
-            TimerState[name].LastTrigger = EData.TotalTime.Milliseconds;
+            TimerState[name].LastTrigger = _c.EData_TotalTime;
         }
         TimerState[name].Enabled = true;
         if (callHandler) CallTimerHandler(name);
@@ -176,10 +109,10 @@ internal class BlocklyAtsCompanion {
     public void UpdateTimer() {
         foreach (var entry in TimerState) {
             if (!entry.Value.Enabled) continue;
-            if (entry.Value.LastTrigger > EData.TotalTime.Milliseconds) {
+            if (entry.Value.LastTrigger > _c.EData_TotalTime) {
                 // From the future? Maybe caused by a station jump, just reset it
                 ResetTimer(entry.Key, false);
-            } else if (EData.TotalTime.Milliseconds >= entry.Value.LastTrigger + entry.Value.Interval) {
+            } else if (_c.EData_TotalTime >= entry.Value.LastTrigger + entry.Value.Interval) {
                 CallTimerHandler(entry.Key);
                 if (entry.Value.Cycle) {
                     ResetTimer(entry.Key, false);
@@ -188,5 +121,9 @@ internal class BlocklyAtsCompanion {
                 }
             }
         }
+    }
+    
+    public void MsgBox(string text) {
+        MessageBox.Show(text, "BlocklyATS Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
 }

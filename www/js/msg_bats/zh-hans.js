@@ -2,6 +2,7 @@ Blockly.Msg["BVE_CAT_EVENT"]="BVE事件";
 Blockly.Msg["BVE_CAT_COMMON"]="BVE常用";
 Blockly.Msg["BVE_CAT_SPECIALIZE"]="BVE参数";
 Blockly.Msg["BVE_CAT_UTILITY"]="实用功能";
+Blockly.Msg["BVE_CAT_ADVANCED"]="高级功能";
 
 Blockly.Msg["BVE_ELAPSE"]="当状态更新 (每帧一次)";
 Blockly.Msg["BVE_INITIALIZE"]="当游戏开始 (载入/跳站)";

@@ -31,7 +31,7 @@ namespace BlocklyAts {
             return process.HasExited ? Task.CompletedTask : tcs.Task;
         }
 
-        public static readonly string BoilerplateLua, BoilerplateCSharp;
+        public static readonly string BoilerplateLua, CodeFunction, CodeOpenBve;
 
         static CompilerFunction() {
 #if DEBUG
@@ -41,7 +41,8 @@ namespace BlocklyAts {
             libDir = Path.Combine(appDir, "lib");
 #endif
             BoilerplateLua = File.ReadAllText(Path.Combine(libDir, "boilerplate.lua"));
-            BoilerplateCSharp = File.ReadAllText(Path.Combine(libDir, "boilerplate.cs"));
+            CodeFunction = File.ReadAllText(Path.Combine(libDir, "function.cs"));
+            CodeOpenBve = File.ReadAllText(Path.Combine(libDir, "openbve.cs"));
         }
 
         public static string CombineCode(string boilerplate, string script) {
@@ -51,6 +52,19 @@ namespace BlocklyAts {
                 + script.Replace("\r\n", "\n").Trim() 
                 + "\n"
                 + boilerplate.Substring(insertPosition)).Trim();
+        }
+
+        public static string CombineCodeForCSharp(string script, bool includeOpenBve) {
+            var sb = new StringBuilder();
+            sb.Append("using System; using System.IO; using System.Collections.Generic; using System.Windows.Forms; ");
+            if (includeOpenBve) sb.Append("using OpenBveApi.Runtime; "); else sb.Append("using BlocklyAts; ");
+            sb.Append("\n");
+            sb.Append("namespace BlocklyAts {\n");
+            sb.Append(script + "\n");
+            sb.Append(CodeFunction);
+            if (includeOpenBve) sb.Append(CodeOpenBve);
+            sb.Append("}\n");
+            return sb.ToString();
         }
 
         private static void CopySectionTo(this Stream input, Stream output, int bytes) {
@@ -87,7 +101,7 @@ namespace BlocklyAts {
         }
 
         public static void CompileCSharp(string script, string outputPath) {
-            var sourceCode = CombineCode(BoilerplateCSharp, script);
+            var sourceCode = CombineCodeForCSharp(script, true);
             var settings = new Dictionary<string, string>() {
                 { "CompilerVersion", "v4.0" }
             };
@@ -117,6 +131,62 @@ namespace BlocklyAts {
                 }
                 throw new Exception(sb.ToString());
             }
+        }
+
+        public static void CompileCSharpUnmanaged(string script, string outputPath, string arch) {
+            var sourceCode = CombineCodeForCSharp(script, false);
+
+            var boilerplateFile = Path.Combine(appDir, "lib", "batsdllexport_" + arch + ".dll");
+            var boilerplateStream = new FileStream(boilerplateFile, FileMode.Open, FileAccess.Read);
+            var outStream = new FileStream(outputPath, FileMode.Create, FileAccess.Write);
+
+            // Write Identifier and PE length to DOS stub
+            byte[] identifier = Encoding.UTF8.GetBytes("BATSNET1");
+            boilerplateStream.CopySectionTo(outStream, 0x6C - identifier.Length);
+            outStream.Write(identifier, 0, identifier.Length);
+            outStream.Write(BitConverter.GetBytes(boilerplateStream.Length), 0, 4);
+            boilerplateStream.Seek(4 + identifier.Length, SeekOrigin.Current);
+            boilerplateStream.CopyTo(outStream);
+            boilerplateStream.Close();
+
+            var tempFilePath = Path.Combine(Path.GetTempPath(), "BlocklyAts_Temp_" + Guid.NewGuid().ToString("N") + ".dll");
+
+            var settings = new Dictionary<string, string>() {
+                { "CompilerVersion", "v4.0" }
+            };
+            CSharpCodeProvider codeProvider = new CSharpCodeProvider(settings);
+            CompilerParameters parameters = new CompilerParameters() {
+                IncludeDebugInformation = false,
+                GenerateExecutable = false,
+                CompilerOptions = "/optimize",
+                OutputAssembly = tempFilePath
+            };
+            string[] assemblies = {
+                "mscorlib.dll",
+                "System.Core.dll",
+                "Microsoft.CSharp.dll",
+                "System.Windows.Forms.dll",
+                boilerplateFile
+            };
+
+            foreach (string a in assemblies) {
+                parameters.ReferencedAssemblies.Add(a);
+            }
+            CompilerResults results = codeProvider.CompileAssemblyFromSource(parameters, sourceCode);
+            if (results.Errors.HasErrors) {
+                StringBuilder sb = new StringBuilder();
+                foreach (CompilerError error in results.Errors) {
+                    sb.AppendLine(error.ToString());
+                }
+                File.Delete(tempFilePath);
+                throw new Exception(sb.ToString());
+            }
+
+            var programStream = new FileStream(tempFilePath, FileMode.Open, FileAccess.Read);
+            programStream.CopyTo(outStream);
+            programStream.Close();
+            File.Delete(tempFilePath);
+            outStream.Close();
         }
     }
 }

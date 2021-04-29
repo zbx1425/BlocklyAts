@@ -1,7 +1,8 @@
 Blockly.Msg["BVE_CAT_EVENT"]="BVEイベント";
 Blockly.Msg["BVE_CAT_COMMON"]="BVE慣用";
 Blockly.Msg["BVE_CAT_SPECIALIZE"]="BVE引数";
-Blockly.Msg["BVE_CAT_UTILITY"]="ユーティリティ";
+Blockly.Msg["BVE_CAT_UTILITY"]="便利機能";
+Blockly.Msg["BVE_CAT_ADVANCED"]="上級者向"
 
 Blockly.Msg["BVE_ELAPSE"]="経過 (1 フレームごと)";
 Blockly.Msg["BVE_INITIALIZE"]="ゲーム開始 (開く/はじめから)";
@@ -35,7 +36,7 @@ Blockly.Msg["BVE_HORN_PRIMARY"]="警笛1";
 Blockly.Msg["BVE_HORN_SECONDARY"]="警笛2";
 Blockly.Msg["BVE_HORN_MUSIC"]="ミュージックホーン";
 
-Blockly.Msg["BVE_VEHICLE_SPEC"]="车辆 %1";
+Blockly.Msg["BVE_VEHICLE_SPEC"]="車両 %1";
 Blockly.Msg["BVE_VSPEC_BRAKE"]="ブレーキノッチ数";
 Blockly.Msg["BVE_VSPEC_POWER"]="力行ノッチ数";
 Blockly.Msg["BVE_VSPEC_ATS"]="ATS確認ノッチ";

@@ -199,6 +199,7 @@ namespace BlocklyAts {
             await saveWorkspace(); // Autosave
 
             var luaCode = await mainWebBrowser.BkyExportLua();
+            var cSharpCode = await mainWebBrowser.BkyExportCSharp();
             var outputList = new List<Tuple<string, string>>();
             if (currentWorkspace.Config.ShouldCompilex86) {
                 outputList.Add(new Tuple<string, string>("x86", currentWorkspace.GetCompilePathx86()));
@@ -213,9 +214,9 @@ namespace BlocklyAts {
             foreach (var pair in outputList) {
                 notifText += "\n" + pair.Item1 + ": " + pair.Item2;
                 if (pair.Item1 == "net") {
-                    CompilerFunction.CompileCSharp(await mainWebBrowser.BkyExportCSharp(), pair.Item2);
+                    CompilerFunction.CompileCSharp(cSharpCode, pair.Item2);
                 } else {
-                    await CompilerFunction.CompileLua(luaCode, pair.Item2, pair.Item1);
+                    CompilerFunction.CompileCSharpUnmanaged(cSharpCode, pair.Item2, pair.Item1);
                 }
             }
             return notifText;

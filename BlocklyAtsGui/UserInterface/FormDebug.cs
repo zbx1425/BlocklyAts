@@ -19,7 +19,7 @@ namespace BlocklyAts {
         public FormDebug(string codeLua, string codeCSharp) {
             InitializeComponent();
             this.codeLua = CompilerFunction.CombineCode(CompilerFunction.BoilerplateLua, codeLua);
-            this.codeCSharp = CompilerFunction.CombineCode(CompilerFunction.BoilerplateCSharp, codeCSharp);
+            this.codeCSharp = CompilerFunction.CombineCodeForCSharp(codeCSharp, true);
             this.codeLua = this.codeLua.Replace("\n", Environment.NewLine);
             this.codeCSharp = this.codeCSharp.Replace("\n", Environment.NewLine);
             ResetTextbox();
@@ -80,10 +80,10 @@ namespace BlocklyAts {
                     tbCode.Language = FastColoredTextBoxNS.Language.CSharp;
                     tbCode.Text = codeCSharp;
                 }
-                for (int i = 0; i < tbCode.LinesCount; i++) {
+                /*for (int i = 0; i < tbCode.LinesCount; i++) {
                     if (tbCode.Lines[i].Contains(CompilerFunction.BoilerplateStartMarker)) break;
                     tbCode.DoAutoIndent(i);
-                }
+                }*/
             } else {
                 if (sender == rbLua) {
                     fallbackTbCode.Text = codeLua;

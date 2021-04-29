@@ -31,12 +31,14 @@ function getQueryVariable(variable) {
 
 var hIntervalInit;
 
-var shortcutKeyMap = ["Q", "W", "E", "R", "", "A", "S", "D", "F", "Z", "", "C", "V"];
+var shortcutKeyMap = ["Q", "W", "E", "R", "", "A", "S", "D", "F", "Z", "", "X", "", "C", "V"];
 
 function batsInit(toolboxNode) {
   Blockly.prompt = function(msg, defaultValue, callback) {
     alertify.prompt(msg, defaultValue, function(evt, value){callback(value)});
   }
+
+  Blockly.FieldMultilineInput.prototype.maxDisplayLength = 1024;
   
   var blocklyDiv = document.getElementById('blocklyDiv');
   window.workspace = Blockly.inject(blocklyDiv, {

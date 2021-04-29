@@ -52,11 +52,46 @@ namespace BlocklyAts {
             using (StreamReader reader = new StreamReader(inStream, Encoding.UTF8)) {
                 var wksp = (Workspace)new XmlSerializer(typeof(Workspace)).Deserialize(reader);
                 wksp.SaveFilePath = path;
-                if (new Version(wksp.EditorVersion) <= new Version(1, 0, 5, 3)) {
-
+                if (new Version(wksp.EditorVersion) <= new Version(1, 0, 6, 0)) {
+                    // Upgrade ID from field to block
+                    string[] upgradeList = {
+                        "bve_sound_stop", "bve_sound_play_once", "bve_sound_play_loop",
+                        "bve_get_sound_internal", "bve_set_sound_internal",
+                        "bve_set_panel", "bve_get_panel"
+                    };
+                    var targetBlocks = wksp.BlocklyXml.Descendants()
+                        .Where(e => e.Name.LocalName == "block")
+                        .Where(e => upgradeList.Contains(e.Attribute("type").Value))
+                        .ToList();
+                    foreach (var block in targetBlocks) {
+                        var valueBlock = block.Descendants()
+                            .Where(e => e.Name.LocalName == "field")
+                            .FirstOrDefault(e => e.Attribute("name").Value == "ID");
+                        if (valueBlock == null) continue;
+                        block.AddFirst(
+                            new XElement("value", new XAttribute("name", "ID"),
+                                new XElement("block", new XAttribute("type", "math_number"), 
+                                    new XAttribute("id", GenerateBlocklyUid()),
+                                    new XElement("field", new XAttribute("name", "NUM"),
+                                        valueBlock.Value
+                                    )
+                                )
+                            )
+                        );
+                        valueBlock.Remove();
+                    }
                 }
                 return wksp;
             }
+        }
+
+        private static string GenerateBlocklyUid() {
+            string soup = "!#$%()*+,-./:;=?@[]^_`{|}~ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var length = 20;
+            var random = new Random();
+            var sb = new StringBuilder();
+            for (var i = 0; i < length; i++) sb.Append(soup[random.Next(0, soup.Length)]);
+            return sb.ToString();
         }
 
         private string SelectDefaultCompilePath(string compilePath, string suffix) {

@@ -108,6 +108,8 @@
         <div class="blocklyToolboxCategory"><div class="blocklyTreeRow bats-key-hint">F</div></div>
         <div class="blocklyToolboxCategory"><div class="blocklyTreeRow bats-key-hint">Z</div></div>
         <div class="blocklyTreeSeparator"></div>
+        <div class="blocklyToolboxCategory"><div class="blocklyTreeRow bats-key-hint">X</div></div>
+        <div class="blocklyTreeSeparator"></div>
         <div class="blocklyToolboxCategory"><div class="blocklyTreeRow bats-key-hint">C</div></div>
         <div class="blocklyToolboxCategory"><div class="blocklyTreeRow bats-key-hint">V</div></div>
         <div class="blocklyTreeSeparator"></div>
@@ -159,19 +161,46 @@
         </value>
       </block>
       <block type="bve_get_door"></block>
-      <block type="bve_set_panel"></block>
-      <block type="bve_get_panel"></block>
-      <block type="bve_sound_stop"></block>
-      <block type="bve_sound_play_once"></block>
+      <block type="bve_set_panel">
+        <value name="ID">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="bve_get_panel">
+        <value name="ID">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="bve_sound_stop">
+        <value name="ID">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="bve_sound_play_once">
+        <value name="ID">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
       <block type="bve_sound_play_loop">
+        <value name="ID">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
         <value name="VOLUME">
           <shadow type="math_number">
             <field name="NUM">100</field>
           </shadow>
         </value>
       </block>
-      <block type="bve_set_sound_internal"></block>
-      <block type="bve_get_sound_internal"></block>
     </category>
     <category id="catBveSpecialize" colour="260" name="%{BKY_BVE_CAT_SPECIALIZE}">
       <label text="%{BKY_BVE_MSG_INIT_ONLY}"></label>
@@ -476,6 +505,23 @@
         </value>
       </block>
       <block type="lists_sort"></block>
+    </category>
+    <sep></sep>
+    <category id="catAdvanced" colour="30" name="%{BKY_BVE_CAT_ADVANCED}">
+      <block type="bve_set_sound_internal">
+        <value name="ID">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="bve_get_sound_internal">
+        <value name="ID">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
     </category>
     <sep></sep>
     <category id="catVariables" colour="330" custom="VARIABLE" name="%{BKY_CAT_VARIABLE}"></category>

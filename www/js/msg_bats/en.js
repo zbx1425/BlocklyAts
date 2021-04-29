@@ -2,6 +2,7 @@ Blockly.Msg["BVE_CAT_EVENT"]="BVE Events";
 Blockly.Msg["BVE_CAT_COMMON"]="BVE Common";
 Blockly.Msg["BVE_CAT_SPECIALIZE"]="BVE Argument";
 Blockly.Msg["BVE_CAT_UTILITY"]="Utility Func";
+Blockly.Msg["BVE_CAT_ADVANCED"]="Advanced";
 
 Blockly.Msg["BVE_ELAPSE"]="when elapse (each frame)";
 Blockly.Msg["BVE_INITIALIZE"]="when init (load/jump station)";
