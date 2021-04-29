@@ -80,11 +80,7 @@ namespace BlocklyAts {
                 arg
             ));
         }
-
-        public async Task<string> BkyExportLua() {
-            return (await InvokeScript("batsWkspExportLua();"))?.ToString();
-        }
-
+        
         public async Task<string> BkyExportCSharp() {
             return (await InvokeScript("batsWkspExportCSharp();"))?.ToString();
         }

@@ -12,16 +12,6 @@ Generate C# code from Blockly blocks.
 Copyright © 2013-2014 City Index Ltd. Licensed under the Apache License, Version 2.0.
 https://github.com/cityindex/blockly-generator-csharp
 
-- Win32 dll script interpreter: Lua  
-Lua is a powerful, efficient, lightweight, embeddable scripting language.  
-Copyright © 1994–2019 Lua.org. Distributed under the terms of the MIT license.
-https://www.lua.org/
-
-- INI file parsing: LIP - Lua INI Parser  
-Lua INI Parser is a tiny Lua library allowing to handle .ini files.  
-Copyright © Carreras Nicolas. This project is under MIT Licence.
-https://github.com/Dynodzzo/Lua_INI_Parser
-
 - Webpage dialog: AlertifyJS  
 AlertifyJS is a javascript framework for developing pretty browser dialogs and notifications.  
 Licensed under GPL 3.0.
@@ -31,8 +21,3 @@ https://alertifyjs.com/
 JavaScript を実行しているブラウザの種類およびそのレンダリングエンジン・ オペレーティングシステムの種類を判別します。© 2006-2020 Magicant 
 uai.js は自由に使用していただいて構いません。 
 http://magicant.github.io/sjavascript/uai-spec.html
-
-- Codepage conversion for Lua Windows IO: luawinfile
-Support UTF-8 filename in Windows. It's similar to lfs but support utf-8 filename.
-Copyright 2017 云风/Cloud Wu cloudwu@gmail.com. This project is under MIT Licence.
-https://github.com/cloudwu/luawinfile

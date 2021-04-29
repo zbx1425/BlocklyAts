@@ -14,13 +14,11 @@ namespace BlocklyAts {
         private FastColoredTextBoxNS.FastColoredTextBox tbCode;
         private TextBox fallbackTbCode;
 
-        public readonly string codeLua, codeCSharp;
+        public readonly string codeCSharp;
 
-        public FormDebug(string codeLua, string codeCSharp) {
+        public FormDebug(string codeCSharp) {
             InitializeComponent();
-            this.codeLua = CompilerFunction.CombineCode(CompilerFunction.BoilerplateLua, codeLua);
             this.codeCSharp = CompilerFunction.CombineCodeForCSharp(codeCSharp, true);
-            this.codeLua = this.codeLua.Replace("\n", Environment.NewLine);
             this.codeCSharp = this.codeCSharp.Replace("\n", Environment.NewLine);
             ResetTextbox();
         }
@@ -48,6 +46,8 @@ namespace BlocklyAts {
                 tbCode.Dock = DockStyle.Fill;
                 tbCode.TabIndex = 2;
                 tbCode.Zoom = 100;
+                tbCode.Language = FastColoredTextBoxNS.Language.CSharp;
+                tbCode.Text = codeCSharp;
                 pnlMain.Controls.Add(tbCode);
                 ((ISupportInitialize)(tbCode)).EndInit();
             } else {
@@ -62,39 +62,11 @@ namespace BlocklyAts {
                 fallbackTbCode.ScrollBars = ScrollBars.Both;
                 fallbackTbCode.Dock = DockStyle.Fill;
                 fallbackTbCode.TabIndex = 2;
+                fallbackTbCode.Text = codeCSharp;
                 pnlMain.Controls.Add(fallbackTbCode);
             }
             ResumeLayout(false);
             PerformLayout();
-        }
-
-        private void rbLua_CheckedChanged(object sender, EventArgs e) {
-            if (tbCode != null) {
-                if (sender == rbLua) {
-                    // TODO: FastColoredTextBox syntax highlighter seems to be mislead by Regex expressions of LIP
-                    tbCode.ResetText();
-                    tbCode.Language = FastColoredTextBoxNS.Language.Lua;
-                    tbCode.Text = codeLua;
-                } else {
-                    tbCode.ResetText();
-                    tbCode.Language = FastColoredTextBoxNS.Language.CSharp;
-                    tbCode.Text = codeCSharp;
-                }
-                /*for (int i = 0; i < tbCode.LinesCount; i++) {
-                    if (tbCode.Lines[i].Contains(CompilerFunction.BoilerplateStartMarker)) break;
-                    tbCode.DoAutoIndent(i);
-                }*/
-            } else {
-                if (sender == rbLua) {
-                    fallbackTbCode.Text = codeLua;
-                } else {
-                    fallbackTbCode.Text = codeCSharp;
-                }
-            }
-        }
-
-        private void FormDebug_Load(object sender, EventArgs e) {
-            rbLua_CheckedChanged(rbLua, null);
         }
     }
 }

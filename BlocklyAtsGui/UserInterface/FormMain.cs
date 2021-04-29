@@ -197,8 +197,7 @@ namespace BlocklyAts {
 
         private async Task<string> buildAllPlatforms() {
             await saveWorkspace(); // Autosave
-
-            var luaCode = await mainWebBrowser.BkyExportLua();
+            
             var cSharpCode = await mainWebBrowser.BkyExportCSharp();
             var outputList = new List<Tuple<string, string>>();
             if (currentWorkspace.Config.ShouldCompilex86) {
@@ -214,7 +213,7 @@ namespace BlocklyAts {
             foreach (var pair in outputList) {
                 notifText += "\n" + pair.Item1 + ": " + pair.Item2;
                 if (pair.Item1 == "net") {
-                    CompilerFunction.CompileCSharp(cSharpCode, pair.Item2);
+                    CompilerFunction.CompileCSharpOpenBve(cSharpCode, pair.Item2);
                 } else {
                     CompilerFunction.CompileCSharpUnmanaged(cSharpCode, pair.Item2, pair.Item1);
                 }
@@ -229,7 +228,7 @@ namespace BlocklyAts {
             }
 
             if (ModifierKeys.HasFlag(Keys.Control) && ModifierKeys.HasFlag(Keys.Shift)) {
-                Clipboard.SetText(await mainWebBrowser.BkyExportLua());
+                Clipboard.SetText(await mainWebBrowser.BkyExportCSharp());
                 return;
             }
             tsbtnCompile.Enabled = tsbtnCompileRun.Enabled = tsbtnCompileSetting.Enabled = false;
@@ -313,11 +312,6 @@ namespace BlocklyAts {
 
         private async void tsbtnDebugWindow_Click(object sender, EventArgs e) {
                 tsbtnDebugWindow.Enabled = false;
-                var codeLua = await mainWebBrowser.BkyExportLua();
-                if (codeLua == null) {
-                    tsbtnDebugWindow.Enabled = true;
-                    return;
-                }
                 var codeCSharp = await mainWebBrowser.BkyExportCSharp();
                 if (codeCSharp == null) {
                     tsbtnDebugWindow.Enabled = true;
@@ -325,7 +319,7 @@ namespace BlocklyAts {
                 }
                 tsbtnDebugWindow.Enabled = true;
                 this.Invoke((Action)(() => {
-                    var formDebug = new FormDebug(codeLua, codeCSharp);
+                    var formDebug = new FormDebug(codeCSharp);
                     formDebug.ShowDialog(this);
                 }));
         }

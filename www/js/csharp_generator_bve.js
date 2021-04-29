@@ -49,33 +49,37 @@ Blockly.CSharp.addReservedWords([
   "_p2",
 ].join(","));
 
+function indentString(string, count = 1, shorterfirst = false) {
+  var result = string.replace(/^/gm, " ".repeat(count));
+  if (shorterfirst) result = result.substring(2);
+  return result;
+}
+
 function batsExportCSharp(workspace) {
   Blockly.CSharp.init(workspace);
 
   var allHats = ["bve_hat_elapse", "bve_hat_initialize", "bve_hat_keydown_any", "bve_hat_keyup_any", "bve_hat_horn_blow", 
     "bve_hat_door_change", "bve_hat_set_signal", "bve_hat_set_beacon", "bve_hat_load", "bve_hat_dispose"];
-  var code = "private dynamic _c;\nprivate dynamic _f;\n" + 
-    "public AtsProgram(object c, object f) { _c = c; _f = f; }\n";
+  var code = "  private ApiProxy _c;\n  private FunctionCompanion _f;\n" + 
+    "  public AtsProgram(ApiProxy c, FunctionCompanion f) { _c = c; _f = f; }\n\n";
   var blocks = workspace.getTopBlocks(false);
   for (var i = 0, block; block = blocks[i]; i++) {
     if (block.type.startsWith("bve_hat")) {
       removeItemOnce(allHats, block.type);
-      code += Blockly.CSharp.blockToCode(block, true);
+      code += indentString(Blockly.CSharp.blockToCode(block, true).trim(), 4, true);
       //var nextBlock = block.getNextBlock();
       //if (nextBlock) code += Blockly.CSharp.blockToCode(nextBlock);
-      if (block.type == "bve_hat_load") code += "return true;\n";
-      code += "}\n";
+      code += "\n  }\n\n";
     } else if (block.type == "procedures_defnoreturn" || block.type == "procedures_defreturn") {
-      code += Blockly.CSharp.blockToCode(block);
+      code += indentString(Blockly.CSharp.blockToCode(block), 2);
     }
   }
-
+  code += "\n";
   for (var i = 0, hatName; hatName = allHats[i]; i++) {
-    code += Blockly.CSharp[hatName]();
-    code += "}\n";
+    code += "  " + Blockly.CSharp[hatName]().trim() + " }\n";
   }
 
-  code = Blockly.CSharp.finish(code).trim();
+  code = Blockly.CSharp.finish(code);
   return "public class AtsProgram {\n" + code + "\n}";
 }
 
@@ -203,7 +207,7 @@ Blockly.CSharp.bve_get_config_default=function(block){ // TODO
   return [
     "_f.GetConfig(" + Blockly.CSharp.quote_(block.getFieldValue("PART")) + ", " 
     + Blockly.CSharp.quote_(block.getFieldValue("KEY")) + ", ("
-    + Blockly.Lua.valueToCode(block, "DEFAULT_VAL", Blockly.CSharp.ORDER_NONE) +"))",
+    + Blockly.CSharp.valueToCode(block, "DEFAULT_VAL", Blockly.CSharp.ORDER_NONE) +"))",
     Blockly.CSharp.ORDER_ATOMIC
   ];
 }

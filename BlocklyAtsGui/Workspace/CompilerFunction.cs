@@ -31,7 +31,7 @@ namespace BlocklyAts {
             return process.HasExited ? Task.CompletedTask : tcs.Task;
         }
 
-        public static readonly string BoilerplateLua, CodeFunction, CodeOpenBve;
+        public static readonly string CodeFunction, CodeOpenBve;
 
         static CompilerFunction() {
 #if DEBUG
@@ -40,18 +40,8 @@ namespace BlocklyAts {
 #else
             libDir = Path.Combine(appDir, "lib");
 #endif
-            BoilerplateLua = File.ReadAllText(Path.Combine(libDir, "boilerplate.lua"));
             CodeFunction = File.ReadAllText(Path.Combine(libDir, "function.cs"));
             CodeOpenBve = File.ReadAllText(Path.Combine(libDir, "openbve.cs"));
-        }
-
-        public static string CombineCode(string boilerplate, string script) {
-            int insertPosition = boilerplate.IndexOf(BoilerplateStartMarker) - 3;
-            return (boilerplate.Substring(0, insertPosition).Trim()
-                + "\n"
-                + script.Replace("\r\n", "\n").Trim() 
-                + "\n"
-                + boilerplate.Substring(insertPosition)).Trim();
         }
 
         public static string CombineCodeForCSharp(string script, bool includeOpenBve) {
@@ -60,7 +50,9 @@ namespace BlocklyAts {
             if (includeOpenBve) sb.Append("using OpenBveApi.Runtime; "); else sb.Append("using BlocklyAts; ");
             sb.Append("\n");
             sb.Append("namespace BlocklyAts {\n");
-            sb.Append(script + "\n");
+            sb.Append("\n\n// ----- Start of your program. -----\n\n");
+            sb.Append(script);
+            sb.Append("\n\n// ----- End of your program. -----\n\n\n");
             sb.Append(CodeFunction);
             if (includeOpenBve) sb.Append(CodeOpenBve);
             sb.Append("}\n");
@@ -77,30 +69,7 @@ namespace BlocklyAts {
             }
         }
 
-        public static async Task CompileLua(string script, string outputPath, string arch) {
-            var sourceCode = CombineCode(BoilerplateLua, script);
-
-            var boilerplateFile = Path.Combine(appDir, "lib", "batswinapi_" + arch + ".dll");
-            var boilerplateStream = new FileStream(boilerplateFile, FileMode.Open, FileAccess.Read);
-            var outStream = new FileStream(outputPath, FileMode.Create, FileAccess.Write);
-
-            // Write Identifier and PE length to DOS stub
-            byte[] identifier = Encoding.UTF8.GetBytes("BATSLUA1");
-            boilerplateStream.CopySectionTo(outStream, 0x6C - identifier.Length);
-            outStream.Write(identifier, 0, identifier.Length);
-            outStream.Write(BitConverter.GetBytes(boilerplateStream.Length), 0, 4);
-            boilerplateStream.Seek(4 + identifier.Length, SeekOrigin.Current);
-            await boilerplateStream.CopyToAsync(outStream);
-
-            byte[] confusion = { 0x11, 0x45, 0x14, 0x19, 0x19, 0x81, 0x14, 0x25 };
-            byte[] srcCode = Encoding.UTF8.GetBytes(sourceCode);
-            for (int i = 0; i < srcCode.Length; i++) srcCode[i] ^= confusion[i % 8];
-            await outStream.WriteAsync(srcCode, 0, srcCode.Length);
-            boilerplateStream.Close();
-            outStream.Close();
-        }
-
-        public static void CompileCSharp(string script, string outputPath) {
+        public static void CompileCSharpOpenBve(string script, string outputPath) {
             var sourceCode = CombineCodeForCSharp(script, true);
             var settings = new Dictionary<string, string>() {
                 { "CompilerVersion", "v4.0" }
