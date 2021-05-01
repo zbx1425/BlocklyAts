@@ -1,4 +1,4 @@
-namespace BlocklyAts {
+namespace BlocklyAts.UserInterface {
     partial class FormBugReport {
         /// <summary>
         /// Required designer variable.

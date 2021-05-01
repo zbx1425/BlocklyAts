@@ -1,4 +1,4 @@
-namespace BlocklyAts {
+namespace BlocklyAts.UserInterface {
     partial class FormAbout {
         /// <summary>
         /// 必需的设计器变量。

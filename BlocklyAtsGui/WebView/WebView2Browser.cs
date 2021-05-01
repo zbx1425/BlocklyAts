@@ -6,10 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using BlocklyAts.Host;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.WinForms;
 
-namespace BlocklyAts {
+namespace BlocklyAts.WebView {
     partial class WebView2Browser : BaseBrowser {
         public override event EventHandler PageFinished;
         public override event PreviewKeyDownEventHandler KeyDown;

@@ -550,18 +550,80 @@ Blockly.defineBlocksWithJsonArray([
     nextStatement: null,
   },
   {
+    type: "bve_convert_to_double",
+    style: "math_blocks",
+    message0: "%{BKY_BVE_CONVERT_TO_DOUBLE}",
+    args0: [
+      {
+        type: "input_value",
+        name: "SOURCE"
+      },
+    ],
+    output: "Number"
+  },
+  {
+    type: "bve_convert_to_string",
+    style: "text_blocks",
+    message0: "%{BKY_BVE_CONVERT_TO_STRING}",
+    args0: [
+      {
+        type: "input_value",
+        name: "SOURCE"
+      },
+    ],
+    output: "String"
+  },
+  {
+    type: "bve_convert_to_boolean",
+    style: "logic_blocks",
+    message0: "%{BKY_BVE_CONVERT_TO_BOOLEAN}",
+    args0: [
+      {
+        type: "input_value",
+        name: "SOURCE"
+      },
+    ],
+    output: "Boolean"
+  },
+  {
     type: "bve_comment",
     style: "comment_block",
     message0: "%1",
     args0: [
       {
         type: "field_multilinetext",
-        max_display_length: "999",
         name: "COMMENT",
         text: "%{BKY_BVE_PLACEHOLDER_COMMENT}"
       }
     ],
     previousStatement: null,
     nextStatement: null,
+  },
+  {
+    type: "bve_rawcode_statement",
+    style: "raw_code_block",
+    message0: "C# %1",
+    args0: [
+      {
+        type: "field_multilinetext",
+        name: "CODE",
+        text: "_c.SetHandle(0, 0);"
+      }
+    ],
+    previousStatement: null,
+    nextStatement: null,
+  },
+  {
+    type: "bve_rawcode_value",
+    style: "raw_code_block",
+    message0: "C# %1",
+    args0: [
+      {
+        type: "field_multilinetext",
+        name: "CODE",
+        text: "_c.DoorState"
+      }
+    ],
+    output: null
   }
 ]);

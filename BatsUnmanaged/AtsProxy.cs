@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -30,14 +31,17 @@ namespace BlocklyAts {
         }
 
         public int GetLegacySound(int id) {
+            if (id < 0 || id > 255) throw new IndexOutOfRangeException("Sound index must be between 0-255.");
             return SoundArray[id];
         }
 
         public void SetLegacySound(int id, int state) {
+            if (id < 0 || id > 255) throw new IndexOutOfRangeException("Sound index must be between 0-255.");
             SoundArray[id] = state;
         }
 
         public void SetLegacySoundLV(int id, double volume) {
+            if (id < 0 || id > 255) throw new IndexOutOfRangeException("Sound index must be between 0-255.");
             int state;
             if (volume <= 0) {
                 state = -10000;
@@ -49,8 +53,15 @@ namespace BlocklyAts {
             SetLegacySound(id, state);
         }
 
-        public int GetPanel(int id) { return PanelArray[id]; }
-        public void SetPanel(int id, int data) { PanelArray[id] = data; }
+        public int GetPanel(int id) {
+            if (id < 0 || id > 255) throw new IndexOutOfRangeException("Panel index must be between 0-255.");
+            return PanelArray[id];
+        }
+
+        public void SetPanel(int id, int data) {
+            if (id < 0 || id > 255) throw new IndexOutOfRangeException("Panel index must be between 0-255.");
+            PanelArray[id] = data;
+        }
 
         public void CallImplFunc(string name) {
             var methodInfo = Impl.ImplType.GetMethod("_etimertick_" + name);
@@ -58,10 +69,7 @@ namespace BlocklyAts {
         }
 
         public string PluginDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location).TrimEnd('\\', '/');
-
-        /// <summary>
-        /// Called when this plug-in is loaded
-        /// </summary>
+        
         [DllExport(CallingConvention.StdCall)]
         public static void Load() {
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
@@ -73,16 +81,20 @@ namespace BlocklyAts {
                     byte[] sizeBuf = new byte[4];
                     fs.Read(sizeBuf, 0, 4);
                     var exeSize = BitConverter.ToInt32(sizeBuf, 0);
+                    fs.Read(sizeBuf, 0, 4);
+                    var dllSize = BitConverter.ToInt32(sizeBuf, 0);
                     fs.Seek(exeSize, SeekOrigin.Begin);
 
-                    byte[] dataBuf = new byte[fs.Length - exeSize + 1];
-                    fs.Read(dataBuf, 0, (int)fs.Length - exeSize);
-                    targetAssembly = Assembly.Load(dataBuf);
+                    byte[] dllBuf = new byte[dllSize];
+                    fs.Read(dllBuf, 0, dllSize);
+                    if (fs.Length > exeSize + dllSize) {
+                        byte[] pdbBuf = new byte[fs.Length - exeSize - dllSize];
+                        fs.Read(pdbBuf, 0, (int)fs.Length - exeSize - dllSize);
+                        targetAssembly = Assembly.Load(dllBuf, pdbBuf);
+                    } else {
+                        targetAssembly = Assembly.Load(dllBuf);
+                    }
                 }
-
-                /*var testFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ats-sn_net.dll");
-                targetAssembly = Assembly.Load(File.ReadAllBytes(testFile));*/
-            
                 Impl = new CallConverter(
                     targetAssembly.GetType("BlocklyAts.AtsProgram"),
                     targetAssembly.GetType("BlocklyAts.FunctionCompanion"),
@@ -106,27 +118,84 @@ namespace BlocklyAts {
             if (result == DialogResult.Cancel) Process.GetCurrentProcess().Kill();
         }
 
-        /// <summary>
-        /// Called when this plug-in is unloaded
-        /// </summary>
+        private static Queue<LAFC> lateCallQueue = new Queue<LAFC>();
+
+        // Late Ats Function Call
+        // Postpone some events to the time of the first Elapse
+        // To make sure the ElapseData is always available
+        // And the sound states behave as the developer expects
+        private struct LAFC {
+            short type;
+            double f1;
+            int i1, i2, i3;
+
+            private LAFC(short type, double f1, int i1, int i2, int i3) {
+                this.type = type;
+                this.f1 = f1;
+                this.i1 = i1;
+                this.i2 = i2;
+                this.i3 = i3;
+            }
+
+            internal static LAFC DoorChange() { return new LAFC( 0, 0.0f, 0, 0, 0 ); }
+            internal static LAFC SetSignal(int i1) { return new LAFC( 1, 0.0f, i1, 0, 0); }
+            internal static LAFC SetBeaconData(int i1, int i2, int i3, double f1) { return new LAFC( 2, f1, i1, i2, i3); }
+            internal static LAFC HornBlow(int i1) { return new LAFC( 3, 0.0f, i1, 0, 0); }
+            internal static LAFC KeyDown(int i1) { return new LAFC( 4, 0.0f, i1, 0, 0); }
+            internal static LAFC KeyUp(int i1) { return new LAFC( 5, 0.0f, i1, 0, 0); }
+
+            internal void Invoke() {
+                try {
+                    switch (type) {
+                        case 0:
+                            Impl.DoorChange();
+                            break;
+                        case 1:
+                            Impl.SetSignal(i1);
+                            break;
+                        case 2:
+                            Impl.SetBeacon(i1, i2, i3, f1);
+                            break;
+                        case 3:
+                            Impl.HornBlow(i1);
+                            break;
+                        case 4:
+                            Impl.KeyDown(i1);
+                            break;
+                        case 5:
+                            Impl.KeyUp(i1);
+                            break;
+                    }
+                } catch (Exception ex) {
+                    new System.Threading.Thread(() => {
+                        RuntimeException(ex);
+                    }).Start();
+                }
+            }
+
+            internal void Schedule() {
+                if (Instance.EData_Ready) {
+                    Invoke();
+                } else {
+                    lateCallQueue.Enqueue(this);
+                }
+            }
+        }
+        
         [DllExport(CallingConvention.StdCall)]
         public static void Dispose() {
-            Impl.Unload();
+            try {
+                Impl.Unload();
+            } catch (Exception ex) {
+                RuntimeException(ex);
+            }
         }
-
-        /// <summary>
-        /// Returns the version numbers of ATS plug-in
-        /// </summary>
-        /// <returns>Version numbers of ATS plug-in.</returns>
+        
         [DllExport(CallingConvention.StdCall)]
         public static int GetPluginVersion() {
             return Version;
         }
-
-        /// <summary>
-        /// Called when the train is loaded
-        /// </summary>
-        /// <param name="vehicleSpec">Spesifications of vehicle.</param>
+        
         [DllExport(CallingConvention.StdCall)]
         public static void SetVehicleSpec(AtsVehicleSpec vehicleSpec) {
             Instance.VSpec_PowerNotches = vehicleSpec.PowerNotches;
@@ -136,11 +205,7 @@ namespace BlocklyAts {
             Instance.VSpec_Cars = vehicleSpec.Cars;
             Instance.VSpec_Ready = true;
         }
-
-        /// <summary>
-        /// Called when the game is started
-        /// </summary>
-        /// <param name="initialHandlePosition">Initial position of control handle.</param>
+        
         [DllExport(CallingConvention.StdCall)]
         public static void Initialize(int initialHandlePosition) {
             try {
@@ -149,19 +214,21 @@ namespace BlocklyAts {
                 RuntimeException(ex);
             }
         }
-
-        /// <summary>
-        /// Called every frame
-        /// </summary>
-        /// <param name="vehicleState">Current state of vehicle.</param>
-        /// <param name="panel">Current state of panel.</param>
-        /// <param name="sound">Current state of sound.</param>
-        /// <returns>Driving operations of vehicle.</returns>
+        
         [DllExport(CallingConvention.StdCall)]
         public static AtsHandles Elapse(AtsVehicleState vehicleState, IntPtr panel, IntPtr sound) {
             try {
                 PanelArray = new AtsIoArray(panel);
                 SoundArray = new AtsIoArray(sound);
+                bool firstElapse = !Instance.EData_Ready;
+                if (firstElapse) {
+                    for (int i = 0; i < SoundArray.Length; i++) {
+                        // Reset the sound states
+                        // So that a sound can be played in loop at 100% volume from the very first Elapse
+                        // Otherwise the behavior might be confusing to new developers
+                        SoundArray[i] = -10000;
+                    }
+                }
                 Instance.EData_Vehicle_Location = vehicleState.Location;
                 Instance.EData_Vehicle_Speed = vehicleState.Speed;
                 Instance.EData_TotalTime = vehicleState.Time;
@@ -176,9 +243,15 @@ namespace BlocklyAts {
                 TempHandle[1] = Instance.EData_Handles_PowerNotch;
                 TempHandle[2] = Instance.EData_Handles_Reverser;
                 TempHandle[3] = AtsCscInstruction.Continue;
-                Impl.Func_UpdateTimer();
-                Impl.Elapse();
-                
+
+                // Don't run the handlers yet, wait for the sound states to take effect
+                if (!firstElapse) {
+                    while (lateCallQueue.Count > 0) {
+                        lateCallQueue.Dequeue().Invoke();
+                    }
+                    Impl.Func_UpdateTimer();
+                    Impl.Elapse();
+                }
             } catch (Exception ex) {
                 RuntimeException(ex);
             }
@@ -189,127 +262,61 @@ namespace BlocklyAts {
                 Reverser = TempHandle[2]
             };
         }
-
-        /// <summary>
-        /// Called when the power is changed
-        /// </summary>
-        /// <param name="handlePosition">Position of traction control handle.</param>
+        
         [DllExport(CallingConvention.StdCall)]
         public static void SetPower(int handlePosition) {
             Instance.EData_Handles_PowerNotch = handlePosition;
         }
-
-        /// <summary>
-        /// Called when the brake is changed
-        /// </summary>
-        /// <param name="handlePosition">Position of brake control handle.</param>
+        
         [DllExport(CallingConvention.StdCall)]
         public static void SetBrake(int handlePosition) {
             Instance.EData_Handles_BrakeNotch = handlePosition;
         }
-
-        /// <summary>
-        /// Called when the reverser is changed
-        /// </summary>
-        /// <param name="handlePosition">Position of reveerser handle.</param>
+        
         [DllExport(CallingConvention.StdCall)]
         public static void SetReverser(int handlePosition) {
             Instance.EData_Handles_Reverser = handlePosition;
         }
-
-        /// <summary>
-        /// Called when any ATS key is pressed
-        /// </summary>
-        /// <param name="keyIndex">Index of key.</param>
+        
         [DllExport(CallingConvention.StdCall)]
         public static void KeyDown(int keyIndex) {
-            try {
-                Instance.KeyState[keyIndex] = true;
-                Impl.KeyDown(keyIndex);
-            } catch (Exception ex) {
-                RuntimeException(ex);
-            }
+            Instance.KeyState[keyIndex] = true;
+            LAFC.KeyDown(keyIndex).Schedule();
         }
-
-        /// <summary>
-        /// Called when any ATS key is released
-        /// </summary>
-        /// <param name="keyIndex">Index of key.</param>
+        
         [DllExport(CallingConvention.StdCall)]
         public static void KeyUp(int keyIndex) {
-            try {
-                Instance.KeyState[keyIndex] = false;
-                Impl.KeyUp(keyIndex);
-            } catch (Exception ex) {
-                RuntimeException(ex);
-            }
+            Instance.KeyState[keyIndex] = false;
+            LAFC.KeyUp(keyIndex).Schedule();
         }
 
-        /// <summary>
-        /// Called when the horn is used
-        /// </summary>
-        /// <param name="hornIndex">Type of horn.</param>
         [DllExport(CallingConvention.StdCall)]
         public static void HornBlow(int hornIndex) {
-            try {
-                Impl.HornBlow(hornIndex);
-            } catch (Exception ex) {
-                RuntimeException(ex);
-            }
+            LAFC.HornBlow(hornIndex).Schedule();
         }
-
-        /// <summary>
-        /// Called when the door is opened
-        /// </summary>
+        
         [DllExport(CallingConvention.StdCall)]
         public static void DoorOpen() {
-            try {
-                Instance.DoorState = 3;
-                Instance.LegacyDoorState = true;
-                Impl.DoorChange();
-            } catch (Exception ex) {
-                RuntimeException(ex);
-            }
+            Instance.DoorState = 3;
+            Instance.LegacyDoorState = true;
+            LAFC.DoorChange().Schedule();
         }
-
-        /// <summary>
-        /// Called when the door is closed
-        /// </summary>
+        
         [DllExport(CallingConvention.StdCall)]
         public static void DoorClose() {
-            try {
-                Instance.DoorState = 0;
-                Instance.LegacyDoorState = false;
-                Impl.DoorChange();
-            } catch (Exception ex) {
-                RuntimeException(ex);
-            }
+            Instance.DoorState = 0;
+            Instance.LegacyDoorState = false;
+            LAFC.DoorChange().Schedule();
         }
-
-        /// <summary>
-        /// Called when current signal is changed
-        /// </summary>
-        /// <param name="signalIndex">Index of signal.</param>
+        
         [DllExport(CallingConvention.StdCall)]
         public static void SetSignal(int signalIndex) {
-            try {
-                Impl.SetSignal(signalIndex);
-            } catch (Exception ex) {
-                RuntimeException(ex);
-            }
+            LAFC.SetSignal(signalIndex).Schedule();
         }
-
-        /// <summary>
-        /// Called when the beacon data is received
-        /// </summary>
-        /// <param name="beaconData">Received data of beacon.</param>
+        
         [DllExport(CallingConvention.StdCall)]
         public static void SetBeaconData(AtsBeaconData beaconData) {
-            try {
-                Impl.SetBeacon(beaconData.Type, beaconData.Optional, beaconData.Signal, beaconData.Distance);
-            } catch (Exception ex) {
-                RuntimeException(ex);
-            }
+            LAFC.SetBeaconData(beaconData.Type, beaconData.Optional, beaconData.Signal, beaconData.Distance).Schedule();
         }
     }
 }

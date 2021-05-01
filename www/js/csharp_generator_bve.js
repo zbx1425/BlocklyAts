@@ -243,4 +243,18 @@ Blockly.CSharp.bve_timer_modify=function(block){
       return "_f.ResetTimer(" + Blockly.CSharp.quote_(timerName) + ", true);\n";
   }
 }
+Blockly.CSharp.bve_convert_to_double=function(block) {
+  return ["Convert.ToDouble(" + Blockly.CSharp.valueToCode(block, "SOURCE", Blockly.CSharp.ORDER_NONE) + ")", 
+    Blockly.CSharp.ORDER_FUNCTION_CALL];
+}
+Blockly.CSharp.bve_convert_to_string=function(block) {
+  return ["Convert.ToString(" + Blockly.CSharp.valueToCode(block, "SOURCE", Blockly.CSharp.ORDER_NONE) + ")", 
+    Blockly.CSharp.ORDER_FUNCTION_CALL];
+}
+Blockly.CSharp.bve_convert_to_boolean=function(block) {
+  return ["Convert.ToBoolean(" + Blockly.CSharp.valueToCode(block, "SOURCE", Blockly.CSharp.ORDER_NONE) + ")", 
+    Blockly.CSharp.ORDER_FUNCTION_CALL];
+}
 Blockly.CSharp.bve_comment = function(block) { return ""; }
+Blockly.CSharp.bve_rawcode_statement = function(block) { return block.getFieldValue("CODE") + "\n"; }
+Blockly.CSharp.bve_rawcode_value = function(block) { return block.getFieldValue("CODE"); }

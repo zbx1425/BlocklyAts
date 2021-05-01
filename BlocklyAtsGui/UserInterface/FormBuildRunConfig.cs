@@ -1,3 +1,5 @@
+using BlocklyAts.Host;
+using BlocklyAts.Workspace;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BlocklyAts {
+namespace BlocklyAts.UserInterface {
     public partial class FormBuildRunConfig : Form {
 
         public BuildRunConfig Config {
@@ -18,6 +20,7 @@ namespace BlocklyAts {
                     ShouldCompilex86 = cbShouldx86.Checked,
                     ShouldCompilex64 = cbShouldx64.Checked,
                     ShouldCompileAnyCpu = cbShouldNet.Checked,
+                    IncludeDebugInfo = cbIncludeDebugInfo.Checked,
                     CompilePathx86 = cbCustomx86.Checked ? tbx86.Text : null,
                     CompilePathx64 = cbCustomx64.Checked ? tbx64.Text : null,
                     CompilePathAnyCpu = cbCustomNet.Checked ? tbNet.Text : null,
@@ -38,6 +41,7 @@ namespace BlocklyAts {
                 cbCustomx86.Checked = !string.IsNullOrEmpty(value.CompilePathx86);
                 cbCustomx64.Checked = !string.IsNullOrEmpty(value.CompilePathx64);
                 cbCustomNet.Checked = !string.IsNullOrEmpty(value.CompilePathAnyCpu);
+                cbIncludeDebugInfo.Checked = value.IncludeDebugInfo;
                 tbx86.Text = value.CompilePathx86;
                 tbx64.Text = value.CompilePathx64;
                 tbNet.Text = value.CompilePathAnyCpu;

@@ -1,4 +1,4 @@
-namespace BlocklyAts {
+namespace BlocklyAts.UserInterface {
     partial class FormBuildRunConfig {
         /// <summary>
         /// Required designer variable.
@@ -50,6 +50,7 @@ namespace BlocklyAts {
             this.lblGameArgs = new System.Windows.Forms.Label();
             this.btnBrowseGamePath = new System.Windows.Forms.Button();
             this.btnGenerateArgs = new System.Windows.Forms.Button();
+            this.cbIncludeDebugInfo = new System.Windows.Forms.CheckBox();
             this.tlpMain.SuspendLayout();
             this.flpRbGame.SuspendLayout();
             this.flpActBtn.SuspendLayout();
@@ -64,9 +65,9 @@ namespace BlocklyAts {
             this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlpMain.Controls.Add(this.flpRbGame, 1, 3);
-            this.tlpMain.Controls.Add(this.tbGameArgs, 1, 5);
-            this.tlpMain.Controls.Add(this.tbGamePath, 1, 4);
+            this.tlpMain.Controls.Add(this.flpRbGame, 1, 4);
+            this.tlpMain.Controls.Add(this.tbGameArgs, 1, 6);
+            this.tlpMain.Controls.Add(this.tbGamePath, 1, 5);
             this.tlpMain.Controls.Add(this.btnBrowseNet, 3, 2);
             this.tlpMain.Controls.Add(this.btnBrowsex64, 3, 1);
             this.tlpMain.Controls.Add(this.tbNet, 2, 2);
@@ -78,16 +79,18 @@ namespace BlocklyAts {
             this.tlpMain.Controls.Add(this.cbCustomx64, 1, 1);
             this.tlpMain.Controls.Add(this.cbCustomNet, 1, 2);
             this.tlpMain.Controls.Add(this.tbx86, 2, 0);
-            this.tlpMain.Controls.Add(this.flpActBtn, 1, 6);
+            this.tlpMain.Controls.Add(this.flpActBtn, 1, 7);
             this.tlpMain.Controls.Add(this.btnBrowsex86, 3, 0);
-            this.tlpMain.Controls.Add(this.lblGamePath, 0, 3);
-            this.tlpMain.Controls.Add(this.lblGameArgs, 0, 5);
-            this.tlpMain.Controls.Add(this.btnBrowseGamePath, 3, 4);
-            this.tlpMain.Controls.Add(this.btnGenerateArgs, 3, 5);
+            this.tlpMain.Controls.Add(this.lblGamePath, 0, 4);
+            this.tlpMain.Controls.Add(this.lblGameArgs, 0, 6);
+            this.tlpMain.Controls.Add(this.btnBrowseGamePath, 3, 5);
+            this.tlpMain.Controls.Add(this.btnGenerateArgs, 3, 6);
+            this.tlpMain.Controls.Add(this.cbIncludeDebugInfo, 0, 3);
             this.tlpMain.Location = new System.Drawing.Point(12, 12);
             this.tlpMain.Margin = new System.Windows.Forms.Padding(12);
             this.tlpMain.Name = "tlpMain";
-            this.tlpMain.RowCount = 7;
+            this.tlpMain.RowCount = 8;
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -96,7 +99,8 @@ namespace BlocklyAts {
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpMain.Size = new System.Drawing.Size(702, 324);
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpMain.Size = new System.Drawing.Size(702, 392);
             this.tlpMain.TabIndex = 0;
             // 
             // flpRbGame
@@ -108,7 +112,7 @@ namespace BlocklyAts {
             this.flpRbGame.Controls.Add(this.rbGameBve6);
             this.flpRbGame.Controls.Add(this.rbGameOpenBve);
             this.flpRbGame.Controls.Add(this.rbGameCustom);
-            this.flpRbGame.Location = new System.Drawing.Point(212, 129);
+            this.flpRbGame.Location = new System.Drawing.Point(212, 197);
             this.flpRbGame.Name = "flpRbGame";
             this.flpRbGame.Padding = new System.Windows.Forms.Padding(0, 15, 0, 0);
             this.flpRbGame.Size = new System.Drawing.Size(296, 41);
@@ -166,7 +170,7 @@ namespace BlocklyAts {
             // 
             this.tlpMain.SetColumnSpan(this.tbGameArgs, 2);
             this.tbGameArgs.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tbGameArgs.Location = new System.Drawing.Point(212, 208);
+            this.tbGameArgs.Location = new System.Drawing.Point(212, 276);
             this.tbGameArgs.Multiline = true;
             this.tbGameArgs.Name = "tbGameArgs";
             this.tbGameArgs.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -177,7 +181,7 @@ namespace BlocklyAts {
             // 
             this.tlpMain.SetColumnSpan(this.tbGamePath, 2);
             this.tbGamePath.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tbGamePath.Location = new System.Drawing.Point(212, 176);
+            this.tbGamePath.Location = new System.Drawing.Point(212, 244);
             this.tbGamePath.Name = "tbGamePath";
             this.tbGamePath.Size = new System.Drawing.Size(381, 26);
             this.tbGamePath.TabIndex = 16;
@@ -300,7 +304,7 @@ namespace BlocklyAts {
             this.flpActBtn.Controls.Add(this.btnOK);
             this.flpActBtn.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.flpActBtn.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flpActBtn.Location = new System.Drawing.Point(212, 274);
+            this.flpActBtn.Location = new System.Drawing.Point(212, 342);
             this.flpActBtn.Name = "flpActBtn";
             this.flpActBtn.Padding = new System.Windows.Forms.Padding(0, 15, 0, 0);
             this.flpActBtn.Size = new System.Drawing.Size(487, 47);
@@ -344,7 +348,7 @@ namespace BlocklyAts {
             // 
             this.lblGamePath.AutoSize = true;
             this.lblGamePath.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblGamePath.Location = new System.Drawing.Point(3, 126);
+            this.lblGamePath.Location = new System.Drawing.Point(3, 194);
             this.lblGamePath.Name = "lblGamePath";
             this.tlpMain.SetRowSpan(this.lblGamePath, 2);
             this.lblGamePath.Size = new System.Drawing.Size(203, 79);
@@ -356,7 +360,7 @@ namespace BlocklyAts {
             // 
             this.lblGameArgs.AutoSize = true;
             this.lblGameArgs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblGameArgs.Location = new System.Drawing.Point(3, 205);
+            this.lblGameArgs.Location = new System.Drawing.Point(3, 273);
             this.lblGameArgs.Name = "lblGameArgs";
             this.lblGameArgs.Size = new System.Drawing.Size(203, 66);
             this.lblGameArgs.TabIndex = 14;
@@ -366,7 +370,7 @@ namespace BlocklyAts {
             // btnBrowseGamePath
             // 
             this.btnBrowseGamePath.AutoSize = true;
-            this.btnBrowseGamePath.Location = new System.Drawing.Point(599, 176);
+            this.btnBrowseGamePath.Location = new System.Drawing.Point(599, 244);
             this.btnBrowseGamePath.Name = "btnBrowseGamePath";
             this.btnBrowseGamePath.Size = new System.Drawing.Size(100, 26);
             this.btnBrowseGamePath.TabIndex = 15;
@@ -377,13 +381,26 @@ namespace BlocklyAts {
             // btnGenerateArgs
             // 
             this.btnGenerateArgs.AutoSize = true;
-            this.btnGenerateArgs.Location = new System.Drawing.Point(599, 208);
+            this.btnGenerateArgs.Location = new System.Drawing.Point(599, 276);
             this.btnGenerateArgs.Name = "btnGenerateArgs";
             this.btnGenerateArgs.Size = new System.Drawing.Size(100, 42);
             this.btnGenerateArgs.TabIndex = 15;
             this.btnGenerateArgs.Text = "Auto Start\r\nScenario\r\n";
             this.btnGenerateArgs.UseVisualStyleBackColor = true;
             this.btnGenerateArgs.Click += new System.EventHandler(this.btnGenerateArgs_Click);
+            // 
+            // cbIncludeDebugInfo
+            // 
+            this.cbIncludeDebugInfo.AutoSize = true;
+            this.tlpMain.SetColumnSpan(this.cbIncludeDebugInfo, 4);
+            this.cbIncludeDebugInfo.Location = new System.Drawing.Point(3, 129);
+            this.cbIncludeDebugInfo.Name = "cbIncludeDebugInfo";
+            this.cbIncludeDebugInfo.Padding = new System.Windows.Forms.Padding(0, 10, 0, 0);
+            this.cbIncludeDebugInfo.Size = new System.Drawing.Size(523, 62);
+            this.cbIncludeDebugInfo.TabIndex = 20;
+            this.cbIncludeDebugInfo.Text = "Include PDB\r\nDisplays the line number of the error when the plugin crashes.\r\nPlea" +
+    "se turn it off when Releasing your plugin!";
+            this.cbIncludeDebugInfo.UseVisualStyleBackColor = true;
             // 
             // FormBuildRunConfig
             // 
@@ -442,5 +459,6 @@ namespace BlocklyAts {
         private System.Windows.Forms.RadioButton rbGameOpenBve;
         private System.Windows.Forms.RadioButton rbGameCustom;
         private System.Windows.Forms.Button btnGenerateArgs;
+        private System.Windows.Forms.CheckBox cbIncludeDebugInfo;
     }
 }

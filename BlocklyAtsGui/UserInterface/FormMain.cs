@@ -1,3 +1,6 @@
+using BlocklyAts.Host;
+using BlocklyAts.WebView;
+using BlocklyAts.Workspace;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,7 +15,7 @@ using System.Web;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
-namespace BlocklyAts {
+namespace BlocklyAts.UserInterface {
     public partial class FormMain : Form {
 
         public FormMain() {
@@ -27,9 +30,20 @@ namespace BlocklyAts {
             }
         }
 
+        public FormMain(string workspacePath) : this() {
+            if (!File.Exists(workspacePath)) return;
+            try {
+                currentWorkspace = SaveState.LoadFromFile(workspacePath);
+                if (currentWorkspace == null) currentWorkspace = new SaveState();
+                updateSaveFileState();
+            } catch {
+                // Give up, if it is not possible to load the workspace.
+            }
+        }
+
         private BaseBrowser mainWebBrowser;
 
-        private Workspace currentWorkspace = new Workspace();
+        private SaveState currentWorkspace = new SaveState();
 
         private async void FormMain_Load(object sender, EventArgs e) {
             ApplyLanguage();
@@ -62,8 +76,8 @@ namespace BlocklyAts {
             }
             updateSaveFileState();
 #if DEBUG
-            string webDirectory = Path.Combine(Path.GetDirectoryName(CompilerFunction.appDir), "www");
-            if (!Directory.Exists(webDirectory)) webDirectory = Path.Combine(CompilerFunction.appDir, "www");
+            string webDirectory = Path.Combine(Path.GetDirectoryName(PlatformFunction.AppDir), "www");
+            if (!Directory.Exists(webDirectory)) webDirectory = Path.Combine(PlatformFunction.AppDir, "www");
 #else
             string webDirectory = Path.Combine(CompilerFunction.appDir, "www");
 #endif
@@ -81,25 +95,27 @@ namespace BlocklyAts {
                     this.Size = new Size(700, 200);
                     tsbSize = 40;
                 } else {
-                    tsbSize = 30;
+                    tsbSize = 26;
                 }
                 foreach (ToolStripItem item in mainToolStrip.Items) {
-                    if (!(item is ToolStripButton)) continue;
-                    item.AutoSize = false;
-                    item.Size = new Size(tsbSize, tsbSize);
-                    if (item.Image == null) continue;
-                    Bitmap b = new Bitmap(tsbSize, tsbSize);
-                    using (Graphics g = Graphics.FromImage((Image)b)) {
-                        g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-                        g.DrawImage(item.Image, 0, 0, tsbSize, tsbSize);
-                    }
-                    Image myResizedImg = (Image)b;
-                    item.Image = myResizedImg;
+                    if (item is ToolStripSeparator) continue;
+                    item.ImageScaling = ToolStripItemImageScaling.SizeToFit;
+                    var iconPath = Path.Combine(PlatformFunction.AppDir, "resource", "icon-light", item.Name + ".png");
+                    if (!File.Exists(iconPath)) continue;
+                    item.Image = Image.FromFile(iconPath);
+                }
+                foreach (ToolStripItem item in tsddbInfo.DropDownItems) {
+                    if (item is ToolStripSeparator) continue;
+                    item.ImageScaling = ToolStripItemImageScaling.SizeToFit;
+                    var iconPath = Path.Combine(PlatformFunction.AppDir, "resource", "icon-light", item.Name + ".png");
+                    if (!File.Exists(iconPath)) continue;
+                    item.Image = Image.FromFile(iconPath);
                 }
                 mainToolStrip.ImageScalingSize = new Size(tsbSize, tsbSize);
                 mainToolStrip.Height = tsbSize;
-                mainWebBrowser.KeyDown += new PreviewKeyDownEventHandler(mainWebBrowser_PreviewKeyDown);
-                this.PreviewKeyDown += new PreviewKeyDownEventHandler(mainWebBrowser_PreviewKeyDown);
+                mainWebBrowser.KeyDown += mainWebBrowser_PreviewKeyDown;
+                this.PreviewKeyDown += mainWebBrowser_PreviewKeyDown;
+                mainWebBrowser.PageFinished += mainWebBrowser_PageFinished;
                 mainWebBrowser.BindTo(this);
             } else {
                 MessageBox.Show(I18n.Translate("Msg.LanguageChange"));
@@ -141,6 +157,11 @@ namespace BlocklyAts {
             }
         }
 
+        private async void mainWebBrowser_PageFinished(object sender, EventArgs e) {
+            if (currentWorkspace == null || currentWorkspace.BlocklyXml == null) return;
+            await mainWebBrowser.BkyLoadInitWorkspace(currentWorkspace.BlocklyXml);
+        }
+
         private void updateSaveFileState() {
             if (string.IsNullOrEmpty(currentWorkspace.SaveFilePath)) {
                 this.Text = "BlocklyAts: " + I18n.Translate("Text.NotSaved");
@@ -154,7 +175,7 @@ namespace BlocklyAts {
         private async void tsbtnNew_Click(object sender, EventArgs e) {
             if (MessageBox.Show(I18n.Translate("Msg.DiscardChange"), "Clear workspace", MessageBoxButtons.YesNo)
                 == DialogResult.Yes) {
-                currentWorkspace = new Workspace();
+                currentWorkspace = new SaveState();
                 await mainWebBrowser.BkyResetWorkspace();
                 updateSaveFileState();
             }
@@ -173,14 +194,17 @@ namespace BlocklyAts {
         private async void tsbtnOpen_Click(object sender, EventArgs e) {
             var ofd = new OpenFileDialog() {
                 Filter = "BlocklyAts XML|*.batsxml",
-                Title = "Restore Workspace"
+                Title = "Load Workspace"
             };
             if (ofd.ShowDialog() != DialogResult.OK) return;
-
+            
             try {
-                currentWorkspace = Workspace.LoadFromFile(ofd.FileName);
-                await mainWebBrowser.BkyLoadWorkspace(currentWorkspace.BlocklyXml);
-                updateSaveFileState();
+                SaveState newWorkspace  = SaveState.LoadFromFile(ofd.FileName);
+                if (newWorkspace != null) {
+                    currentWorkspace = newWorkspace;
+                    await mainWebBrowser.BkyLoadWorkspace(currentWorkspace.BlocklyXml);
+                    updateSaveFileState();
+                }
             } catch (Exception ex) {
                 MessageBox.Show("This workspace savestate is malformed:\n" + ex.ToString());
             }
@@ -197,7 +221,8 @@ namespace BlocklyAts {
 
         private async Task<string> buildAllPlatforms() {
             await saveWorkspace(); // Autosave
-            
+            flashSaveBtn();
+
             var cSharpCode = await mainWebBrowser.BkyExportCSharp();
             var outputList = new List<Tuple<string, string>>();
             if (currentWorkspace.Config.ShouldCompilex86) {
@@ -213,9 +238,13 @@ namespace BlocklyAts {
             foreach (var pair in outputList) {
                 notifText += "\n" + pair.Item1 + ": " + pair.Item2;
                 if (pair.Item1 == "net") {
-                    CompilerFunction.CompileCSharpOpenBve(cSharpCode, pair.Item2);
+                    CompilerFunction.CompileCSharpOpenBve(
+                        cSharpCode, pair.Item2, currentWorkspace.Config.IncludeDebugInfo
+                    );
                 } else {
-                    CompilerFunction.CompileCSharpUnmanaged(cSharpCode, pair.Item2, pair.Item1);
+                    CompilerFunction.CompileCSharpUnmanaged(
+                        cSharpCode, pair.Item2, pair.Item1, currentWorkspace.Config.IncludeDebugInfo
+                    );
                 }
             }
             return notifText;
@@ -246,31 +275,27 @@ namespace BlocklyAts {
         }
 
         private async void tsbtnSave_Click(object sender, EventArgs e) {
+            if (!tsbtnSave.Enabled) return;
             await saveWorkspace();
+            flashSaveBtn();
+        }
+
+        private void flashSaveBtn() {
             new System.Threading.Thread(() => {
-                var resources = new ComponentResourceManager(typeof(FormMain));
-                Image sourceIcon = (Image)resources.GetObject("tsbtnSave.Image");
-                Bitmap originalIcon = new Bitmap(tsbtnSave.Width, tsbtnSave.Height);
-                using (Graphics g = Graphics.FromImage(originalIcon)) {
-                    g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-                    g.DrawImage(sourceIcon, 0, 0, tsbtnSave.Width, tsbtnSave.Height);
-                }
-                Bitmap flashingIcon = new Bitmap(originalIcon);
-                using (Graphics g = Graphics.FromImage(flashingIcon)) {
-                    g.FillRectangle(
-                        new SolidBrush(Color.FromArgb(150, 0, 200, 50)),
-                        new Rectangle(0, 0, flashingIcon.Width, flashingIcon.Height)
-                    );
-                }
-                for (int i = 0; i <= 7; i++) {
+                var iconPathSrc = Path.Combine(PlatformFunction.AppDir, "resource", "icon-light", "tsbtnSave.png");
+                var iconPathOk = Path.Combine(PlatformFunction.AppDir, "resource", "icon-light", "tsbtnSave_Ok.png");
+                Image sourceIcon = Image.FromFile(iconPathSrc);
+                Image flashingIcon = Image.FromFile(iconPathOk);
+                for (int i = 0; i <= 5; i++) {
                     this.BeginInvoke((Action)(() => {
                         if (i % 2 == 0) {
                             tsbtnSave.Image = flashingIcon;
                         } else {
-                            tsbtnSave.Image = originalIcon;
+                            tsbtnSave.Image = sourceIcon;
                         }
+                        tsbtnSave.Invalidate();
                     }));
-                    System.Threading.Thread.Sleep(60);
+                    System.Threading.Thread.Sleep(100);
                 }
             }).Start();
         }

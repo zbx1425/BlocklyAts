@@ -2,7 +2,7 @@ Blockly.Msg["BVE_CAT_EVENT"]="BVE事件";
 Blockly.Msg["BVE_CAT_COMMON"]="BVE常用";
 Blockly.Msg["BVE_CAT_SPECIALIZE"]="BVE参数";
 Blockly.Msg["BVE_CAT_UTILITY"]="实用功能";
-Blockly.Msg["BVE_CAT_ADVANCED"]="高级功能";
+Blockly.Msg["BVE_CAT_ADVANCED"]="其他";
 
 Blockly.Msg["BVE_ELAPSE"]="当状态更新 (每帧一次)";
 Blockly.Msg["BVE_INITIALIZE"]="当游戏开始 (载入/跳站)";
@@ -65,8 +65,8 @@ Blockly.Msg["BVE_HND_CONSTSPD"]="定速装置";
 Blockly.Msg["BVE_SOUND_STOP"]="停止 %1 号声音";
 Blockly.Msg["BVE_SOUND_PLAY_ONCE"]="播放 %1 号声音一次";
 Blockly.Msg["BVE_SOUND_PLAY_LOOP"]="以 %2%% 音量循环播放 %1 号声音";
-Blockly.Msg["BVE_GET_SOUND_INTERNAL"]="(高级) %1 号声音状态";
-Blockly.Msg["BVE_SET_SOUND_INTERNAL"]="(高级) 设定 %1 号声音状态为 %2";
+Blockly.Msg["BVE_GET_SOUND_INTERNAL"]="%1 号声音状态";
+Blockly.Msg["BVE_SET_SOUND_INTERNAL"]="设定 %1 号声音状态为 %2";
 
 Blockly.Msg["BVE_GET_PANEL"]="面板状态 %1";
 Blockly.Msg["BVE_SET_PANEL"]="设定面板状态 %1 为 %2";
@@ -90,6 +90,10 @@ Blockly.Msg["BVE_TMRMOD_STOP"]="停止";
 Blockly.Msg["BVE_TMRMOD_TRIGSTOP"]="触发后停止";
 Blockly.Msg["BVE_TMRMOD_RESET"]="重新开始";
 Blockly.Msg["BVE_TMRMOD_TRIGRESET"]="触发后重开始";
+
+Blockly.Msg["BVE_CONVERT_TO_DOUBLE"]="%1 转数字";
+Blockly.Msg["BVE_CONVERT_TO_STRING"]="%1 转文本";
+Blockly.Msg["BVE_CONVERT_TO_BOOLEAN"]="%1 转布尔值";
 
 Blockly.Msg["BVE_MSG_HAT_SINGLETON"]="事件处理程序每种只可定义一个。";
 Blockly.Msg["BVE_MSG_HAT_TIMER_SINGLETON"]="对于每个名称的定时器只能有一个'当定时器触发'。";

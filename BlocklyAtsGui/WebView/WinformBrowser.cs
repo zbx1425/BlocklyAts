@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BlocklyAts {
+namespace BlocklyAts.WebView {
 
     public class WinformBrowser : BaseBrowser {
 

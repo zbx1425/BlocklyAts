@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
-namespace BlocklyAts {
+namespace BlocklyAts.Host {
     public class UpgradeInfo {
 
         public string Project;
@@ -20,26 +20,11 @@ namespace BlocklyAts {
         public static async Task<UpgradeInfo> FetchOnline(string url, string name) {
             try {
                 string remoteDocument;
-                //if (PlatformFunction.IsMono()) {
-                //    // Mono's HttpWebRequest / WebClient implemention is currently inoperative
-                //    // This is so inconvenient, here's a workaround
-                //    var proc = new System.Diagnostics.Process();
-                //    proc.StartInfo = new System.Diagnostics.ProcessStartInfo("curl");
-                //    proc.StartInfo.CreateNoWindow = true;
-                //    proc.StartInfo.ErrorDialog = false;
-                //    proc.StartInfo.UseShellExecute = false;
-                //    proc.StartInfo.RedirectStandardOutput = true;
-                //    proc.StartInfo.Arguments = "\"" + url + "\" -m 10";
-                //    proc.Start();
-                //    remoteDocument = await proc.StandardOutput.ReadToEndAsync();
-                //    await proc.WaitForExitAsync();
-                //} else {
-                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                    request.AutomaticDecompression = DecompressionMethods.GZip;
-                    HttpWebResponse response = (HttpWebResponse)await request.GetResponseAsync();
-                    Stream stream = response.GetResponseStream();
-                    remoteDocument = await new StreamReader(stream).ReadToEndAsync();
-                //}
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.AutomaticDecompression = DecompressionMethods.GZip;
+                HttpWebResponse response = (HttpWebResponse)await request.GetResponseAsync();
+                Stream stream = response.GetResponseStream();
+                remoteDocument = await new StreamReader(stream).ReadToEndAsync();
                 
                 var xdoc = XDocument.Parse(remoteDocument);
                 foreach (var project in xdoc.Root.Elements("Project")) {

@@ -3,15 +3,18 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BlocklyAts {
+namespace BlocklyAts.Host {
     static class PlatformFunction {
+        
+        public static readonly string AppDir = Path.GetDirectoryName(Application.ExecutablePath);
 
-        static readonly string appName = System.IO.Path.GetFileName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
+        public static readonly string AppName = Path.GetFileName(Process.GetCurrentProcess().MainModule.FileName);
 
         static readonly string featureControlRegKey = @"Software\Microsoft\Internet Explorer\Main\FeatureControl\";
 
@@ -44,19 +47,19 @@ namespace BlocklyAts {
             if (LicenseManager.UsageMode != LicenseUsageMode.Runtime) return;
 
             Registry.CurrentUser.CreateSubKey(featureControlRegKey + "FEATURE_BROWSER_EMULATION", true)
-                .SetValue(appName, GetBrowserEmulationMode(), RegistryValueKind.DWord);
+                .SetValue(AppName, GetBrowserEmulationMode(), RegistryValueKind.DWord);
 
             // enable the features which are "On" for the full Internet Explorer browser
             Registry.CurrentUser.CreateSubKey(featureControlRegKey + "FEATURE_ENABLE_CLIPCHILDREN_OPTIMIZATION", true)
-                .SetValue(appName, 1, RegistryValueKind.DWord);
+                .SetValue(AppName, 1, RegistryValueKind.DWord);
             Registry.CurrentUser.CreateSubKey(featureControlRegKey + "FEATURE_AJAX_CONNECTIONEVENTS", true)
-                .SetValue(appName, 1, RegistryValueKind.DWord);
+                .SetValue(AppName, 1, RegistryValueKind.DWord);
             Registry.CurrentUser.CreateSubKey(featureControlRegKey + "FEATURE_GPU_RENDERING", true)
-                .SetValue(appName, 1, RegistryValueKind.DWord);
+                .SetValue(AppName, 1, RegistryValueKind.DWord);
             //Registry.CurrentUser.CreateSubKey(featureControlRegKey + "FEATURE_LOCALMACHINE_LOCKDOWN", true)
             //    .SetValue(appName, 0, RegistryValueKind.DWord);
             Registry.CurrentUser.CreateSubKey(featureControlRegKey + "FEATURE_NINPUT_LEGACYMODE", true)
-                .SetValue(appName, 0, RegistryValueKind.DWord);
+                .SetValue(AppName, 0, RegistryValueKind.DWord);
         }
 
         public static void UnsetWebBrowserFeatures() {
@@ -65,19 +68,19 @@ namespace BlocklyAts {
             if (LicenseManager.UsageMode != LicenseUsageMode.Runtime) return;
 
             Registry.CurrentUser.OpenSubKey(featureControlRegKey + "FEATURE_BROWSER_EMULATION", true)
-                ?.DeleteValue(appName);
+                ?.DeleteValue(AppName);
 
             // enable the features which are "On" for the full Internet Explorer browser
             Registry.CurrentUser.OpenSubKey(featureControlRegKey + "FEATURE_ENABLE_CLIPCHILDREN_OPTIMIZATION", true)
-                ?.DeleteValue(appName);
+                ?.DeleteValue(AppName);
             Registry.CurrentUser.OpenSubKey(featureControlRegKey + "FEATURE_AJAX_CONNECTIONEVENTS", true)
-                ?.DeleteValue(appName);
+                ?.DeleteValue(AppName);
             Registry.CurrentUser.OpenSubKey(featureControlRegKey + "FEATURE_GPU_RENDERING", true)
-                ?.DeleteValue(appName);
+                ?.DeleteValue(AppName);
             //Registry.CurrentUser.OpenSubKey(featureControlRegKey + "FEATURE_LOCALMACHINE_LOCKDOWN", true)
             //    ?.DeleteValue(appName);
             Registry.CurrentUser.OpenSubKey(featureControlRegKey + "FEATURE_NINPUT_LEGACYMODE", true)
-                ?.DeleteValue(appName);
+                ?.DeleteValue(AppName);
         }
 
         private static UInt32 GetBrowserEmulationMode() {

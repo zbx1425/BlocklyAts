@@ -1,5 +1,15 @@
 public class ApiProxy : IRuntime {
   
+  // Increase this value if you need more panel variables.
+  // Please note that only OpenBVE supports more than 256 panel variables.
+  private const int MAX_PANEL_INDEX = 255;
+  private const string MAX_PANEL_ERROR_MSG = "Panel index must be between 0-255.";
+  
+  // Increase this value if you need more Ats sounds.
+  // Please note that only OpenBVE supports more than 256 sounds.
+  private const int MAX_SOUND_INDEX = 255;
+  private const string MAX_SOUND_ERROR_MSG = "Sound index must be between 0-255.";
+  
   private AtsProgram Impl; 
   private FunctionCompanion Func;
   
@@ -14,21 +24,39 @@ public class ApiProxy : IRuntime {
     return true;
   }
   
+  private static void RuntimeException(Exception ex) {
+    new System.Threading.Thread(() => { RuntimeExceptionBlocking(ex); }).Start();
+  }
+  
+  private static void RuntimeExceptionBlocking(Exception ex) {
+    var result = MessageBox.Show(ex.ToString(), "BlocklyAts Runtime Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
+    if (result == DialogResult.Cancel) System.Diagnostics.Process.GetCurrentProcess().Kill();
+  }
+  
   public void SetVehicleSpecs(VehicleSpecs _p1) { VSpec = _p1; }
   public void SetReverser(int _p1) { EData_Handles_Reverser = _p1; }
   public void SetPower(int _p1) { EData_Handles_PowerNotch = _p1; }
   public void SetBrake(int _p1) { EData_Handles_BrakeNotch = _p1; }
   public void PerformAI(AIData _p1) { }
   
-  public void Elapse(ElapseData _p1) { EData = _p1; Func.UpdateTimer(); Impl.Elapse(); }
-  public void Initialize(InitializationModes _p1) { Impl.Initialize((int)_p1); }
-  public void KeyDown(VirtualKeys _p1) { int _pkey = (int)_p1; if (_pkey > 15) return; KeyState[_pkey] = true; Impl.KeyDown(_pkey); }
-  public void KeyUp(VirtualKeys _p1) { int _pkey = (int)_p1; if (_pkey > 15) return; KeyState[_pkey] = false; Impl.KeyUp(_pkey); }
-  public void HornBlow(HornTypes _p1) { Impl.HornBlow((int)_p1); }
-  public void DoorChange(DoorStates _p1, DoorStates _p2) { _doorState = _p2; if ((_p1 == DoorStates.None) == (_p2 == DoorStates.None)) return; Impl.DoorChange(); }
-  public void SetSignal(SignalData[] _p1) { Impl.SetSignal(_p1[0].Aspect); }
-  public void SetBeacon(BeaconData _p1) { Impl.SetBeacon(_p1.Type, _p1.Optional, _p1.Signal.Aspect, _p1.Signal.Distance); }
-  public void Unload() { Impl.Unload(); }
+  public void Elapse(ElapseData _p1) { EData = _p1; try { Func.UpdateTimer(); Impl.Elapse(); } catch (Exception ex) { RuntimeExceptionBlocking(ex); } }
+  public void Initialize(InitializationModes _p1) { try { Impl.Initialize((int)_p1); } catch (Exception ex) { RuntimeExceptionBlocking(ex); } }
+  public void KeyDown(VirtualKeys _p1) { 
+    int _pkey = (int)_p1; if (_pkey > 15) return; KeyState[_pkey] = true; 
+    try { Impl.KeyDown(_pkey); } catch (Exception ex) { RuntimeException(ex); } 
+  }
+  public void KeyUp(VirtualKeys _p1) { 
+    int _pkey = (int)_p1; if (_pkey > 15) return; KeyState[_pkey] = false; 
+    try { Impl.KeyUp(_pkey); } catch (Exception ex) { RuntimeException(ex); }
+  }
+  public void HornBlow(HornTypes _p1) { try { Impl.HornBlow((int)_p1); } catch (Exception ex) { RuntimeException(ex); } }
+  public void DoorChange(DoorStates _p1, DoorStates _p2) { 
+    _doorState = _p2; if ((_p1 == DoorStates.None) == (_p2 == DoorStates.None)) return; 
+    try { Impl.DoorChange(); } catch (Exception ex) { RuntimeException(ex); }
+  }
+  public void SetSignal(SignalData[] _p1) { try { Impl.SetSignal(_p1[0].Aspect); } catch (Exception ex) { RuntimeException(ex); } }
+  public void SetBeacon(BeaconData _p1) { try { Impl.SetBeacon(_p1.Type, _p1.Optional, _p1.Signal.Aspect, _p1.Signal.Distance); } catch (Exception ex) { RuntimeException(ex); } }
+  public void Unload() { try { Impl.Unload(); } catch (Exception ex) { RuntimeExceptionBlocking(ex); } }
   
   public int VSpec_PowerNotches, VSpec_BrakeNotches, VSpec_AtsNotch, VSpec_B67Notch, VSpec_Cars;
   public int EData_Handles_Reverser, EData_Handles_PowerNotch, EData_Handles_BrakeNotch, EData_Handles_ConstSpeed;
@@ -78,7 +106,7 @@ public class ApiProxy : IRuntime {
     }
   }
   
-  private int[] Panel = new int[1024]; // Why not add some extra panel variables?
+  private int[] Panel = new int[MAX_PANEL_INDEX + 1]; // Why not add some extra panel variables?
   private DoorStates _doorState;
   public int DoorState {
     get { return (int)this._doorState; }
@@ -91,9 +119,9 @@ public class ApiProxy : IRuntime {
   public string PluginDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location).TrimEnd('\\', '/');
   
   private PlaySoundDelegate playSoundDelegate;
-  private SoundHandle[] soundHandles = new SoundHandle[256];
+  private SoundHandle[] soundHandles = new SoundHandle[MAX_SOUND_INDEX + 1];
   // To achieve the same behavior as Win32 plugin interface at bve_get_sound_internal
-  private int[] emulatedSoundState = new int[256];
+  private int[] emulatedSoundState = new int[MAX_SOUND_INDEX + 1];
   
   public void SetHandle(int type, int pos) {
     switch (type) {
@@ -114,10 +142,12 @@ public class ApiProxy : IRuntime {
   }
   
   public int GetLegacySound(int id) {
+    if (id < 0 || id > MAX_SOUND_INDEX) throw new IndexOutOfRangeException(MAX_SOUND_ERROR_MSG);
     return emulatedSoundState[id];
   }
 
   public void SetLegacySound(int id, int state) {
+    if (id < 0 || id > MAX_SOUND_INDEX) throw new IndexOutOfRangeException(MAX_SOUND_ERROR_MSG);
     if (state == -10000) {
       if (soundHandles[id] != null && soundHandles[id].Playing) {
         soundHandles[id].Stop();
@@ -145,6 +175,7 @@ public class ApiProxy : IRuntime {
   }
   
   public void SetLegacySoundLV(int id, double volume) {
+    if (id < 0 || id > MAX_SOUND_INDEX) throw new IndexOutOfRangeException(MAX_SOUND_ERROR_MSG);
     int state;
     if (volume <= 0) {
       state = -10000;
@@ -156,8 +187,15 @@ public class ApiProxy : IRuntime {
     SetLegacySound(id, state);
   }
   
-  public int GetPanel(int id) { return Panel[id]; }
-  public void SetPanel(int id, int data) { Panel[id] = data; }
+  public int GetPanel(int id) { 
+    if (id < 0 || id > MAX_PANEL_INDEX) throw new IndexOutOfRangeException(MAX_PANEL_ERROR_MSG);
+    return Panel[id]; 
+  }
+  
+  public void SetPanel(int id, int data) {
+    if (id < 0 || id > MAX_PANEL_INDEX) throw new IndexOutOfRangeException(MAX_PANEL_ERROR_MSG);
+    Panel[id] = data; 
+  }
   
   public void CallImplFunc(string name) {
     var methodInfo = Impl.GetType().GetMethod("_etimertick_" + name);

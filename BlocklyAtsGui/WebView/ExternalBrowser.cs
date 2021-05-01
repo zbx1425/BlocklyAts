@@ -1,4 +1,4 @@
-using BlocklyATS;
+using BlocklyAts.Host;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BlocklyAts {
+namespace BlocklyAts.WebView {
 
     class ExternalBrowser : BaseBrowser {
 #pragma warning disable CS0067
@@ -143,7 +143,10 @@ namespace BlocklyAts {
                     SetMessage("Too many clients! Only one tab page of one browser may be connected.");
                     browserReady = false;
                 } else {
-                    if (!browserReady) SetMessage("Browser connected. #" + heartbeat.First().Key);
+                    if (!browserReady) {
+                        SetMessage("Browser connected. #" + heartbeat.First().Key);
+                        PageFinished?.Invoke(this, new EventArgs());
+                    }
                     browserReady = true;
                 }
             } finally {

@@ -2,7 +2,7 @@ Blockly.Msg["BVE_CAT_EVENT"]="BVE Events";
 Blockly.Msg["BVE_CAT_COMMON"]="BVE Common";
 Blockly.Msg["BVE_CAT_SPECIALIZE"]="BVE Argument";
 Blockly.Msg["BVE_CAT_UTILITY"]="Utility Func";
-Blockly.Msg["BVE_CAT_ADVANCED"]="Advanced";
+Blockly.Msg["BVE_CAT_ADVANCED"]="Misc";
 
 Blockly.Msg["BVE_ELAPSE"]="when elapse (each frame)";
 Blockly.Msg["BVE_INITIALIZE"]="when init (load/jump station)";
@@ -65,8 +65,8 @@ Blockly.Msg["BVE_HND_CONSTSPD"]="constspeed";
 Blockly.Msg["BVE_SOUND_STOP"]="stop sound %1";
 Blockly.Msg["BVE_SOUND_PLAY_ONCE"]="play sound %1 once";
 Blockly.Msg["BVE_SOUND_PLAY_LOOP"]="play sound %1 loop at %2%% volume";
-Blockly.Msg["BVE_GET_SOUND_INTERNAL"]="(advanced) sound %1 state";
-Blockly.Msg["BVE_SET_SOUND_INTERNAL"]="(advanced) set sound %1 state to %2";
+Blockly.Msg["BVE_GET_SOUND_INTERNAL"]="sound %1 state";
+Blockly.Msg["BVE_SET_SOUND_INTERNAL"]="set sound %1 state to %2";
 
 Blockly.Msg["BVE_GET_PANEL"]="panel state %1";
 Blockly.Msg["BVE_SET_PANEL"]="set panel state %1 to %2";
@@ -90,6 +90,10 @@ Blockly.Msg["BVE_TMRMOD_STOP"]="stop";
 Blockly.Msg["BVE_TMRMOD_TRIGSTOP"]="trigger&stop";
 Blockly.Msg["BVE_TMRMOD_RESET"]="restart";
 Blockly.Msg["BVE_TMRMOD_TRIGRESET"]="trigger&restart";
+
+Blockly.Msg["BVE_CONVERT_TO_DOUBLE"]="%1 to number";
+Blockly.Msg["BVE_CONVERT_TO_STRING"]="%1 to string";
+Blockly.Msg["BVE_CONVERT_TO_BOOLEAN"]="%1 to boolean";
 
 Blockly.Msg["BVE_MSG_HAT_SINGLETON"]="Events may only be used once each";
 Blockly.Msg["BVE_MSG_HAT_TIMER_SINGLETON"]="Only one 'when triggered' may be used for each timer name.";

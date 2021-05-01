@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlocklyAts {
+namespace BlocklyAts.Host {
 
     static class PreferenceManager {
 

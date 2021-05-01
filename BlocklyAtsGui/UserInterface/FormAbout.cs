@@ -1,3 +1,4 @@
+using BlocklyAts.Host;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,7 +8,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BlocklyAts {
+namespace BlocklyAts.UserInterface {
     partial class FormAbout : Form {
         public FormAbout() {
             InitializeComponent();

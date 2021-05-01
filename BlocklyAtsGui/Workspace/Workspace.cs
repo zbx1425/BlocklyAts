@@ -1,3 +1,4 @@
+using BlocklyAts.Host;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -5,15 +6,16 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
-namespace BlocklyAts {
+namespace BlocklyAts.Workspace {
 
     // For backward-compatibility of my stupid temporary idea
     [XmlRoot(ElementName = "blocklyats")]
-    public class Workspace {
+    public class SaveState {
 
         [XmlIgnore()]
         public string SaveFilePath { get; set; }
@@ -26,7 +28,7 @@ namespace BlocklyAts {
         [XmlElement("blocklyxml")]
         public FPXElement BlocklyXml { get; set; }
 
-        public Workspace() {
+        public SaveState() {
             Config = new BuildRunConfig();
             Config.ShouldCompileAnyCpu = true;
             Config.ShouldCompilex64 = true;
@@ -43,15 +45,22 @@ namespace BlocklyAts {
             using (FileStream outStream = new FileStream(path, FileMode.Create, FileAccess.Write))
             using (StreamWriter writer = new StreamWriter(outStream, Encoding.UTF8)) {
             using (XmlWriter xmlWriter = XmlWriter.Create(writer, new XmlWriterSettings { Indent = false }))
-                new XmlSerializer(typeof(Workspace)).Serialize(xmlWriter, this);
+                new XmlSerializer(typeof(SaveState)).Serialize(xmlWriter, this);
             }
         }
 
-        public static Workspace LoadFromFile(string path) {
+        public static SaveState LoadFromFile(string path) {
             using (FileStream inStream = new FileStream(path, FileMode.Open, FileAccess.Read))
             using (StreamReader reader = new StreamReader(inStream, Encoding.UTF8)) {
-                var wksp = (Workspace)new XmlSerializer(typeof(Workspace)).Deserialize(reader);
+                var wksp = (SaveState)new XmlSerializer(typeof(SaveState)).Deserialize(reader);
                 wksp.SaveFilePath = path;
+                if (new Version(wksp.EditorVersion) > Assembly.GetExecutingAssembly().GetName().Version) {
+                    // Maybe this UI code should be moved somewhere else?
+                    if (MessageBox.Show(I18n.Translate("Msg.LoadHigherVersion"), "Low Version", 
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
+                        return null;
+                    }
+                }
                 if (new Version(wksp.EditorVersion) <= new Version(1, 0, 6, 0)) {
                     // Upgrade ID from field to block
                     string[] upgradeList = {

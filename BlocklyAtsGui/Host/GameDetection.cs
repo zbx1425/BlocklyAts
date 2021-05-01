@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlocklyAts {
+namespace BlocklyAts.Host {
     static class GameDetection {
 
         public static readonly string OpenBvePath = null;

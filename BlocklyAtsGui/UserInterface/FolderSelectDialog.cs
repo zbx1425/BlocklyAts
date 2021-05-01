@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace BlocklyAts {
+namespace BlocklyAts.UserInterface {
     /// <summary>
     /// Present the Windows Vista-style open file dialog to select a folder. Fall back for older Windows Versions
     /// </summary>

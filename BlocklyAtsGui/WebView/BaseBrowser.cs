@@ -1,3 +1,4 @@
+using BlocklyAts.Host;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Web.Script.Serialization;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
-namespace BlocklyAts {
+namespace BlocklyAts.WebView {
 
     public abstract class BaseBrowser : IDisposable {
         public abstract Control GetControl();

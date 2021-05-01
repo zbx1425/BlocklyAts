@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace BlocklyAts {
+namespace BlocklyAts.Host {
 
     [XmlRoot(ElementName = "Preference")]
     public class Preference {

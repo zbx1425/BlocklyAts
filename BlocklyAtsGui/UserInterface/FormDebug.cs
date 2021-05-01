@@ -1,3 +1,5 @@
+using BlocklyAts.Host;
+using BlocklyAts.Workspace;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BlocklyAts {
+namespace BlocklyAts.UserInterface {
     public partial class FormDebug : Form {
 
         private FastColoredTextBoxNS.FastColoredTextBox tbCode;

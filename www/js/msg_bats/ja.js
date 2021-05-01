@@ -1,19 +1,19 @@
 Blockly.Msg["BVE_CAT_EVENT"]="BVEイベント";
-Blockly.Msg["BVE_CAT_COMMON"]="BVE慣用";
+Blockly.Msg["BVE_CAT_COMMON"]="BVE汎用";
 Blockly.Msg["BVE_CAT_SPECIALIZE"]="BVE引数";
 Blockly.Msg["BVE_CAT_UTILITY"]="便利機能";
-Blockly.Msg["BVE_CAT_ADVANCED"]="上級者向"
+Blockly.Msg["BVE_CAT_ADVANCED"]="その他"
 
-Blockly.Msg["BVE_ELAPSE"]="経過 (1 フレームごと)";
-Blockly.Msg["BVE_INITIALIZE"]="ゲーム開始 (開く/はじめから)";
-Blockly.Msg["BVE_KEYDOWN_ANY"]="キーが押された";
-Blockly.Msg["BVE_KEYUP_ANY"]="キーが離された";
-Blockly.Msg["BVE_HORN_BLOW"]="警笛が扱われた";
-Blockly.Msg["BVE_DOOR_CHANGE"]="客室ドアが移動";
-Blockly.Msg["BVE_SET_SIGNAL"]="閉そくの信号が変化した";
-Blockly.Msg["BVE_SET_BEACON"]="地上子を越えた";
-Blockly.Msg["BVE_LOAD"]="プラグインが読み込";
-Blockly.Msg["BVE_DISPOSE"]="プラグインが解放";
+Blockly.Msg["BVE_ELAPSE"]="経過 (1 フレーム毎)";	
+Blockly.Msg["BVE_INITIALIZE"]="ゲーム開始時 (開く/はじめから)";	
+Blockly.Msg["BVE_KEYDOWN_ANY"]="保安装置キーが押された時";	
+Blockly.Msg["BVE_KEYUP_ANY"]="保安装置キーが離された時";	
+Blockly.Msg["BVE_HORN_BLOW"]="警笛が扱われた時";	
+Blockly.Msg["BVE_DOOR_CHANGE"]="客室ドアが開/閉された時";	
+Blockly.Msg["BVE_SET_SIGNAL"]="閉そくの信号が変化した時";	
+Blockly.Msg["BVE_SET_BEACON"]="地上子を越えた時";	
+Blockly.Msg["BVE_LOAD"]="プラグインが読み込まれた時";	
+Blockly.Msg["BVE_DISPOSE"]="プラグインが解放された時";
 
 Blockly.Msg["BVE_ATS_KEY_S"]="S (Space)";
 Blockly.Msg["BVE_ATS_KEY_A1"]="A1 (Insert)";
@@ -65,14 +65,14 @@ Blockly.Msg["BVE_HND_CONSTSPD"]="定速制御";
 Blockly.Msg["BVE_SOUND_STOP"]="サウンド %1 を止める";
 Blockly.Msg["BVE_SOUND_PLAY_ONCE"]="サウンド %1 を1回再生する";
 Blockly.Msg["BVE_SOUND_PLAY_LOOP"]="音量 %2%% でサウンド %1 を繰り返し再生する";
-Blockly.Msg["BVE_GET_SOUND_INTERNAL"]="(高度) サウンド %1 の状態";
-Blockly.Msg["BVE_SET_SOUND_INTERNAL"]="(高度) サウンド %1 の状態を %2 に設定";
+Blockly.Msg["BVE_GET_SOUND_INTERNAL"]="サウンド %1 の状態";
+Blockly.Msg["BVE_SET_SOUND_INTERNAL"]="サウンド %1 の状態を %2 に設定";
 
 Blockly.Msg["BVE_GET_PANEL"]="パネル %1 の状態";
 Blockly.Msg["BVE_SET_PANEL"]="パネル %1 の状態を %2 に設定";
 
-Blockly.Msg["BVE_GET_KEY"]="キー %1 が押された?";
-Blockly.Msg["BVE_GET_DOOR"]="ドアが開いた?";
+Blockly.Msg["BVE_GET_KEY"]="キー %1 が押されたか?";	
+Blockly.Msg["BVE_GET_DOOR"]="ドアが開いたか?";
 
 Blockly.Msg["BVE_INIT_MODE"]="ゲーム開始時のブレーキ弁の状態";
 Blockly.Msg["BVE_UPDOWN_KEY"]="押/離されたキー";
@@ -91,17 +91,21 @@ Blockly.Msg["BVE_TMRMOD_TRIGSTOP"]="トリガーと停止";
 Blockly.Msg["BVE_TMRMOD_RESET"]="リセット";
 Blockly.Msg["BVE_TMRMOD_TRIGRESET"]="トリガーとリセット";
 
+Blockly.Msg["BVE_CONVERT_TO_DOUBLE"]="%1 >数値";
+Blockly.Msg["BVE_CONVERT_TO_STRING"]="%1 >テキスト";
+Blockly.Msg["BVE_CONVERT_TO_BOOLEAN"]="%1 >ブール値";
+
 Blockly.Msg["BVE_MSG_HAT_SINGLETON"]="イベントはそれぞれ1回のみ使用できます。";
 Blockly.Msg["BVE_MSG_HAT_TIMER_SINGLETON"]="タイマー名ごとに使用できる「トリガー時」は1つだけです。 ";
 Blockly.Msg["BVE_MSG_NO_LIMIT"]="制限なし：";
-Blockly.Msg["BVE_MSG_NULL_LOAD"]="'読み込'の場合は使用しない：";
-Blockly.Msg["BVE_MSG_NULL_LOAD_INIT"]="'読み込'または'ゲーム開始'の場合は使用しない：";
-Blockly.Msg["BVE_MSG_ELAPSE_ONLY"]="'経過'の場合にのみ使用：";
-Blockly.Msg["BVE_MSG_INIT_ONLY"]="'ゲーム開始'の場合にのみ使用：";
-Blockly.Msg["BVE_MSG_KEY_ANY_ONLY"]="'キーが押/離'の場合にのみ使用：";
-Blockly.Msg["BVE_MSG_BLOW_HORN_ONLY"]="'警笛が扱'の場合にのみ使用：";
-Blockly.Msg["BVE_MSG_SET_SIGNAL_ONLY"]="'信号が変化'の場合にのみ使用：";
-Blockly.Msg["BVE_MSG_SET_BEACON_ONLY"]="'地上子を越えた'の場合にのみ使用：";
+Blockly.Msg["BVE_MSG_NULL_LOAD"]="'プラグインが読みこまれた時'の場合は使用しない：";	
+Blockly.Msg["BVE_MSG_NULL_LOAD_INIT"]="'プラグインが読みこまれた時'または'ゲーム開始時'の場合は使用しない：";	
+Blockly.Msg["BVE_MSG_ELAPSE_ONLY"]="'経過'の場合にのみ使用：";	
+Blockly.Msg["BVE_MSG_INIT_ONLY"]="'ゲーム開始時'の場合にのみ使用：";	
+Blockly.Msg["BVE_MSG_KEY_ANY_ONLY"]="'保安装置キーが押/離された時'の場合にのみ使用：";	
+Blockly.Msg["BVE_MSG_BLOW_HORN_ONLY"]="'警笛が扱われた時'の場合にのみ使用：";	
+Blockly.Msg["BVE_MSG_SET_SIGNAL_ONLY"]="'信号が変化した時'の場合にのみ使用：";	
+Blockly.Msg["BVE_MSG_SET_BEACON_ONLY"]="'地上子を越えた時'の場合にのみ使用：";
 
 Blockly.Msg["BVE_CONFIG_LOAD"]="設定ファイル %1 をロード";
 Blockly.Msg["BVE_GET_CONFIG"]="設定項目 [%1]%2";

@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace BlocklyAts {
+namespace BlocklyAts.Workspace {
     
     public class BuildRunConfig {
 
@@ -26,6 +26,8 @@ namespace BlocklyAts {
         public bool ShouldCompilex86 { get; set; }
 
         public bool ShouldCompilex64 { get; set; }
+
+        public bool IncludeDebugInfo { get; set; }
 
         public string CompilePathAnyCpu { get; set; }
 

@@ -13,7 +13,12 @@ var themeWithHat = Blockly.Theme.defineTheme('themeWithHat', {
       "colourPrimary": "#cccccc",
       "colourSecondary":"#cccccc",
       "colourTertiary":"#cccccc"
-   }
+    },
+    "raw_code_block": {
+      "colourPrimary": "#a06000",
+      "colourSecondary":"#ffd149",
+      "colourTertiary":"#ff7043"
+    }
   }
 });
 
@@ -210,10 +215,6 @@ function batsWkspSave() {
 function batsWkspLoad(xmlstr) {
   workspace.clear();
   Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xmlstr),workspace);
-}
-
-function batsWkspExportLua() {
-  return batsExportLua(workspace);
 }
 
 function batsWkspExportCSharp() {

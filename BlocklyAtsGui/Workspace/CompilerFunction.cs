@@ -11,11 +11,10 @@ using System.Windows.Forms;
 using System.CodeDom.Compiler;
 using Microsoft.CSharp;
 
-namespace BlocklyAts {
+namespace BlocklyAts.Workspace {
 
     static class CompilerFunction {
 
-        public static readonly string appDir = Path.GetDirectoryName(Application.ExecutablePath);
         public static readonly string libDir;
         public static readonly string BoilerplateStartMarker = "Start of BlocklyAts boilerplate code.";
 
@@ -35,8 +34,8 @@ namespace BlocklyAts {
 
         static CompilerFunction() {
 #if DEBUG
-            libDir = Path.Combine(Path.GetDirectoryName(appDir), "assets", "lib");
-            if (!Directory.Exists(libDir)) libDir = Path.Combine(appDir, "lib");
+            libDir = Path.Combine(Path.GetDirectoryName(PlatformFunction.AppDir), "assets", "lib");
+            if (!Directory.Exists(libDir)) libDir = Path.Combine(PlatformFunction.AppDir, "lib");
 #else
             libDir = Path.Combine(appDir, "lib");
 #endif
@@ -69,24 +68,25 @@ namespace BlocklyAts {
             }
         }
 
-        public static void CompileCSharpOpenBve(string script, string outputPath) {
+        public static void CompileCSharpOpenBve(string script, string outputPath, bool includePDB) {
             var sourceCode = CombineCodeForCSharp(script, true);
             var settings = new Dictionary<string, string>() {
                 { "CompilerVersion", "v4.0" }
             };
             CSharpCodeProvider codeProvider = new CSharpCodeProvider(settings);
             CompilerParameters parameters = new CompilerParameters() {
-                IncludeDebugInformation = false,
+                IncludeDebugInformation = includePDB,
                 GenerateExecutable = false,
-                CompilerOptions = "/optimize",
                 OutputAssembly = outputPath
             };
+            if (!includePDB) parameters.CompilerOptions = "/optimize";
             string[] assemblies = {
                 "mscorlib.dll",
                 "System.Core.dll",
+                "System.dll",
                 "Microsoft.CSharp.dll",
                 "System.Windows.Forms.dll",
-                Path.Combine(appDir, "lib", "OpenBveApi.dll")
+                Path.Combine(PlatformFunction.AppDir, "lib", "OpenBveApi.dll")
             };
 
             foreach (string a in assemblies) {
@@ -102,34 +102,26 @@ namespace BlocklyAts {
             }
         }
 
-        public static void CompileCSharpUnmanaged(string script, string outputPath, string arch) {
+        public static void CompileCSharpUnmanaged(string script, string outputPath, string arch, bool includePDB) {
             var sourceCode = CombineCodeForCSharp(script, false);
 
-            var boilerplateFile = Path.Combine(appDir, "lib", "batsdllexport_" + arch + ".dll");
+            var boilerplateFile = Path.Combine(PlatformFunction.AppDir, "lib", "batsdllexport_" + arch + ".dll");
             var boilerplateStream = new FileStream(boilerplateFile, FileMode.Open, FileAccess.Read);
             var outStream = new FileStream(outputPath, FileMode.Create, FileAccess.Write);
 
-            // Write Identifier and PE length to DOS stub
-            byte[] identifier = Encoding.UTF8.GetBytes("BATSNET1");
-            boilerplateStream.CopySectionTo(outStream, 0x6C - identifier.Length);
-            outStream.Write(identifier, 0, identifier.Length);
-            outStream.Write(BitConverter.GetBytes(boilerplateStream.Length), 0, 4);
-            boilerplateStream.Seek(4 + identifier.Length, SeekOrigin.Current);
-            boilerplateStream.CopyTo(outStream);
-            boilerplateStream.Close();
-
-            var tempFilePath = Path.Combine(Path.GetTempPath(), "BlocklyAts_Temp_" + Guid.NewGuid().ToString("N") + ".dll");
+            var dllFilePath = Path.Combine(Path.GetTempPath(), "BlocklyAts_Temp_" + Guid.NewGuid().ToString("N") + ".dll");
+            var pdbFilePath = Path.ChangeExtension(dllFilePath, ".pdb");
 
             var settings = new Dictionary<string, string>() {
                 { "CompilerVersion", "v4.0" }
             };
             CSharpCodeProvider codeProvider = new CSharpCodeProvider(settings);
             CompilerParameters parameters = new CompilerParameters() {
-                IncludeDebugInformation = false,
+                IncludeDebugInformation = includePDB,
                 GenerateExecutable = false,
-                CompilerOptions = "/optimize",
-                OutputAssembly = tempFilePath
+                OutputAssembly = dllFilePath,
             };
+            if (!includePDB) parameters.CompilerOptions = "/optimize";
             string[] assemblies = {
                 "mscorlib.dll",
                 "System.Core.dll",
@@ -147,14 +139,34 @@ namespace BlocklyAts {
                 foreach (CompilerError error in results.Errors) {
                     sb.AppendLine(error.ToString());
                 }
-                File.Delete(tempFilePath);
+                File.Delete(dllFilePath);
+                boilerplateStream.Close();
+                outStream.Close();
                 throw new Exception(sb.ToString());
             }
 
-            var programStream = new FileStream(tempFilePath, FileMode.Open, FileAccess.Read);
+            var programStream = new FileStream(dllFilePath, FileMode.Open, FileAccess.Read);
+
+            // Write Identifier and PE length to DOS stub
+            byte[] identifier = Encoding.UTF8.GetBytes("BATSNET1");
+            boilerplateStream.CopySectionTo(outStream, 0x6C - identifier.Length);
+            outStream.Write(identifier, 0, identifier.Length);
+            outStream.Write(BitConverter.GetBytes(boilerplateStream.Length), 0, 4);
+            outStream.Write(BitConverter.GetBytes(programStream.Length), 0, 4);
+            boilerplateStream.Seek(8 + identifier.Length, SeekOrigin.Current);
+            boilerplateStream.CopyTo(outStream);
+            boilerplateStream.Close();
+
             programStream.CopyTo(outStream);
             programStream.Close();
-            File.Delete(tempFilePath);
+
+            if (includePDB) {
+                var pdbStream = new FileStream(pdbFilePath, FileMode.Open, FileAccess.Read);
+                pdbStream.CopyTo(outStream);
+                pdbStream.Close();
+                File.Delete(pdbFilePath);
+            }
+            File.Delete(dllFilePath);
             outStream.Close();
         }
     }

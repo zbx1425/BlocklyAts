@@ -77,7 +77,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -90,8 +89,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="System\Preference.cs" />
-    <Compile Include="System\PreferenceManager.cs" />
+    <Compile Include="Host\Preference.cs" />
+    <Compile Include="Host\PreferenceManager.cs" />
+    <Compile Include="Host\RecentFileList.cs" />
     <Compile Include="UserInterface\FormBugReport.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -128,12 +128,12 @@
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
     <Compile Include="WebView\BaseBrowser.cs" />
-    <Compile Include="System\GameDetection.cs" />
-    <Compile Include="System\I18n.cs" />
-    <Compile Include="System\PlatformFunction.cs" />
+    <Compile Include="Host\GameDetection.cs" />
+    <Compile Include="Host\I18n.cs" />
+    <Compile Include="Host\PlatformFunction.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="System\UpgradeInfo.cs" />
+    <Compile Include="Host\UpgradeInfo.cs" />
     <Compile Include="WebView\WebView2Browser.cs" />
     <Compile Include="WebView\WinformBrowser.cs" />
     <Compile Include="Workspace\Workspace.cs" />

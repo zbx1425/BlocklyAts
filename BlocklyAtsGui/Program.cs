@@ -1,3 +1,5 @@
+using BlocklyAts.Host;
+using BlocklyAts.UserInterface;
 using Microsoft.Web.WebView2.Core;
 using System;
 using System.Collections.Generic;
@@ -7,20 +9,26 @@ using System.Windows.Forms;
 
 namespace BlocklyAts {
     static class Program {
-        /// <summary>
-        /// 应用程序的主入口点。
-        /// </summary>
+
         [STAThread]
         static void Main() {
             PreferenceManager.LoadPreference();
-
+            
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormMain());
+
+            FormMain mainForm;
+            if (Environment.GetCommandLineArgs().Length > 1) {
+                mainForm = new FormMain(Environment.GetCommandLineArgs()[1]);
+            } else {
+                mainForm = new FormMain();
+            }
+
+            Application.Run(mainForm);
 
             if (!PreferenceManager.SavePreference()) {
                 MessageBox.Show(
-                    I18n.TranslateAllLang("Msg.PreferenceWriteFail"), "Cannot Write Preference",
+                    "Cannot write preference. Please check permission.", "Cannot Write Preference",
                     MessageBoxButtons.OK, MessageBoxIcon.Error
                 );
             }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Net.NetworkInformation;
 
-namespace BlocklyATS {
+namespace BlocklyAts.WebView {
     class HttpServer {
 
         public string ListenUrl = null;
@@ -23,6 +23,17 @@ namespace BlocklyATS {
         }
 
         public Func<string, string, string> InteropReceived;
+
+        private readonly string wwwDir;
+
+        public HttpServer() {
+#if DEBUG
+            wwwDir = Path.Combine(Path.GetDirectoryName(PlatformFunction.AppDir), "www");
+            if (!Directory.Exists(wwwDir)) wwwDir = Path.Combine(PlatformFunction.AppDir, "www");
+#else
+            wwwDir = Path.Combine(PlatformFunction.AppDir, "www");
+#endif
+        }
 
         public bool Start() {
             // No need to check for avalibility. You can't install .net 4.6 on XP after all
@@ -78,12 +89,7 @@ namespace BlocklyATS {
                     resp.Close();
                     continue;
                 }
-#if DEBUG
-                var requestFile = Path.GetFullPath("../www" + requestPath);
-                if (!File.Exists(requestFile)) requestFile = Path.GetFullPath("www" + requestPath);
-#else
-                var requestFile = Path.GetFullPath("www" + requestPath);
-#endif
+                var requestFile = Path.Combine(wwwDir, requestPath.TrimStart('/', '\\'));
                 if (File.Exists(requestFile)) {
                     byte[] data = File.ReadAllBytes(requestFile);
                     switch (Path.GetExtension(requestFile).ToLowerInvariant()) {
