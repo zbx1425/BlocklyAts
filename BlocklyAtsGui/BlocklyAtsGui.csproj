@@ -98,6 +98,12 @@
     <Compile Include="UserInterface\FormBugReport.Designer.cs">
       <DependentUpon>FormBugReport.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserInterface\FormUserConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterface\FormUserConfig.Designer.cs">
+      <DependentUpon>FormUserConfig.cs</DependentUpon>
+    </Compile>
     <Compile Include="WebView\HttpServer.cs" />
     <Compile Include="Workspace\CompilerFunction.cs" />
     <Compile Include="Workspace\BuildRunConfig.cs" />
@@ -136,7 +142,7 @@
     <Compile Include="Host\UpgradeInfo.cs" />
     <Compile Include="WebView\WebView2Browser.cs" />
     <Compile Include="WebView\WinformBrowser.cs" />
-    <Compile Include="Workspace\Workspace.cs" />
+    <Compile Include="Workspace\SaveState.cs" />
     <EmbeddedResource Include="UserInterface\FormAbout.resx">
       <DependentUpon>FormAbout.cs</DependentUpon>
     </EmbeddedResource>
@@ -162,6 +168,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UserInterface\FormUserConfig.resx">
+      <DependentUpon>FormUserConfig.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

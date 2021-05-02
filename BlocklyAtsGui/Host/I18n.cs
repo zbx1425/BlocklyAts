@@ -33,21 +33,21 @@ namespace BlocklyAts.Host {
                 LanguageDisplayList.Add(new KeyValuePair<string, string>(pair.Key, pair.Value["Name"]));
             }
 
-            if (string.IsNullOrEmpty(PreferenceManager.CurrentPreference.Language))
-                PreferenceManager.CurrentPreference.Language = "en";
-            if (!languages.ContainsKey(PreferenceManager.CurrentPreference.Language))
-                PreferenceManager.CurrentPreference.Language = "en";
+            if (string.IsNullOrEmpty(PreferenceManager.Current.Language))
+                PreferenceManager.Current.Language = "en";
+            if (!languages.ContainsKey(PreferenceManager.Current.Language))
+                PreferenceManager.Current.Language = "en";
         }
 
         public static bool CanTranslate(string key) {
-            return languages[PreferenceManager.CurrentPreference.Language].ContainsKey(key);
+            return languages[PreferenceManager.Current.Language].ContainsKey(key);
         }
 
         public static string Translate(string key, object param = null) {
             if (param == null) {
-                return languages[PreferenceManager.CurrentPreference.Language][key];
+                return languages[PreferenceManager.Current.Language][key];
             } else {
-                return string.Format(languages[PreferenceManager.CurrentPreference.Language][key], param);
+                return string.Format(languages[PreferenceManager.Current.Language][key], param);
             }
         }
 

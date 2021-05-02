@@ -9,6 +9,7 @@ FormMain.tsbtnCompile = 编译 (Ctrl+Shift+B)
 FormMain.tsbtnCompileRun = 编译并运行 (F5)
 FormMain.tsbtnCompileSetting = 编译与运行设置
 FormMain.tsbtnDebugWindow = 调试窗口
+FormMain.tsbtnUserConfig = 偏好设置
 FormMain.tsbtnHelp = 帮助
 FormMain.tsbtnBugReport = 报告软件问题
 FormMain.tsbtnAbout = 关于 BlocklyAts
@@ -23,8 +24,14 @@ FormCompilerConfig.cbCustom = 自设\n路径
 FormCompilerConfig.rbGameCustom = 自设路径
 FormCompilerConfig.btnBrowse = 浏览
 FormCompilerConfig.btnGenerateArgs = 自动启动\n线路场景
-FormCompilerConfig.btnOK = 确定
-FormCompilerConfig.btnCancel = 取消
+
+FormUserConfig.cbDarkTheme = 暗色主题
+FormUserConfig.cbExternalWebView = 使用外部浏览器(而非内置浏览器)
+FormUserConfig.btnClearRecentFiles = 清除"最近打开的文件"列表
+FormUserConfig.btnUninstall = 清除所有数据与缓存
+
+Text.btnOK = 确定
+Text.btnCancel = 取消
 
 Text.NotSaved = 尚未保存
 Text.GenArg.SelectScenario = 选择 BVE5/6 场景TXT文件
@@ -39,6 +46,6 @@ Msg.NoGameProgram = 请先在 "编译与运行设置" 中选择游戏程序，�
 Msg.GenArgInvalidSelect = 选择的文件或目录并不符合所要求的场景、线路或列车格式。
 Msg.DiscardChange = 未保存的更改将被放弃。确认？
 Msg.LoadHigherVersion = 这一存档是由更高版本的 BlocklyAts 制作的。如要打开它，您需要升级 BlocklyAts。\n仍然要打开吗？可能无法正确加载。
-Msg.LanguageChange = 重新启动程序以应用语言更改。 
+Msg.NeedRestart = 重新启动程序以应用更改。 
 Msg.UpgradeAvailable = 新版本 {0} 已推出。\n建议您使用新版本，以避免问题。\n下载链接: {1} (按确认键打开)\n\n{2}
 Msg.BugReport = BlocklyAts 现仍处于开发测试阶段。\n请将使用过程中遇到的问题向开发者汇报，以便做出相应修复。

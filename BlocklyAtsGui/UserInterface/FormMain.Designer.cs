@@ -26,7 +26,7 @@ namespace BlocklyAts.UserInterface {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.mainToolStrip = new System.Windows.Forms.ToolStrip();
             this.tsbtnNew = new System.Windows.Forms.ToolStripButton();
-            this.tsbtnOpen = new System.Windows.Forms.ToolStripButton();
+            this.tsddbOpen = new System.Windows.Forms.ToolStripSplitButton();
             this.tsbtnSave = new System.Windows.Forms.ToolStripButton();
             this.tsbtnSaveAs = new System.Windows.Forms.ToolStripButton();
             this.tss1 = new System.Windows.Forms.ToolStripSeparator();
@@ -41,6 +41,7 @@ namespace BlocklyAts.UserInterface {
             this.tsbtnDebugWindow = new System.Windows.Forms.ToolStripButton();
             this.tss2 = new System.Windows.Forms.ToolStripSeparator();
             this.tscbLanguage = new System.Windows.Forms.ToolStripComboBox();
+            this.tsbtnUserConfig = new System.Windows.Forms.ToolStripButton();
             this.mainToolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -50,7 +51,7 @@ namespace BlocklyAts.UserInterface {
             this.mainToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.mainToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbtnNew,
-            this.tsbtnOpen,
+            this.tsddbOpen,
             this.tsbtnSave,
             this.tsbtnSaveAs,
             this.tss1,
@@ -58,6 +59,7 @@ namespace BlocklyAts.UserInterface {
             this.tsbtnCompileRun,
             this.tsbtnCompileSetting,
             this.tsddbInfo,
+            this.tsbtnUserConfig,
             this.tsbtnDebugWindow,
             this.tss2,
             this.tscbLanguage});
@@ -79,17 +81,17 @@ namespace BlocklyAts.UserInterface {
             this.tsbtnNew.Text = "New";
             this.tsbtnNew.Click += new System.EventHandler(this.tsbtnNew_Click);
             // 
-            // tsbtnOpen
+            // tsddbOpen
             // 
-            this.tsbtnOpen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbtnOpen.Image = ((System.Drawing.Image)(resources.GetObject("tsbtnOpen.Image")));
-            this.tsbtnOpen.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.tsbtnOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbtnOpen.Name = "tsbtnOpen";
-            this.tsbtnOpen.Padding = new System.Windows.Forms.Padding(1, 0, 1, 0);
-            this.tsbtnOpen.Size = new System.Drawing.Size(23, 22);
-            this.tsbtnOpen.Text = "Open";
-            this.tsbtnOpen.Click += new System.EventHandler(this.tsbtnOpen_Click);
+            this.tsddbOpen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsddbOpen.Image = ((System.Drawing.Image)(resources.GetObject("tsddbOpen.Image")));
+            this.tsddbOpen.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.tsddbOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsddbOpen.Name = "tsddbOpen";
+            this.tsddbOpen.Padding = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.tsddbOpen.Size = new System.Drawing.Size(34, 22);
+            this.tsddbOpen.Text = "Open";
+            this.tsddbOpen.ButtonClick += new System.EventHandler(this.tsddbOpen_Click);
             // 
             // tsbtnSave
             // 
@@ -167,12 +169,10 @@ namespace BlocklyAts.UserInterface {
             this.tsbtnAbout});
             this.tsddbInfo.Image = ((System.Drawing.Image)(resources.GetObject("tsddbInfo.Image")));
             this.tsddbInfo.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsddbInfo.Margin = new System.Windows.Forms.Padding(0, 1, 10, 2);
+            this.tsddbInfo.Margin = new System.Windows.Forms.Padding(1, 1, 10, 2);
             this.tsddbInfo.Name = "tsddbInfo";
             this.tsddbInfo.Padding = new System.Windows.Forms.Padding(0, 0, 4, 0);
-            this.tsddbInfo.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.tsddbInfo.ShowDropDownArrow = false;
-            this.tsddbInfo.Size = new System.Drawing.Size(24, 22);
+            this.tsddbInfo.Size = new System.Drawing.Size(33, 22);
             this.tsddbInfo.Text = "Info...";
             // 
             // tsbtnHelp
@@ -217,7 +217,7 @@ namespace BlocklyAts.UserInterface {
             this.tsbtnDebugWindow.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tsbtnDebugWindow.Image = ((System.Drawing.Image)(resources.GetObject("tsbtnDebugWindow.Image")));
             this.tsbtnDebugWindow.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbtnDebugWindow.Margin = new System.Windows.Forms.Padding(0, 1, 4, 2);
+            this.tsbtnDebugWindow.Margin = new System.Windows.Forms.Padding(0, 1, 1, 2);
             this.tsbtnDebugWindow.Name = "tsbtnDebugWindow";
             this.tsbtnDebugWindow.Size = new System.Drawing.Size(23, 22);
             this.tsbtnDebugWindow.Text = "Debug Window";
@@ -239,6 +239,18 @@ namespace BlocklyAts.UserInterface {
             this.tscbLanguage.Name = "tscbLanguage";
             this.tscbLanguage.Size = new System.Drawing.Size(121, 25);
             this.tscbLanguage.SelectedIndexChanged += new System.EventHandler(this.tscbLanguage_SelectedIndexChanged);
+            // 
+            // tsbtnUserConfig
+            // 
+            this.tsbtnUserConfig.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tsbtnUserConfig.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbtnUserConfig.Image = ((System.Drawing.Image)(resources.GetObject("tsbtnUserConfig.Image")));
+            this.tsbtnUserConfig.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbtnUserConfig.Margin = new System.Windows.Forms.Padding(0, 1, 1, 2);
+            this.tsbtnUserConfig.Name = "tsbtnUserConfig";
+            this.tsbtnUserConfig.Size = new System.Drawing.Size(23, 22);
+            this.tsbtnUserConfig.Text = "User Settings";
+            this.tsbtnUserConfig.Click += new System.EventHandler(this.tsbtnUserConfig_Click);
             // 
             // FormMain
             // 
@@ -263,7 +275,7 @@ namespace BlocklyAts.UserInterface {
 
         private System.Windows.Forms.ToolStrip mainToolStrip;
         private System.Windows.Forms.ToolStripButton tsbtnNew;
-        private System.Windows.Forms.ToolStripButton tsbtnOpen;
+        private System.Windows.Forms.ToolStripSplitButton tsddbOpen;
         private System.Windows.Forms.ToolStripButton tsbtnSaveAs;
         private System.Windows.Forms.ToolStripSeparator tss1;
         private System.Windows.Forms.ToolStripButton tsbtnDebugWindow;
@@ -278,6 +290,7 @@ namespace BlocklyAts.UserInterface {
         private System.Windows.Forms.ToolStripMenuItem tsbtnBugReport;
         private System.Windows.Forms.ToolStripSeparator tssm1;
         private System.Windows.Forms.ToolStripMenuItem tsbtnAbout;
+        private System.Windows.Forms.ToolStripButton tsbtnUserConfig;
     }
 }
 

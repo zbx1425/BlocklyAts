@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 
 namespace BlocklyAts.Host {
 
-    class RecentFileList : List<string> {
+    public class RecentFileList : List<string> {
 
         public const int MaxRecordNum = 16;
 
         public string[] GetRecentFiles(int maxAmount) {
-            return this.Where(f => File.Exists(f)).Reverse().Take(maxAmount).ToArray();
+            this.RemoveAll(f => !File.Exists(f));
+            return Enumerable.Reverse(this).Take(maxAmount).ToArray();
         }
 
         public void AddRecentFile(string path) {

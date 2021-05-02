@@ -126,8 +126,8 @@ namespace BlocklyAts.UserInterface {
                 }
             }
             foreach (Control ctrl in flpActBtn.Controls) {
-                if (I18n.CanTranslate("FormCompilerConfig." + ctrl.Name)) {
-                    ctrl.Text = I18n.Translate("FormCompilerConfig." + ctrl.Name);
+                if (I18n.CanTranslate("Text." + ctrl.Name)) {
+                    ctrl.Text = I18n.Translate("Text." + ctrl.Name);
                 }
             }
             foreach (Control ctrl in flpRbGame.Controls) {

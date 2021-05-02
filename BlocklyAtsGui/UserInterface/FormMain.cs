@@ -23,7 +23,7 @@ namespace BlocklyAts.UserInterface {
 
             for (int i = 0; i < I18n.LanguageDisplayList.Count; i++) {
                 tscbLanguage.Items.Add(I18n.LanguageDisplayList[i].Value);
-                if (I18n.LanguageDisplayList[i].Key == PreferenceManager.CurrentPreference.Language) {
+                if (I18n.LanguageDisplayList[i].Key == PreferenceManager.Current.Language) {
                     tscbLanguage.SelectedIndex = i;
                     tscbLanguage.Text = I18n.LanguageDisplayList[i].Value;
                 }
@@ -68,6 +68,17 @@ namespace BlocklyAts.UserInterface {
             });
         }
 
+        class LightTspProfessionalColors : ProfessionalColorTable {
+            public override Color ToolStripGradientBegin { get { return Color.FromArgb(0xfa, 0xfa, 0xfa); } }
+            public override Color ToolStripGradientMiddle { get { return Color.FromArgb(0xf5, 0xf5, 0xf5); } }
+            public override Color ToolStripGradientEnd { get { return Color.FromArgb(0xee, 0xee, 0xee); } }
+        }
+        class DarkTspProfessionalColors : ProfessionalColorTable {
+            public override Color ToolStripGradientBegin { get { return Color.FromArgb(0x26, 0x32, 0x38); } }
+            public override Color ToolStripGradientMiddle { get { return Color.FromArgb(0x37, 0x47, 0x4f); } }
+            public override Color ToolStripGradientEnd { get { return Color.FromArgb(0x1e, 0x1e, 0x1e); } }
+        }
+
         private void ApplyLanguage() {
             foreach (ToolStripItem item in mainToolStrip.Items) {
                 if (I18n.CanTranslate("FormMain." + item.Name)) {
@@ -82,9 +93,10 @@ namespace BlocklyAts.UserInterface {
             string webDirectory = Path.Combine(CompilerFunction.appDir, "www");
 #endif
             
-            string pageURL = Path.Combine(webDirectory, "index.html") + string.Format("?ver={0}&lang={1}",
+            string pageURL = Path.Combine(webDirectory, "index.html") + string.Format("?ver={0}&lang={1}&theme={2}",
                 PlatformFunction.VersionString,
-                I18n.Translate("BlocklyName")
+                I18n.Translate("BlocklyName"),
+                PreferenceManager.Current.DarkMode ? "dark" : "light"
             );
             if (mainWebBrowser == null) {
                 mainWebBrowser = BaseBrowser.AcquireInstance(pageURL);
@@ -97,17 +109,27 @@ namespace BlocklyAts.UserInterface {
                 } else {
                     tsbSize = 26;
                 }
+                string resourceType;
+                if (PreferenceManager.Current.DarkMode) {
+                    resourceType = "icon-dark";
+                    mainToolStrip.Renderer = new ToolStripProfessionalRenderer(new DarkTspProfessionalColors());
+                    mainToolStrip.ForeColor = Color.White;
+                } else {
+                    resourceType = "icon-light";
+                    mainToolStrip.Renderer = new ToolStripProfessionalRenderer(new LightTspProfessionalColors());
+                    mainToolStrip.ForeColor = Color.Black;
+                }
                 foreach (ToolStripItem item in mainToolStrip.Items) {
                     if (item is ToolStripSeparator) continue;
                     item.ImageScaling = ToolStripItemImageScaling.SizeToFit;
-                    var iconPath = Path.Combine(PlatformFunction.AppDir, "resource", "icon-light", item.Name + ".png");
+                    var iconPath = Path.Combine(PlatformFunction.AppDir, "resource", resourceType, item.Name + ".png");
                     if (!File.Exists(iconPath)) continue;
                     item.Image = Image.FromFile(iconPath);
                 }
                 foreach (ToolStripItem item in tsddbInfo.DropDownItems) {
                     if (item is ToolStripSeparator) continue;
                     item.ImageScaling = ToolStripItemImageScaling.SizeToFit;
-                    var iconPath = Path.Combine(PlatformFunction.AppDir, "resource", "icon-light", item.Name + ".png");
+                    var iconPath = Path.Combine(PlatformFunction.AppDir, "resource", resourceType, item.Name + ".png");
                     if (!File.Exists(iconPath)) continue;
                     item.Image = Image.FromFile(iconPath);
                 }
@@ -118,7 +140,7 @@ namespace BlocklyAts.UserInterface {
                 mainWebBrowser.PageFinished += mainWebBrowser_PageFinished;
                 mainWebBrowser.BindTo(this);
             } else {
-                MessageBox.Show(I18n.Translate("Msg.LanguageChange"));
+                MessageBox.Show(I18n.Translate("Msg.NeedRestart"));
                 return;
             }
         }
@@ -144,7 +166,7 @@ namespace BlocklyAts.UserInterface {
                 }
             } else if (e.KeyCode == Keys.O) {
                 if (ModifierKeys.HasFlag(Keys.Control)) {
-                    tsbtnOpen_Click(null, null);
+                    tsddbOpen_Click(null, null);
                 }
             } else if (e.KeyCode == Keys.N) {
                 if (ModifierKeys.HasFlag(Keys.Control)) {
@@ -169,6 +191,17 @@ namespace BlocklyAts.UserInterface {
             } else {
                 this.Text = "BlocklyAts: " + currentWorkspace.SaveFilePath;
                 tsbtnSave.Enabled = true;
+                PreferenceManager.Current.RecentFiles?.AddRecentFile(currentWorkspace.SaveFilePath);
+            }
+            if (PreferenceManager.Current.RecentFiles != null) {
+                var recentFilesArray = PreferenceManager.Current.RecentFiles.GetRecentFiles(8);
+                tsddbOpen.DropDownItems.Clear();
+                foreach (var item in recentFilesArray) {
+                    tsddbOpen.DropDownItems.Add(Path.GetFileNameWithoutExtension(item), null, async (sender, e) => {
+                        await loadWorkspace(item);
+                    });
+                }
+                tsddbOpen.DropDownButtonWidth = recentFilesArray.Length > 0 ? 20 : 0;
             }
         }
 
@@ -191,15 +224,18 @@ namespace BlocklyAts.UserInterface {
             await saveWorkspace(sfd.FileName);
         }
 
-        private async void tsbtnOpen_Click(object sender, EventArgs e) {
+        private async void tsddbOpen_Click(object sender, EventArgs e) {
             var ofd = new OpenFileDialog() {
                 Filter = "BlocklyAts XML|*.batsxml",
                 Title = "Load Workspace"
             };
             if (ofd.ShowDialog() != DialogResult.OK) return;
-            
+            await loadWorkspace(ofd.FileName);
+        }
+
+        private async Task loadWorkspace(string path) {
             try {
-                SaveState newWorkspace  = SaveState.LoadFromFile(ofd.FileName);
+                SaveState newWorkspace = SaveState.LoadFromFile(path);
                 if (newWorkspace != null) {
                     currentWorkspace = newWorkspace;
                     await mainWebBrowser.BkyLoadWorkspace(currentWorkspace.BlocklyXml);
@@ -282,8 +318,14 @@ namespace BlocklyAts.UserInterface {
 
         private void flashSaveBtn() {
             new System.Threading.Thread(() => {
-                var iconPathSrc = Path.Combine(PlatformFunction.AppDir, "resource", "icon-light", "tsbtnSave.png");
-                var iconPathOk = Path.Combine(PlatformFunction.AppDir, "resource", "icon-light", "tsbtnSave_Ok.png");
+                string resourceType;
+                if (PreferenceManager.Current.DarkMode) {
+                    resourceType = "icon-dark";
+                } else {
+                    resourceType = "icon-light";
+                }
+                var iconPathSrc = Path.Combine(PlatformFunction.AppDir, "resource", resourceType, "tsbtnSave.png");
+                var iconPathOk = Path.Combine(PlatformFunction.AppDir, "resource", resourceType, "tsbtnSave_Ok.png");
                 Image sourceIcon = Image.FromFile(iconPathSrc);
                 Image flashingIcon = Image.FromFile(iconPathOk);
                 for (int i = 0; i <= 5; i++) {
@@ -355,18 +397,33 @@ namespace BlocklyAts.UserInterface {
 
         private void tscbLanguage_SelectedIndexChanged(object sender, EventArgs e) {
             var newlang = I18n.LanguageDisplayList[tscbLanguage.SelectedIndex].Key;
-            if (newlang != PreferenceManager.CurrentPreference.Language) {
-                PreferenceManager.CurrentPreference.Language = newlang;
+            if (newlang != PreferenceManager.Current.Language) {
+                PreferenceManager.Current.Language = newlang;
                 ApplyLanguage();
             }
         }
 
         private void tsbtnHelp_Click(object sender, EventArgs e) {
-            PlatformFunction.CallBrowser("https://github.com/zbx1425/BlocklyAts/wiki");
+            PlatformFunction.CallBrowser("https://www.zbx1425.cn/nautilus/blocklyats");
         }
 
         private void tsbtnBugReport_Click(object sender, EventArgs e) {
             new FormBugReport().ShowDialog();
+        }
+
+        private void tsbtnUserConfig_Click(object sender, EventArgs e) {
+            var result = new FormUserConfig().ShowDialog();
+            if (result == DialogResult.Abort) {
+                // How can I stop WebView2 from occupying the files?
+                // I cannot delete the entire DataDirectory
+                if (File.Exists(PreferenceManager.PreferencePath))
+                    File.Delete(PreferenceManager.PreferencePath);
+                if (!PlatformFunction.IsMono)
+                    PlatformFunction.UnsetWebBrowserFeatures();
+                PreferenceManager.Current = null;
+                Application.Exit();
+            }
+            if (PreferenceManager.Current != null) updateSaveFileState();
         }
     }
 }

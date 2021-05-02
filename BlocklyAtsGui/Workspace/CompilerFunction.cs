@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.CodeDom.Compiler;
 using Microsoft.CSharp;
+using BlocklyAts.Host;
 
 namespace BlocklyAts.Workspace {
 

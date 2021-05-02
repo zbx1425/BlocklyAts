@@ -26,12 +26,7 @@ namespace BlocklyAts {
 
             Application.Run(mainForm);
 
-            if (!PreferenceManager.SavePreference()) {
-                MessageBox.Show(
-                    "Cannot write preference. Please check permission.", "Cannot Write Preference",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error
-                );
-            }
+            PreferenceManager.SavePreference();
         }
     }
 }

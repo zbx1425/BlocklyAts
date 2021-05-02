@@ -412,7 +412,7 @@ namespace BlocklyAts.UserInterface {
             this.ClientSize = new System.Drawing.Size(832, 427);
             this.ControlBox = false;
             this.Controls.Add(this.tlpMain);
-            this.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Font = new System.Drawing.Font(System.Windows.Forms.Control.DefaultFont.FontFamily, 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;

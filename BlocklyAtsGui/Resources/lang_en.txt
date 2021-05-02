@@ -9,6 +9,7 @@ FormMain.tsbtnCompile = Compile (Ctrl+Shift+B)
 FormMain.tsbtnCompileRun = Compile and Run (F5)
 FormMain.tsbtnCompileSetting = Build and Run Settings
 FormMain.tsbtnDebugWindow = Debug Window
+FormMain.tsbtnUserConfig = Preference Settings
 FormMain.tsbtnHelp = Help
 FormMain.tsbtnBugReport = Report a Bug
 FormMain.tsbtnAbout = About BlocklyAts
@@ -23,8 +24,14 @@ FormCompilerConfig.cbCustom = Custom\nPath
 FormCompilerConfig.rbGameCustom = Custom Path
 FormCompilerConfig.btnBrowse = Browse
 FormCompilerConfig.btnGenerateArgs = Auto Start\nScenario
-FormCompilerConfig.btnOK = OK
-FormCompilerConfig.btnCancel = Cancel
+
+FormUserConfig.cbDarkTheme = Dark theme
+FormUserConfig.cbExternalWebView = Use external browser
+FormUserConfig.btnClearRecentFiles = Clear the "Recent Files" list
+FormUserConfig.btnUninstall = Clear all data and cache
+
+Text.btnOK = OK
+Text.btnCancel = Cancel
 
 Text.NotSaved = Not yet saved
 Text.GenArg.SelectScenario = Select BVE5/6 Scenario TXT File
@@ -39,6 +46,6 @@ Msg.NoGameProgram = Please select the game, or specify its installation path in 
 Msg.GenArgInvalidSelect = The selected file or directory does not match the required format of a scenario, a route or a train.
 Msg.DiscardChange = All unsaved changes will be discarded. Confirm?
 Msg.LoadHigherVersion = This savestate is created by a higher version of BlocklyAts. In order to open it, you should upgrade BlocklyAts.\nOpen anyway? It might not load properly.
-Msg.LanguageChange = Restart the program to apply language change.
+Msg.NeedRestart = Restart the program to apply your change.
 Msg.UpgradeAvailable = New version {0} has been released.\nUsing the latest version is recommended, to avoid bugs.\nDownload link: {1} (Press "OK" to open)\n\n{2}
 Msg.BugReport = BlocklyAts is currently in Beta.\nPlease report any bug you encountered to the developer, so that we can fix them.

@@ -1,26 +1,55 @@
 var workspace = null;
 
-var themeWithHat = Blockly.Theme.defineTheme('themeWithHat', {
-  'base': Blockly.Themes.Classic,
-  'blockStyles': {
-    "bve_blocks": {
-       "colourPrimary": "#37474f",
-       "colourSecondary":"#90a4ae",
-       "colourTertiary":"#aed581",
-       "hat": "cap"
-    }, 
-    "comment_block": {
-      "colourPrimary": "#cccccc",
-      "colourSecondary":"#cccccc",
-      "colourTertiary":"#cccccc"
-    },
-    "raw_code_block": {
-      "colourPrimary": "#a06000",
-      "colourSecondary":"#ffd149",
-      "colourTertiary":"#ff7043"
-    }
-  }
-});
+var blockStylesLight = {
+  bve_blocks: {
+    colourPrimary: "#37474f",
+    colourSecondary: "#90a4ae",
+    colourTertiary: "#263238",
+    hat: "cap",
+  },
+  comment_block: {
+    colourPrimary: "#cccccc",
+    colourSecondary: "#cccccc",
+    colourTertiary: "#cccccc",
+  },
+  raw_code_block: {
+    colourPrimary: "#a06000",
+    colourSecondary: "#e09000",
+    colourTertiary: "#804000",
+  },
+};
+
+var blockStylesDark = {
+  bve_blocks: {
+    colourPrimary: "#546e7a",
+    colourSecondary: "#b0bec5",
+    colourTertiary: "#263238",
+    hat: "cap",
+  },
+  comment_block: {
+    colourPrimary: "#cccccc",
+    colourSecondary: "#cccccc",
+    colourTertiary: "#cccccc",
+  },
+  raw_code_block: {
+    colourPrimary: "#a06000",
+    colourSecondary: "#e09000",
+    colourTertiary: "#804000",
+  },
+};
+
+var themeWithHat;
+if (getQueryVariable("theme") == "dark") {
+  themeWithHat = Blockly.Theme.defineTheme('themeWithHat', {
+    'base': Blockly.Themes.Dark,
+    'blockStyles': blockStylesDark
+  });
+} else {
+  themeWithHat = Blockly.Theme.defineTheme('themeWithHat', {
+    'base': Blockly.Themes.Classic,
+    'blockStyles': blockStylesLight
+  });
+}
 
 function getQueryVariable(variable) {
   var query = window.location.search.substring(1);
@@ -104,7 +133,6 @@ function batsInit(toolboxNode) {
     workspaceSearch.init();
   }
 
-  if (getQueryVariable("ver") == null) hIntervalInit = setInterval(batsRemoteInit, 500);
   if (typeof onBlocklyLoad != 'undefined' && onBlocklyLoad != null) {
     onBlocklyLoad();
   }
@@ -130,6 +158,7 @@ function batsRemoteInit() {
       clientID = parseInt(cID);
       document.getElementById("vertext").innerHTML = "v" + version + ", ";
       clearInterval(hIntervalInit);
+      batsInit(document.getElementById("toolbox"));
       setInterval(batsRemoteHeartbeat, 500);
     } else {
       document.getElementById("page-overlay").innerHTML = "Please keep the BlocklyAts main program running!";
@@ -173,7 +202,14 @@ function batsRemoteHeartbeat() {
 }
 
 window.addEventListener('load', function() {
-  batsInit(document.getElementById("toolbox"));
+  if (getQueryVariable("theme") == "dark") {
+    document.getElementById("overlay").classList.add("overlay-dark");
+  }
+  if (getQueryVariable("ver") == null) {
+    hIntervalInit = setInterval(batsRemoteInit, 500);
+  } else {
+    batsInit(document.getElementById("toolbox"));
+  }
 });
 
 var pageSeq, pageMap, pageCurrent, shareVariables;

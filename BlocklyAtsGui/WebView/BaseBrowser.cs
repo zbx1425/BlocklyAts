@@ -32,7 +32,7 @@ namespace BlocklyAts.WebView {
         }
 
         public static BaseBrowser AcquireInstance(string url = "about:blank") {
-            if (PreferenceManager.CurrentPreference.PreferExternalBrowser) {
+            if (PreferenceManager.Current.PreferExternalBrowser) {
                 return new ExternalBrowser(url);
             } else if (!PlatformFunction.IsMono) {
                 const string EdgeKeyName = @"SOFTWARE\WOW6432Node\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}";

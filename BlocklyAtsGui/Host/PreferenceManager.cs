@@ -9,7 +9,7 @@ namespace BlocklyAts.Host {
 
     static class PreferenceManager {
 
-        public static Preference CurrentPreference;
+        public static Preference Current;
 
         public static string DataDirectory = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
@@ -21,13 +21,14 @@ namespace BlocklyAts.Host {
         public static bool FirstStartup = true;
 
         public static void ResetPreference() {
-            CurrentPreference = new Preference() {
+            Current = new Preference() {
                 Language = "en",
                 PreferExternalBrowser = false
             };
         }
 
         public static bool LoadPreference() {
+            ResetPreference();
             try {
                 if (!Directory.Exists(DataDirectory)) Directory.CreateDirectory(DataDirectory);
             } catch {
@@ -35,24 +36,23 @@ namespace BlocklyAts.Host {
             }
             if (File.Exists(PreferencePath)) {
                 try {
-                    CurrentPreference = Preference.LoadFromFile(PreferencePath);
+                    Current = Preference.LoadFromFile(PreferencePath);
                     FirstStartup = false;
                 } catch {
-                    ResetPreference();
                     return false;
                 }
                 return true;
             } else {
-                ResetPreference();
                 FirstStartup = true;
                 return false;
             }
         }
 
         public static bool SavePreference() {
+            if (Current == null) return false;
             try {
                 if (!Directory.Exists(DataDirectory)) Directory.CreateDirectory(DataDirectory);
-                CurrentPreference.SaveToFile(PreferencePath);
+                Current.SaveToFile(PreferencePath);
             } catch {
                 return false;
             }

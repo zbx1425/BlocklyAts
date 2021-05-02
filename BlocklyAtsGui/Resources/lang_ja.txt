@@ -9,6 +9,7 @@ FormMain.tsbtnCompile = コンパイル (Ctrl+Shift+B)
 FormMain.tsbtnCompileRun = コンパイルして実行する (F5)
 FormMain.tsbtnCompileSetting = コンパイラと実行の設定
 FormMain.tsbtnDebugWindow = デバッグウィンドウ
+FormMain.tsbtnUserConfig = 環境設定
 FormMain.tsbtnHelp = 説明書
 FormMain.tsbtnBugReport = 不具合を報告
 FormMain.tsbtnAbout = BlocklyAts 関連情報
@@ -23,8 +24,14 @@ FormCompilerConfig.cbCustom = カスタム\nパス
 FormCompilerConfig.rbGameCustom = カスタムパス
 FormCompilerConfig.btnBrowse = ブラウズ
 FormCompilerConfig.btnGenerateArgs = シナリオ\n自動開始
-FormCompilerConfig.btnOK = 確認
-FormCompilerConfig.btnCancel = 取消
+
+FormUserConfig.cbDarkTheme = 暗いテーマ
+FormUserConfig.cbExternalWebView = 外部ブラウザを使用する
+FormUserConfig.btnClearRecentFiles = 「最近のファイル」リストをクリアする
+FormUserConfig.btnUninstall = すべてのデータとキャッシュをクリアする
+
+Text.btnOK = 確認
+Text.btnCancel = 取消
 
 Text.NotSaved = 保存されていません
 Text.GenArg.SelectScenario = BVE5/6 のシナリオTXTファイルを選択します 
@@ -39,6 +46,6 @@ Msg.NoGameProgram = 「コンパイラと実行の設定」でゲームを選択
 Msg.GenArgInvalidSelect = 選択したファイルまたはディレクトリが、シナリオ、路線、または車両の必要な形式と一致しません。 
 Msg.DiscardChange = 保存されていない変更はすべて破棄されます。よろしいですか?
 Msg.LoadHigherVersion = このプラグインは、BlocklyAtsの上位バージョンによって作成されます。それを開くには、BlocklyAtsをアップグレードする必要があります。\nとにかく開きますか？正しくロードされない場合があります。 
-Msg.LanguageChange = プログラムを再起動して、言語の変更を適用します。
+Msg.NeedRestart = プログラムを再起動して、変更を適用します。
 Msg.UpgradeAvailable = 新しいバージョン {0} がリリースされました。\n不具合を減らすために、最新バージョンを使用してください。\nダウンロードリンク: {1} (「OK」を押して開きます)\n\n{2}
 Msg.BugReport = BlocklyAtsは現在ベータ版です。\n発生した不具合を開発者に報告してください。\nソフトウェアの改善にご協力いただき、誠にありがとうございます。 
