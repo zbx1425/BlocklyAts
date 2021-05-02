@@ -20,8 +20,13 @@ public class ApiProxy : IRuntime {
     
     Func = new FunctionCompanion(this);
     Impl = new AtsProgram(this, Func);
-    Impl.Load();
+    try { Impl.Load(); } catch (Exception ex) { RuntimeExceptionBlocking(ex); }
     return true;
+  }
+  
+  public class AtsCustomException : Exception {
+    
+    public AtsCustomException(string message) : base(message) { }
   }
   
   private static void RuntimeException(Exception ex) {
@@ -29,8 +34,14 @@ public class ApiProxy : IRuntime {
   }
   
   private static void RuntimeExceptionBlocking(Exception ex) {
-    var result = MessageBox.Show(ex.ToString(), "BlocklyAts Runtime Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
-    if (result == DialogResult.Cancel) System.Diagnostics.Process.GetCurrentProcess().Kill();
+    if (ex is System.Reflection.TargetInvocationException) ex = ex.InnerException;
+    if (ex is AtsCustomException) {
+      MessageBox.Show(ex.Message, "BlocklyAts Customized Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+      System.Diagnostics.Process.GetCurrentProcess().Kill();
+    } else {
+      var result = MessageBox.Show(ex.ToString(), "BlocklyAts Runtime Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
+      if (result == DialogResult.Cancel) System.Diagnostics.Process.GetCurrentProcess().Kill();
+    }
   }
   
   public void SetVehicleSpecs(VehicleSpecs _p1) { VSpec = _p1; }

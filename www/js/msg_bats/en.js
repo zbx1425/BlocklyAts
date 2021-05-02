@@ -2,7 +2,7 @@ Blockly.Msg["BVE_CAT_EVENT"]="BVE Events";
 Blockly.Msg["BVE_CAT_COMMON"]="BVE Common";
 Blockly.Msg["BVE_CAT_SPECIALIZE"]="BVE Argument";
 Blockly.Msg["BVE_CAT_UTILITY"]="Utility Func";
-Blockly.Msg["BVE_CAT_ADVANCED"]="Misc";
+Blockly.Msg["BVE_CAT_MISC"]="Misc";
 
 Blockly.Msg["BVE_ELAPSE"]="when elapse (each frame)";
 Blockly.Msg["BVE_INITIALIZE"]="when init (load/jump station)";
@@ -106,6 +106,7 @@ Blockly.Msg["BVE_MSG_KEY_ANY_ONLY"]="Only use when 'key up/down':";
 Blockly.Msg["BVE_MSG_BLOW_HORN_ONLY"]="Only use when 'horn blew':";
 Blockly.Msg["BVE_MSG_SET_SIGNAL_ONLY"]="Only use when 'signal update':";
 Blockly.Msg["BVE_MSG_SET_BEACON_ONLY"]="Only use when 'beacon update':";
+Blockly.Msg["BVE_MSG_ADVANCED"]="For advanced users:";
 
 Blockly.Msg["BVE_CONFIG_LOAD"]="read config from file %1";
 Blockly.Msg["BVE_GET_CONFIG"]="config [%1]%2";
@@ -116,9 +117,10 @@ Blockly.Msg["BVE_PLACEHOLDER_PATH"]="filename.ini";
 Blockly.Msg["BVE_PLACEHOLDER_PART"]="part name";
 Blockly.Msg["BVE_PLACEHOLDER_KEY"]="key name";
 Blockly.Msg["BVE_PLACEHOLDER_TIMER"]="timer name";
-Blockly.Msg["BVE_PLACEHOLDER_COMMENT"]="Comment block. Have no effect. Insert at places you want to describe.";
+Blockly.Msg["BVE_PLACEHOLDER_COMMENT"]="Comment block. Have no effect.\nInsert at places you want to describe.";
 
 Blockly.Msg["BVE_MSGBOX"]="msgbox %1";
+Blockly.Msg["BVE_EXCEPTION"]="error %1";
 
 Blockly.Msg["CAT_LOGIC"]="Logics";
 Blockly.Msg["CAT_LOOP"]="Loops";

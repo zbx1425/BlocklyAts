@@ -485,6 +485,19 @@ Blockly.defineBlocksWithJsonArray([
     nextStatement: null,
   },
   {
+    type: "bve_exception",
+    style: "raw_code_block",
+    message0: "%{BKY_BVE_EXCEPTION}",
+    args0: [
+      {
+        type: "input_value",
+        name: "MSG",
+        check: "String",
+      }
+    ],
+    previousStatement: null,
+  },
+  {
     type: "bve_hat_timer",
     style: "bve_blocks",
     message0: "%{BKY_BVE_TIMER_TRIGGER}",

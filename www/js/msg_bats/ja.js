@@ -2,7 +2,7 @@ Blockly.Msg["BVE_CAT_EVENT"]="BVEイベント";
 Blockly.Msg["BVE_CAT_COMMON"]="BVE汎用";
 Blockly.Msg["BVE_CAT_SPECIALIZE"]="BVE引数";
 Blockly.Msg["BVE_CAT_UTILITY"]="便利機能";
-Blockly.Msg["BVE_CAT_ADVANCED"]="その他"
+Blockly.Msg["BVE_CAT_MISC"]="その他"
 
 Blockly.Msg["BVE_ELAPSE"]="経過 (1 フレーム毎)";	
 Blockly.Msg["BVE_INITIALIZE"]="ゲーム開始時 (開く/はじめから)";	
@@ -106,6 +106,7 @@ Blockly.Msg["BVE_MSG_KEY_ANY_ONLY"]="'保安装置キーが押/離された時'�
 Blockly.Msg["BVE_MSG_BLOW_HORN_ONLY"]="'警笛が扱われた時'の場合にのみ使用：";	
 Blockly.Msg["BVE_MSG_SET_SIGNAL_ONLY"]="'信号が変化した時'の場合にのみ使用：";	
 Blockly.Msg["BVE_MSG_SET_BEACON_ONLY"]="'地上子を越えた時'の場合にのみ使用：";
+Blockly.Msg["BVE_MSG_ADVANCED"]="上級者向け:";
 
 Blockly.Msg["BVE_CONFIG_LOAD"]="設定ファイル %1 をロード";
 Blockly.Msg["BVE_GET_CONFIG"]="設定項目 [%1]%2";
@@ -116,9 +117,10 @@ Blockly.Msg["BVE_PLACEHOLDER_PATH"]="名前を付ける.ini";
 Blockly.Msg["BVE_PLACEHOLDER_PART"]="部分の名前";
 Blockly.Msg["BVE_PLACEHOLDER_KEY"]="キーの名前";
 Blockly.Msg["BVE_PLACEHOLDER_TIMER"]="タイマーの名前";
-Blockly.Msg["BVE_PLACEHOLDER_COMMENT"]="コメントブロック。効果はありません。説明したい場所に挿入してください。";
+Blockly.Msg["BVE_PLACEHOLDER_COMMENT"]="コメントブロック。効果はありません。\n説明したい場所に挿入してください。";
 
-Blockly.Msg["BVE_MSGBOX"]="ポップアップ通知 %1";
+Blockly.Msg["BVE_MSGBOX"]="ポップアップ %1";
+Blockly.Msg["BVE_EXCEPTION"]="エラー %1";
 
 Blockly.Msg["CAT_LOGIC"]="ロジック";
 Blockly.Msg["CAT_LOOP"]="ループ";

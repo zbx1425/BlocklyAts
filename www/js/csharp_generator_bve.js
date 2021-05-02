@@ -220,6 +220,9 @@ Blockly.CSharp.bve_set_config=function(block){
 Blockly.CSharp.bve_msgbox=function(block){
   return "_f.MsgBox(" + (Blockly.CSharp.valueToCode(block, "MSG", Blockly.CSharp.ORDER_NONE) || "\"\"") + ");\n";
 }
+Blockly.CSharp.bve_exception=function(block){
+  return "throw new ApiProxy.AtsCustomException(" + (Blockly.CSharp.valueToCode(block, "MSG", Blockly.CSharp.ORDER_NONE) || "\"\"") + ");\n";
+}
 Blockly.CSharp.bve_hat_timer=function(block){
   var timerName = Blockly.CSharp.bveTimerNameDB.getName(block.getFieldValue("NAME"), Blockly.Generator.NAME_TYPE);
   return "public void _etimertick_" + timerName + "() {\n";

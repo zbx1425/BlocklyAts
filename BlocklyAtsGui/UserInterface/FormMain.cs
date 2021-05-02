@@ -85,12 +85,17 @@ namespace BlocklyAts.UserInterface {
                     item.Text = I18n.Translate("FormMain." + item.Name);
                 }
             }
+            foreach (ToolStripItem item in tsddbInfo.DropDownItems) {
+                if (I18n.CanTranslate("FormMain." + item.Name)) {
+                    item.Text = I18n.Translate("FormMain." + item.Name);
+                }
+            }
             updateSaveFileState();
 #if DEBUG
             string webDirectory = Path.Combine(Path.GetDirectoryName(PlatformFunction.AppDir), "www");
             if (!Directory.Exists(webDirectory)) webDirectory = Path.Combine(PlatformFunction.AppDir, "www");
 #else
-            string webDirectory = Path.Combine(CompilerFunction.appDir, "www");
+            string webDirectory = Path.Combine(PlatformFunction.AppDir, "www");
 #endif
             
             string pageURL = Path.Combine(webDirectory, "index.html") + string.Format("?ver={0}&lang={1}&theme={2}",
@@ -195,13 +200,13 @@ namespace BlocklyAts.UserInterface {
             }
             if (PreferenceManager.Current.RecentFiles != null) {
                 var recentFilesArray = PreferenceManager.Current.RecentFiles.GetRecentFiles(8);
-                tsbtnOpen.DropDownItems.Clear();
+                tsddbOpen.DropDownItems.Clear();
                 foreach (var item in recentFilesArray) {
-                    tsbtnOpen.DropDownItems.Add(Path.GetFileNameWithoutExtension(item), null, async (sender, e) => {
+                    tsddbOpen.DropDownItems.Add(Path.GetFileNameWithoutExtension(item), null, async (sender, e) => {
                         await loadWorkspace(item);
                     });
                 }
-                tsbtnOpen.DropDownButtonWidth = recentFilesArray.Length > 0 ? 20 : 0;
+                tsddbOpen.DropDownButtonWidth = recentFilesArray.Length > 0 ? 20 : 0;
             }
         }
 

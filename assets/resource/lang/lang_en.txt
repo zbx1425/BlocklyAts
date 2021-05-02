@@ -2,7 +2,7 @@ Name = English
 BlocklyName = en
 
 FormMain.tsbtnNew = New Project (Ctrl+N)
-FormMain.tsbtnOpen = Open Project (Ctrl+O)
+FormMain.tsddbOpen = Open Project (Ctrl+O)
 FormMain.tsbtnSave = Save Project (Ctrl+S)
 FormMain.tsbtnSaveAs = Save Project As (Ctrl+Shift+S)
 FormMain.tsbtnCompile = Compile (Ctrl+Shift+B)

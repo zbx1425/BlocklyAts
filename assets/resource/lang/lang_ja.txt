@@ -2,7 +2,7 @@ Name = 日本語
 BlocklyName = ja
 
 FormMain.tsbtnNew = 新規プロジェクト (Ctrl+N)
-FormMain.tsbtnOpen = プロジェクトを開く (Ctrl+O)
+FormMain.tsddbOpen = プロジェクトを開く (Ctrl+O)
 FormMain.tsbtnSave = プロジェクトを保存 (Ctrl+S)
 FormMain.tsbtnSaveAs = 名前を付けて保存 (Ctrl+Shift+S)
 FormMain.tsbtnCompile = コンパイル (Ctrl+Shift+B)

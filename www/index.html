@@ -249,16 +249,6 @@
       <block type="bve_get_config_default"></block>
       <block type="bve_set_config"></block>
       <block type="bve_config_save"></block>
-      <sep gap="40"></sep>
-      <block type="bve_msgbox">
-        <value name="MSG">
-          <shadow type="text">
-            <field name="TEXT">Hello World!</field>
-          </shadow>
-        </value>
-      </block>
-      <sep gap="40"></sep>
-      <block type="bve_comment"></block>
     </category>
     <sep></sep>
     <category id="catLogic" colour="210" name="%{BKY_CAT_LOGIC}">
@@ -509,11 +499,29 @@
       <block type="lists_sort"></block>
     </category>
     <sep></sep>
-    <category id="catAdvanced" colour="30" name="%{BKY_BVE_CAT_ADVANCED}">
+    <category id="catMisc" colour="30" name="%{BKY_BVE_CAT_MISC}">
       <block type="bve_convert_to_double"></block>
       <block type="bve_convert_to_string"></block>
       <block type="bve_convert_to_boolean"></block>
-      <sep gap="80"></sep>
+      <sep gap="40"></sep>
+      <block type="bve_msgbox">
+        <value name="MSG">
+          <shadow type="text">
+            <field name="TEXT">Hello World!</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="bve_exception">
+        <value name="MSG">
+          <shadow type="text">
+            <field name="TEXT">Something went wrong!</field>
+          </shadow>
+        </value>
+      </block>
+      <sep gap="40"></sep>
+      <block type="bve_comment"></block>
+      <sep gap="40"></sep>
+      <label text="%{BKY_BVE_MSG_ADVANCED}"></label>
       <block type="bve_set_sound_internal">
         <value name="ID">
           <shadow type="math_number">

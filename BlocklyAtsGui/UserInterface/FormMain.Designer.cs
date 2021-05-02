@@ -26,7 +26,7 @@ namespace BlocklyAts.UserInterface {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.mainToolStrip = new System.Windows.Forms.ToolStrip();
             this.tsbtnNew = new System.Windows.Forms.ToolStripButton();
-            this.tsbtnOpen = new System.Windows.Forms.ToolStripSplitButton();
+            this.tsddbOpen = new System.Windows.Forms.ToolStripSplitButton();
             this.tsbtnSave = new System.Windows.Forms.ToolStripButton();
             this.tsbtnSaveAs = new System.Windows.Forms.ToolStripButton();
             this.tss1 = new System.Windows.Forms.ToolStripSeparator();
@@ -51,7 +51,7 @@ namespace BlocklyAts.UserInterface {
             this.mainToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.mainToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbtnNew,
-            this.tsbtnOpen,
+            this.tsddbOpen,
             this.tsbtnSave,
             this.tsbtnSaveAs,
             this.tss1,
@@ -83,15 +83,15 @@ namespace BlocklyAts.UserInterface {
             // 
             // tsbtnOpen
             // 
-            this.tsbtnOpen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbtnOpen.Image = ((System.Drawing.Image)(resources.GetObject("tsbtnOpen.Image")));
-            this.tsbtnOpen.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.tsbtnOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbtnOpen.Name = "tsbtnOpen";
-            this.tsbtnOpen.Padding = new System.Windows.Forms.Padding(1, 0, 1, 0);
-            this.tsbtnOpen.Size = new System.Drawing.Size(34, 22);
-            this.tsbtnOpen.Text = "Open";
-            this.tsbtnOpen.ButtonClick += new System.EventHandler(this.tsddbOpen_Click);
+            this.tsddbOpen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsddbOpen.Image = ((System.Drawing.Image)(resources.GetObject("tsbtnOpen.Image")));
+            this.tsddbOpen.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.tsddbOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsddbOpen.Name = "tsddbOpen";
+            this.tsddbOpen.Padding = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.tsddbOpen.Size = new System.Drawing.Size(34, 22);
+            this.tsddbOpen.Text = "Open";
+            this.tsddbOpen.ButtonClick += new System.EventHandler(this.tsddbOpen_Click);
             // 
             // tsbtnSave
             // 
@@ -275,7 +275,7 @@ namespace BlocklyAts.UserInterface {
 
         private System.Windows.Forms.ToolStrip mainToolStrip;
         private System.Windows.Forms.ToolStripButton tsbtnNew;
-        private System.Windows.Forms.ToolStripSplitButton tsbtnOpen;
+        private System.Windows.Forms.ToolStripSplitButton tsddbOpen;
         private System.Windows.Forms.ToolStripButton tsbtnSaveAs;
         private System.Windows.Forms.ToolStripSeparator tss1;
         private System.Windows.Forms.ToolStripButton tsbtnDebugWindow;

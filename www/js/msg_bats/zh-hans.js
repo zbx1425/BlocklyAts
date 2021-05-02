@@ -2,7 +2,7 @@ Blockly.Msg["BVE_CAT_EVENT"]="BVE事件";
 Blockly.Msg["BVE_CAT_COMMON"]="BVE常用";
 Blockly.Msg["BVE_CAT_SPECIALIZE"]="BVE参数";
 Blockly.Msg["BVE_CAT_UTILITY"]="实用功能";
-Blockly.Msg["BVE_CAT_ADVANCED"]="其他";
+Blockly.Msg["BVE_CAT_MISC"]="其他";
 
 Blockly.Msg["BVE_ELAPSE"]="当状态更新 (每帧一次)";
 Blockly.Msg["BVE_INITIALIZE"]="当游戏开始 (载入/跳站)";
@@ -106,6 +106,7 @@ Blockly.Msg["BVE_MSG_KEY_ANY_ONLY"]="以下只可在'任一按键按/抬'时使�
 Blockly.Msg["BVE_MSG_BLOW_HORN_ONLY"]="以下只可在'鸣放任一警笛'时使用。";
 Blockly.Msg["BVE_MSG_SET_SIGNAL_ONLY"]="以下只可在'收到信号机'时使用。";
 Blockly.Msg["BVE_MSG_SET_BEACON_ONLY"]="以下只可在'收到应答器'时使用。";
+Blockly.Msg["BVE_MSG_ADVANCED"]="高级功能: ";
 
 Blockly.Msg["BVE_CONFIG_LOAD"]="读取配置文件 %1";
 Blockly.Msg["BVE_GET_CONFIG"]="配置项 [%1]%2";
@@ -116,9 +117,10 @@ Blockly.Msg["BVE_PLACEHOLDER_PATH"]="配置文件.ini";
 Blockly.Msg["BVE_PLACEHOLDER_PART"]="部分名称";
 Blockly.Msg["BVE_PLACEHOLDER_KEY"]="键值名称";
 Blockly.Msg["BVE_PLACEHOLDER_TIMER"]="定时器名称";
-Blockly.Msg["BVE_PLACEHOLDER_COMMENT"]="注释块。无任何效果。放在你需要解释的地方。";
+Blockly.Msg["BVE_PLACEHOLDER_COMMENT"]="注释块。无任何效果。\n放在你需要解释的地方。";
 
 Blockly.Msg["BVE_MSGBOX"]="弹窗 %1";
+Blockly.Msg["BVE_EXCEPTION"]="错误 %1";
 
 Blockly.Msg["CAT_LOGIC"]="逻辑";
 Blockly.Msg["CAT_LOOP"]="循环";

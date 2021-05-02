@@ -38,7 +38,7 @@ namespace BlocklyAts.Workspace {
             libDir = Path.Combine(Path.GetDirectoryName(PlatformFunction.AppDir), "assets", "lib");
             if (!Directory.Exists(libDir)) libDir = Path.Combine(PlatformFunction.AppDir, "lib");
 #else
-            libDir = Path.Combine(appDir, "lib");
+            libDir = Path.Combine(PlatformFunction.AppDir, "lib");
 #endif
             CodeFunction = File.ReadAllText(Path.Combine(libDir, "function.cs"));
             CodeOpenBve = File.ReadAllText(Path.Combine(libDir, "openbve.cs"));

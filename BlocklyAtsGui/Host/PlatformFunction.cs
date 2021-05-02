@@ -34,7 +34,11 @@ namespace BlocklyAts.Host {
                 string versionString = version.ToString();
                 if (version.Revision > 100) {
                     int rcNum = version.Revision - 100;
-                    version = new Version(version.Major, version.Minor, version.Build + 1, 0);
+                    if (version.Build >= 100) {
+                        version = new Version(version.Major, version.Minor + 1, 0, 0);
+                    } else {
+                        version = new Version(version.Major, version.Minor, version.Build + 1, 0);
+                    }
                     versionString = version.ToString() + "-rc" + rcNum;
                 }
                 return versionString;

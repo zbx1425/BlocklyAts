@@ -2,7 +2,7 @@ Name = 简体中文
 BlocklyName = zh-hans
 
 FormMain.tsbtnNew = 新建工程 (Ctrl+N)
-FormMain.tsbtnOpen = 打开工程 (Ctrl+O)
+FormMain.tsddbOpen = 打开工程 (Ctrl+O)
 FormMain.tsbtnSave = 保存工程 (Ctrl+S)
 FormMain.tsbtnSaveAs = 工程另存为 (Ctrl+Shift+S)
 FormMain.tsbtnCompile = 编译 (Ctrl+Shift+B)

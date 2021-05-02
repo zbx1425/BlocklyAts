@@ -69,7 +69,12 @@ namespace BlocklyAts {
         }
 
         public string PluginDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location).TrimEnd('\\', '/');
-        
+
+        public class AtsCustomException : Exception {
+
+            public AtsCustomException(string message) : base(message) { }
+        }
+
         [DllExport(CallingConvention.StdCall)]
         public static void Load() {
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
@@ -102,8 +107,7 @@ namespace BlocklyAts {
                 );
                 Impl.Load();
             } catch (Exception ex) {
-                MessageBox.Show(ex.ToString(), "BlocklyAts Loading Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Process.GetCurrentProcess().Kill();
+                RuntimeException(ex);
                 return;
             }
         }
@@ -114,8 +118,14 @@ namespace BlocklyAts {
         }
 
         private static void RuntimeException(Exception ex) {
-            var result = MessageBox.Show(ex.ToString(), "BlocklyAts Runtime Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
-            if (result == DialogResult.Cancel) Process.GetCurrentProcess().Kill();
+            if (ex is System.Reflection.TargetInvocationException) ex = ex.InnerException;
+            if (ex is AtsCustomException) {
+                MessageBox.Show(ex.Message, "BlocklyAts Customized Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Diagnostics.Process.GetCurrentProcess().Kill();
+            } else {
+                var result = MessageBox.Show(ex.ToString(), "BlocklyAts Runtime Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
+                if (result == DialogResult.Cancel) System.Diagnostics.Process.GetCurrentProcess().Kill();
+            }
         }
 
         private static Queue<LAFC> lateCallQueue = new Queue<LAFC>();
