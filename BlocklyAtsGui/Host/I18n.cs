@@ -16,11 +16,14 @@ namespace BlocklyAts.Host {
         public static List<KeyValuePair<string, string>> LanguageDisplayList = new List<KeyValuePair<string, string>>();
 
         static I18n() {
-            foreach (DictionaryEntry entry in Properties.Resources.ResourceManager.GetResourceSet(CultureInfo.CurrentUICulture, true, true)) {
-                if (!entry.Key.ToString().StartsWith("lang_", StringComparison.Ordinal)) continue;
+            var langFileDir = Path.Combine(PlatformFunction.AppDir, "resource", "lang");
+            var langFiles = Directory.GetFiles(langFileDir, "lang_*.txt");
+
+            foreach (var file in langFiles) {
+                var langContent = File.ReadAllText(file, Encoding.UTF8);
                 languages.Add(
-                    entry.Key.ToString().Replace("lang_", ""),
-                    entry.Value.ToString().Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries)
+                    Path.GetFileNameWithoutExtension(file).Replace("lang_", ""),
+                    langContent.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries)
                         .Where(s => !string.IsNullOrEmpty(s.Trim()))
                         .ToDictionary(l => l.Split(new[] { '=' }, 2)[0].Trim(), 
                             l => l.Split(new[] { '=' }, 2)[1].Trim().Replace("\\n", Environment.NewLine)));

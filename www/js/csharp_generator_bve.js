@@ -49,8 +49,9 @@ Blockly.CSharp.addReservedWords([
   "_p2",
 ].join(","));
 
-function indentString(string, count = 1, shorterfirst = false) {
-  var result = string.replace(/^/gm, " ".repeat(count));
+function indentString(str, count, shorterfirst) {
+  if (!count) count = 1;
+  var result = str.replace(/^/gm, " ".repeat(count));
   if (shorterfirst) result = result.substring(2);
   return result;
 }

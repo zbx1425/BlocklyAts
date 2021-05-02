@@ -125,9 +125,9 @@ namespace BlocklyAts {
         // To make sure the ElapseData is always available
         // And the sound states behave as the developer expects
         private struct LAFC {
-            short type;
-            double f1;
-            int i1, i2, i3;
+            private readonly short type;
+            private readonly double f1;
+            private readonly int i1, i2, i3;
 
             private LAFC(short type, double f1, int i1, int i2, int i3) {
                 this.type = type;

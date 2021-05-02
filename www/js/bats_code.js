@@ -115,7 +115,8 @@ function batsInit(toolboxNode) {
   Blockly.svgResize(workspace);
 
   var onkeydown = function(e) {
-    if (e.shiftKey && e.key && document.activeElement.tagName.toUpperCase() != "INPUT") {
+    var activeElementName = document.activeElement.tagName.toUpperCase();
+    if (e.shiftKey && e.key && activeElementName != "INPUT" && activeElementName != "TEXTAREA") {
       var selIndex = shortcutKeyMap.indexOf(e.key);
       if (selIndex >= 0) workspace.getToolbox().selectItemByPosition(selIndex);
     }

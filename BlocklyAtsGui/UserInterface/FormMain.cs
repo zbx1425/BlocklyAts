@@ -195,13 +195,13 @@ namespace BlocklyAts.UserInterface {
             }
             if (PreferenceManager.Current.RecentFiles != null) {
                 var recentFilesArray = PreferenceManager.Current.RecentFiles.GetRecentFiles(8);
-                tsddbOpen.DropDownItems.Clear();
+                tsbtnOpen.DropDownItems.Clear();
                 foreach (var item in recentFilesArray) {
-                    tsddbOpen.DropDownItems.Add(Path.GetFileNameWithoutExtension(item), null, async (sender, e) => {
+                    tsbtnOpen.DropDownItems.Add(Path.GetFileNameWithoutExtension(item), null, async (sender, e) => {
                         await loadWorkspace(item);
                     });
                 }
-                tsddbOpen.DropDownButtonWidth = recentFilesArray.Length > 0 ? 20 : 0;
+                tsbtnOpen.DropDownButtonWidth = recentFilesArray.Length > 0 ? 20 : 0;
             }
         }
 

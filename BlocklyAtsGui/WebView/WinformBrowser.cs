@@ -26,7 +26,7 @@ namespace BlocklyAts.WebView {
         static extern int CoInternetSetFeatureEnabled(int FeatureEntry, [MarshalAs(UnmanagedType.U4)] int dwFlags, bool fEnable);
 
         public WinformBrowser(string url = "about:blank") {
-            if (PlatformFunction.IsMono) {
+            if (!PlatformFunction.IsMono) {
                 try {
                     PlatformFunction.SetWebBrowserFeatures();
                     CoInternetSetFeatureEnabled(FEATURE_LOCALMACHINE_LOCKDOWN, SET_FEATURE_ON_PROCESS, false);
@@ -37,7 +37,7 @@ namespace BlocklyAts.WebView {
             browser = new WebBrowser {
                 IsWebBrowserContextMenuEnabled = false,
                 AllowWebBrowserDrop = false,
-                //ScriptErrorsSuppressed = true,
+                ScriptErrorsSuppressed = false,
                 WebBrowserShortcutsEnabled = false
             };
             browser.DocumentCompleted += Browser_DocumentCompleted;

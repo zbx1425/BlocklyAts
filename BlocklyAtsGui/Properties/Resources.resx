@@ -121,13 +121,4 @@
   <data name="Attribution" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Attribution.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="lang_en" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\lang_en.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="lang_ja" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\lang_ja.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="lang_zh_CHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\lang_zh_CHS.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
 </root>

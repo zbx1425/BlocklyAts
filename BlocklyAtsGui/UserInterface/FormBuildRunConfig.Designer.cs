@@ -100,7 +100,7 @@ namespace BlocklyAts.UserInterface {
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpMain.Size = new System.Drawing.Size(702, 392);
+            this.tlpMain.Size = new System.Drawing.Size(702, 452);
             this.tlpMain.TabIndex = 0;
             // 
             // flpRbGame
@@ -171,10 +171,11 @@ namespace BlocklyAts.UserInterface {
             this.tlpMain.SetColumnSpan(this.tbGameArgs, 2);
             this.tbGameArgs.Dock = System.Windows.Forms.DockStyle.Top;
             this.tbGameArgs.Location = new System.Drawing.Point(212, 276);
+            this.tbGameArgs.MinimumSize = new System.Drawing.Size(0, 120);
             this.tbGameArgs.Multiline = true;
             this.tbGameArgs.Name = "tbGameArgs";
             this.tbGameArgs.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbGameArgs.Size = new System.Drawing.Size(381, 60);
+            this.tbGameArgs.Size = new System.Drawing.Size(381, 120);
             this.tbGameArgs.TabIndex = 17;
             // 
             // tbGamePath
@@ -304,7 +305,7 @@ namespace BlocklyAts.UserInterface {
             this.flpActBtn.Controls.Add(this.btnOK);
             this.flpActBtn.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.flpActBtn.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flpActBtn.Location = new System.Drawing.Point(212, 342);
+            this.flpActBtn.Location = new System.Drawing.Point(212, 402);
             this.flpActBtn.Name = "flpActBtn";
             this.flpActBtn.Padding = new System.Windows.Forms.Padding(0, 15, 0, 0);
             this.flpActBtn.Size = new System.Drawing.Size(487, 47);
@@ -362,7 +363,7 @@ namespace BlocklyAts.UserInterface {
             this.lblGameArgs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblGameArgs.Location = new System.Drawing.Point(3, 273);
             this.lblGameArgs.Name = "lblGameArgs";
-            this.lblGameArgs.Size = new System.Drawing.Size(203, 66);
+            this.lblGameArgs.Size = new System.Drawing.Size(203, 126);
             this.lblGameArgs.TabIndex = 14;
             this.lblGameArgs.Text = "Game Program Arguments";
             this.lblGameArgs.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -412,7 +413,7 @@ namespace BlocklyAts.UserInterface {
             this.ClientSize = new System.Drawing.Size(832, 427);
             this.ControlBox = false;
             this.Controls.Add(this.tlpMain);
-            this.Font = new System.Drawing.Font(System.Windows.Forms.Control.DefaultFont.FontFamily, 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;

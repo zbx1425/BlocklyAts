@@ -43,8 +43,8 @@ namespace BlocklyAts.UserInterface {
             this.tlpMain.ColumnCount = 1;
             this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlpMain.Controls.Add(this.flpActBtn, 0, 3);
-            this.tlpMain.Controls.Add(this.btnUninstall, 0, 4);
-            this.tlpMain.Controls.Add(this.btnClearRecentFiles, 0, 3);
+            this.tlpMain.Controls.Add(this.btnUninstall, 0, 5);
+            this.tlpMain.Controls.Add(this.btnClearRecentFiles, 0, 4);
             this.tlpMain.Controls.Add(this.cbExternalWebView, 0, 2);
             this.tlpMain.Controls.Add(this.cbDarkTheme, 0, 1);
             this.tlpMain.Controls.Add(this.lblRequireRestart, 0, 0);

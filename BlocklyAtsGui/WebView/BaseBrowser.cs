@@ -29,6 +29,7 @@ namespace BlocklyAts.WebView {
             browser.Size = parent.ClientSize;
             parent.Controls.Add(browser);
             browser.BringToFront();
+            browser.Focus();
         }
 
         public static BaseBrowser AcquireInstance(string url = "about:blank") {

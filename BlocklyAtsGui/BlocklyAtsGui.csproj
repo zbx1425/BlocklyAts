@@ -189,15 +189,6 @@
     <None Include="Resources\Attribution.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\lang_zh_CHS.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\lang_en.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\lang_ja.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
