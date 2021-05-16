@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28307.960
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlocklyAtsGui", "BlocklyAtsGui\BlocklyAtsGui.csproj", "{77703C7D-A2A3-4426-956D-D0B20F69D735}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BatsUnmanaged", "BatsUnmanaged\BatsUnmanaged.csproj", "{2AABD893-9059-4558-95CE-26EC2F921D6A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtsCallConverter", "AtsCallConverter\AtsCallConverter.csproj", "{2AABD893-9059-4558-95CE-26EC2F921D6A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

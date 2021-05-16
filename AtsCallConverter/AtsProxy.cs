@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -9,7 +10,7 @@ using System.Windows.Forms;
 namespace BlocklyAts {
 
     public partial class ApiProxy {
-
+        
         private static ApiProxy Instance = new ApiProxy();
         private static CallConverter Impl;
 
@@ -70,17 +71,11 @@ namespace BlocklyAts {
 
         public string PluginDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location).TrimEnd('\\', '/');
 
-        public class AtsCustomException : Exception {
-
-            public AtsCustomException(string message) : base(message) { }
-        }
-
         [DllExport(CallingConvention.StdCall)]
         public static void Load() {
-            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-
             Assembly targetAssembly = null;
             try {
+                AssemblyResolveHelper.SetupResolveHandler();
                 using (var fs = new FileStream(Assembly.GetExecutingAssembly().Location, FileMode.Open, FileAccess.Read)) {
                     fs.Seek(0x6C, SeekOrigin.Begin);
                     byte[] sizeBuf = new byte[4];
@@ -100,26 +95,25 @@ namespace BlocklyAts {
                         targetAssembly = Assembly.Load(dllBuf);
                     }
                 }
+
+                var types = targetAssembly.GetExportedTypes();
                 Impl = new CallConverter(
-                    targetAssembly.GetType("BlocklyAts.AtsProgram"),
-                    targetAssembly.GetType("BlocklyAts.FunctionCompanion"),
+                    types.First(t => t.Name == "AtsProgram"),
+                    types.First(t => t.Name == "FunctionCompanion"),
                     Instance
                 );
                 Impl.Load();
+
+                AssemblyResolveHelper.RemoveResolveHandler();
             } catch (Exception ex) {
                 RuntimeException(ex);
                 return;
             }
         }
 
-        private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args) {
-            if (args.Name.Contains("BlocklyAtsUnmanaged")) return Assembly.GetExecutingAssembly();
-            return null;
-        }
-
         private static void RuntimeException(Exception ex) {
             if (ex is System.Reflection.TargetInvocationException) ex = ex.InnerException;
-            if (ex is AtsCustomException) {
+            if (ex.GetType().Name == "AtsCustomException") {
                 MessageBox.Show(ex.Message, "BlocklyAts Customized Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 System.Diagnostics.Process.GetCurrentProcess().Kill();
             } else {

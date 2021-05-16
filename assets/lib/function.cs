@@ -1,8 +1,8 @@
 public class FunctionCompanion {
   
-  private ApiProxy _c;
+  private dynamic _c;
   
-  public FunctionCompanion(ApiProxy c) {
+  public FunctionCompanion(object c) {
     _c = c;
   }
   
@@ -11,6 +11,10 @@ public class FunctionCompanion {
     public double LastTrigger;
     public bool Cycle;
     public bool Enabled;
+  }
+  
+  public class AtsCustomException : Exception {
+    public AtsCustomException(string message) : base(message) { }
   }
   
   private Dictionary<string, TimerTuple> TimerState = new Dictionary<string, TimerTuple>();

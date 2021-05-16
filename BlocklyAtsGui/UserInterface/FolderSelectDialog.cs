@@ -10,7 +10,7 @@ namespace BlocklyAts.UserInterface {
         private string _initialDirectory;
         private string _title;
         private string _fileName = "";
-
+        
         /// <summary>
         /// Gets or sets the initial directory for the folderbrowser dialog to show
         /// </summary>

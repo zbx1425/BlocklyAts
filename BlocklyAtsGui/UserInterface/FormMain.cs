@@ -261,9 +261,6 @@ namespace BlocklyAts.UserInterface {
         }
 
         private async Task<string> buildAllPlatforms() {
-            await saveWorkspace(); // Autosave
-            flashSaveBtn();
-
             var cSharpCode = await mainWebBrowser.BkyExportCSharp();
             var outputList = new List<Tuple<string, string>>();
             if (currentWorkspace.Config.ShouldCompilex86) {

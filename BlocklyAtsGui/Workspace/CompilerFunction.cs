@@ -17,19 +17,6 @@ namespace BlocklyAts.Workspace {
     static class CompilerFunction {
 
         public static readonly string libDir;
-        public static readonly string BoilerplateStartMarker = "Start of BlocklyAts boilerplate code.";
-
-        public static Task WaitForExitAsync(this Process process, CancellationToken cancellationToken = default(CancellationToken)) {
-            if (process.HasExited) return Task.CompletedTask;
-
-            var tcs = new TaskCompletionSource<object>();
-            process.EnableRaisingEvents = true;
-            process.Exited += (sender, args) => tcs.TrySetResult(null);
-            if (cancellationToken != default(CancellationToken))
-                cancellationToken.Register(() => tcs.SetCanceled());
-
-            return process.HasExited ? Task.CompletedTask : tcs.Task;
-        }
 
         public static readonly string CodeFunction, CodeOpenBve;
 
@@ -45,9 +32,10 @@ namespace BlocklyAts.Workspace {
         }
 
         public static string CombineCodeForCSharp(string script, bool includeOpenBve) {
+            var guid = Guid.NewGuid();
             var sb = new StringBuilder();
             sb.Append("using System; using System.IO; using System.Collections.Generic; using System.Windows.Forms; ");
-            if (includeOpenBve) sb.Append("using OpenBveApi.Runtime; "); else sb.Append("using BlocklyAts; ");
+            if (includeOpenBve) sb.Append("using OpenBveApi.Runtime; ");
             sb.Append("\n");
             sb.Append("namespace BlocklyAts {\n");
             sb.Append("\n\n// ----- Start of your program. -----\n\n");
@@ -78,7 +66,7 @@ namespace BlocklyAts.Workspace {
             CompilerParameters parameters = new CompilerParameters() {
                 IncludeDebugInformation = includePDB,
                 GenerateExecutable = false,
-                OutputAssembly = outputPath
+                OutputAssembly = outputPath,
             };
             if (!includePDB) parameters.CompilerOptions = "/optimize";
             string[] assemblies = {
@@ -106,7 +94,7 @@ namespace BlocklyAts.Workspace {
         public static void CompileCSharpUnmanaged(string script, string outputPath, string arch, bool includePDB) {
             var sourceCode = CombineCodeForCSharp(script, false);
 
-            var boilerplateFile = Path.Combine(PlatformFunction.AppDir, "lib", "batsdllexport_" + arch + ".dll");
+            var boilerplateFile = Path.Combine(PlatformFunction.AppDir, "lib", "AtsCallConverter_" + arch + ".dll");
             var boilerplateStream = new FileStream(boilerplateFile, FileMode.Open, FileAccess.Read);
             var outStream = new FileStream(outputPath, FileMode.Create, FileAccess.Write);
 
@@ -127,8 +115,7 @@ namespace BlocklyAts.Workspace {
                 "mscorlib.dll",
                 "System.Core.dll",
                 "Microsoft.CSharp.dll",
-                "System.Windows.Forms.dll",
-                boilerplateFile
+                "System.Windows.Forms.dll"
             };
 
             foreach (string a in assemblies) {

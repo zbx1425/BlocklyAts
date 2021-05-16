@@ -61,8 +61,8 @@ function batsExportCSharp(workspace) {
 
   var allHats = ["bve_hat_elapse", "bve_hat_initialize", "bve_hat_keydown_any", "bve_hat_keyup_any", "bve_hat_horn_blow", 
     "bve_hat_door_change", "bve_hat_set_signal", "bve_hat_set_beacon", "bve_hat_load", "bve_hat_dispose"];
-  var code = "  private ApiProxy _c;\n  private FunctionCompanion _f;\n" + 
-    "  public AtsProgram(ApiProxy c, FunctionCompanion f) { _c = c; _f = f; }\n\n";
+  var code = "  private dynamic _c;\n  private FunctionCompanion _f;\n" + 
+    "  public AtsProgram(object c, FunctionCompanion f) { _c = c; _f = f; }\n\n";
   var blocks = workspace.getTopBlocks(false);
   for (var i = 0, block; block = blocks[i]; i++) {
     if (block.type.startsWith("bve_hat")) {
@@ -221,7 +221,7 @@ Blockly.CSharp.bve_msgbox=function(block){
   return "_f.MsgBox(" + (Blockly.CSharp.valueToCode(block, "MSG", Blockly.CSharp.ORDER_NONE) || "\"\"") + ");\n";
 }
 Blockly.CSharp.bve_exception=function(block){
-  return "throw new ApiProxy.AtsCustomException(" + (Blockly.CSharp.valueToCode(block, "MSG", Blockly.CSharp.ORDER_NONE) || "\"\"") + ");\n";
+  return "throw new FunctionCompanion.AtsCustomException(" + (Blockly.CSharp.valueToCode(block, "MSG", Blockly.CSharp.ORDER_NONE) || "\"\"") + ");\n";
 }
 Blockly.CSharp.bve_hat_timer=function(block){
   var timerName = Blockly.CSharp.bveTimerNameDB.getName(block.getFieldValue("NAME"), Blockly.Generator.NAME_TYPE);

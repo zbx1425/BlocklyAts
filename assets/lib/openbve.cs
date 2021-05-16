@@ -14,6 +14,7 @@ public class ApiProxy : IRuntime {
   private FunctionCompanion Func;
   
   public bool Load(LoadProperties _p1) {
+    LProp = _p1;
     playSoundDelegate = _p1.PlaySound;
     _p1.Panel = Panel;
     for (int i = 0; i < 256; i++) emulatedSoundState[i] = -10000;
@@ -24,18 +25,13 @@ public class ApiProxy : IRuntime {
     return true;
   }
   
-  public class AtsCustomException : Exception {
-    
-    public AtsCustomException(string message) : base(message) { }
-  }
-  
   private static void RuntimeException(Exception ex) {
     new System.Threading.Thread(() => { RuntimeExceptionBlocking(ex); }).Start();
   }
   
   private static void RuntimeExceptionBlocking(Exception ex) {
     if (ex is System.Reflection.TargetInvocationException) ex = ex.InnerException;
-    if (ex is AtsCustomException) {
+    if (ex.GetType().Name == "AtsCustomException") {
       MessageBox.Show(ex.Message, "BlocklyAts Customized Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
       System.Diagnostics.Process.GetCurrentProcess().Kill();
     } else {
@@ -74,8 +70,9 @@ public class ApiProxy : IRuntime {
   public double EData_Vehicle_Location, EData_Vehicle_Speed, EData_TotalTime;
   public double EData_Vehicle_BcPressure, EData_Vehicle_MrPressure, EData_Vehicle_ErPressure, EData_Vehicle_BpPressure, EData_Vehicle_SapPressure, EData_Vehicle_Current;
   
+  public LoadProperties LProp;
   private VehicleSpecs _vspec;
-  private VehicleSpecs VSpec {
+  public VehicleSpecs VSpec {
     get { return _vspec; }
     set {
       _vspec = value;
@@ -87,7 +84,7 @@ public class ApiProxy : IRuntime {
     }
   }
   private ElapseData _edata;
-  private ElapseData EData {
+  public ElapseData EData {
     get { return _edata; }
     set {
       _edata = value;

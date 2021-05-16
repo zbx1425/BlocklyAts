@@ -196,16 +196,16 @@
     <PostBuildEvent>XCOPY "$(SolutionDir)www" "$(TargetDir)\www\" /E /Y
 XCOPY "$(SolutionDir)assets" "$(TargetDir)\" /E /Y
 IF $(ConfigurationName)==Release (
-COPY /Y "$(SolutionDir)BatsUnmanaged\bin\Release\x86\BlocklyAtsUnmanaged.dll" "$(TargetDir)\lib\batsdllexport_x86.dll"
-COPY /Y "$(SolutionDir)BatsUnmanaged\bin\Release\x64\BlocklyAtsUnmanaged.dll" "$(TargetDir)\lib\batsdllexport_x64.dll"
+COPY /Y "$(SolutionDir)AtsCallConverter\bin\Release\x86\AtsCallConverter.dll" "$(TargetDir)\lib\AtsCallConverter_x86.dll"
+COPY /Y "$(SolutionDir)AtsCallConverter\bin\Release\x64\AtsCallConverter.dll" "$(TargetDir)\lib\AtsCallConverter_x64.dll"
 COPY /Y "$(SolutionDir)README.md" "$(TargetDir)"
 COPY /Y "$(SolutionDir)LICENSE" "$(TargetDir)"
 ERASE "$(TargetDir)\*.xml"
 ERASE "$(TargetDir)\*.zip"
 "C:\Program Files\7-zip\7z.exe" a BlocklyAts.zip .
 ) else (
-COPY /Y "$(SolutionDir)BatsUnmanaged\bin\Debug\x86\BlocklyAtsUnmanaged.dll" "$(TargetDir)\lib\batsdllexport_x86.dll"
-COPY /Y "$(SolutionDir)BatsUnmanaged\bin\Debug\x64\BlocklyAtsUnmanaged.dll" "$(TargetDir)\lib\batsdllexport_x64.dll"
+COPY /Y "$(SolutionDir)AtsCallConverter\bin\Debug\x86\AtsCallConverter.dll" "$(TargetDir)\lib\AtsCallConverter_x86.dll"
+COPY /Y "$(SolutionDir)AtsCallConverter\bin\Debug\x64\AtsCallConverter.dll" "$(TargetDir)\lib\AtsCallConverter_x64.dll"
 )</PostBuildEvent>
   </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
