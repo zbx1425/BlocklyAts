@@ -418,6 +418,7 @@ namespace BlocklyAts.UserInterface {
             if (result == DialogResult.Abort) {
                 // How can I stop WebView2 from occupying the files?
                 // I cannot delete the entire DataDirectory
+                mainWebBrowser.Dispose();
                 if (File.Exists(PreferenceManager.PreferencePath))
                     File.Delete(PreferenceManager.PreferencePath);
                 if (!PlatformFunction.IsMono)

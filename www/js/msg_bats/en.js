@@ -94,6 +94,9 @@ Blockly.Msg["BVE_TMRMOD_TRIGRESET"]="trigger&restart";
 Blockly.Msg["BVE_CONVERT_TO_DOUBLE"]="%1 to number";
 Blockly.Msg["BVE_CONVERT_TO_STRING"]="%1 to string";
 Blockly.Msg["BVE_CONVERT_TO_BOOLEAN"]="%1 to boolean";
+Blockly.Msg["BVE_CAN_CONVERT_TO"]="%1 can be converted to %2?";
+Blockly.Msg["BVE_TYPE_DOUBLE"]="number";
+Blockly.Msg["BVE_TYPE_BOOLEAN"]="boolean";
 
 Blockly.Msg["BVE_MSG_HAT_SINGLETON"]="Events may only be used once each";
 Blockly.Msg["BVE_MSG_HAT_TIMER_SINGLETON"]="Only one 'when triggered' may be used for each timer name.";
@@ -120,7 +123,7 @@ Blockly.Msg["BVE_PLACEHOLDER_TIMER"]="timer name";
 Blockly.Msg["BVE_PLACEHOLDER_COMMENT"]="Comment block. Have no effect.\nInsert at places you want to describe.";
 
 Blockly.Msg["BVE_MSGBOX"]="msgbox %1";
-Blockly.Msg["BVE_EXCEPTION"]="error %1";
+Blockly.Msg["BVE_EXCEPTION"]="show error %1";
 
 Blockly.Msg["CAT_LOGIC"]="Logics";
 Blockly.Msg["CAT_LOOP"]="Loops";

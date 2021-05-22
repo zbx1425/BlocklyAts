@@ -40,7 +40,7 @@ namespace BlocklyAts.Workspace {
             sb.Append("namespace BlocklyAts {\n");
             sb.Append("\n\n// ----- Start of your program. -----\n\n");
             sb.Append(script);
-            sb.Append("\n\n// ----- End of your program. -----\n\n\n");
+            sb.Append("\n\n// ----- End of your program. You don't have to care about codes after this line. -----\n\n\n");
             sb.Append(CodeFunction);
             if (includeOpenBve) sb.Append(CodeOpenBve);
             sb.Append("}\n");

@@ -25,7 +25,7 @@ namespace BlocklyAts.WebView {
             var createTask = CoreWebView2Environment.CreateAsync(null, PreferenceManager.WebView2UserDataPath, null);
             createTask.Wait();
             environment = createTask.Result;
-            browser.CoreWebView2Ready += (sender, e) => {
+            browser.CoreWebView2InitializationCompleted += (sender, e) => {
                 browser.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All);
                 browser.CoreWebView2.WebResourceRequested += CoreWebView2_WebResourceRequested;
                 browser.CoreWebView2.Settings.IsZoomControlEnabled = false;

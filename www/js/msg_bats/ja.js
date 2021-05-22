@@ -94,6 +94,9 @@ Blockly.Msg["BVE_TMRMOD_TRIGRESET"]="トリガーとリセット";
 Blockly.Msg["BVE_CONVERT_TO_DOUBLE"]="%1 >数値";
 Blockly.Msg["BVE_CONVERT_TO_STRING"]="%1 >テキスト";
 Blockly.Msg["BVE_CONVERT_TO_BOOLEAN"]="%1 >ブール値";
+Blockly.Msg["BVE_CAN_CONVERT_TO"]="%1 は %2に変換できますか?";
+Blockly.Msg["BVE_TYPE_DOUBLE"]="数値";
+Blockly.Msg["BVE_TYPE_BOOLEAN"]="ブール値";
 
 Blockly.Msg["BVE_MSG_HAT_SINGLETON"]="イベントはそれぞれ1回のみ使用できます。";
 Blockly.Msg["BVE_MSG_HAT_TIMER_SINGLETON"]="タイマー名ごとに使用できる「トリガー時」は1つだけです。 ";
@@ -120,7 +123,7 @@ Blockly.Msg["BVE_PLACEHOLDER_TIMER"]="タイマーの名前";
 Blockly.Msg["BVE_PLACEHOLDER_COMMENT"]="コメントブロック。効果はありません。\n説明したい場所に挿入してください。";
 
 Blockly.Msg["BVE_MSGBOX"]="ポップアップ %1";
-Blockly.Msg["BVE_EXCEPTION"]="エラー %1";
+Blockly.Msg["BVE_EXCEPTION"]="エラーを表示 %1";
 
 Blockly.Msg["CAT_LOGIC"]="ロジック";
 Blockly.Msg["CAT_LOOP"]="ループ";

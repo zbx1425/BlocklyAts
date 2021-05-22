@@ -94,6 +94,9 @@ Blockly.Msg["BVE_TMRMOD_TRIGRESET"]="触发后重开始";
 Blockly.Msg["BVE_CONVERT_TO_DOUBLE"]="%1 转数字";
 Blockly.Msg["BVE_CONVERT_TO_STRING"]="%1 转文本";
 Blockly.Msg["BVE_CONVERT_TO_BOOLEAN"]="%1 转布尔值";
+Blockly.Msg["BVE_CAN_CONVERT_TO"]="%1 能转为%2?";
+Blockly.Msg["BVE_TYPE_DOUBLE"]="数字";
+Blockly.Msg["BVE_TYPE_BOOLEAN"]="布尔值";
 
 Blockly.Msg["BVE_MSG_HAT_SINGLETON"]="事件处理程序每种只可定义一个。";
 Blockly.Msg["BVE_MSG_HAT_TIMER_SINGLETON"]="对于每个名称的定时器只能有一个'当定时器触发'。";
@@ -120,7 +123,7 @@ Blockly.Msg["BVE_PLACEHOLDER_TIMER"]="定时器名称";
 Blockly.Msg["BVE_PLACEHOLDER_COMMENT"]="注释块。无任何效果。\n放在你需要解释的地方。";
 
 Blockly.Msg["BVE_MSGBOX"]="弹窗 %1";
-Blockly.Msg["BVE_EXCEPTION"]="错误 %1";
+Blockly.Msg["BVE_EXCEPTION"]="显示错误 %1";
 
 Blockly.Msg["CAT_LOGIC"]="逻辑";
 Blockly.Msg["CAT_LOOP"]="循环";

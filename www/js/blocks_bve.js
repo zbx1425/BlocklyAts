@@ -599,6 +599,26 @@ Blockly.defineBlocksWithJsonArray([
     output: "Boolean"
   },
   {
+    type: "bve_can_convert_to",
+    style: "logic_blocks",
+    message0: "%{BKY_BVE_CAN_CONVERT_TO}",
+    args0: [
+      {
+        type: "input_value",
+        name: "SOURCE"
+      },
+      {
+        type: "field_dropdown",
+        name: "TYPE",
+        options: [
+          ["%{BKY_BVE_TYPE_DOUBLE}", "Double"],
+          ["%{BKY_BVE_TYPE_BOOLEAN}", "Bool"]
+        ]
+      }
+    ],
+    output: "Boolean"
+  },
+  {
     type: "bve_comment",
     style: "comment_block",
     message0: "%1",

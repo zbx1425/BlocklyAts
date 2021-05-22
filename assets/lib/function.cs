@@ -131,3 +131,106 @@ public class FunctionCompanion {
     MessageBox.Show(text, "BlocklyATS Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
   }
 }
+
+// This helper class simulates the behavior of implicit type conversion like Javascript.
+public static class C {
+
+  public static int Int(object src) {
+    try {
+      try {
+        return Convert.ToInt32(src); 
+      } catch {
+        return (int)Convert.ToDouble(src);
+      }
+    } catch (FormatException ex) {
+      throw new FormatException("\"" + src.ToString() + "\" is not numeric; " + ex.ToString());
+    }
+  }
+
+  public static double Double(object src) {
+    try {
+      return Convert.ToDouble(src);
+    } catch (FormatException ex) {
+      throw new FormatException("\"" + src.ToString() + "\" is not numeric; " + ex.ToString());
+    }
+  }
+
+  public static bool CanConvertToDouble(object src) {
+    try {
+      Convert.ToDouble(src);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  public static bool Bool(object src) {
+    try {
+      return Convert.ToBoolean(src);
+    } catch (FormatException ex) {
+      throw new FormatException("\"" + src.ToString() + "\" cannot be represented by Boolean; " + ex.ToString());
+    }
+  }
+
+  public static bool CanConvertToBool(object src) {
+    try {
+      Convert.ToBoolean(src);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  public static dynamic Add(dynamic a, dynamic b) {
+    if (IsNumeric(a) && IsNumeric(b)) {
+      return Double(a) + Double(b);
+    } else {
+      return a + b;
+    }
+  }
+  
+  public static dynamic Sub(dynamic a, dynamic b) {
+    if (IsNumeric(a) && IsNumeric(b)) {
+      return Double(a) - Double(b);
+    } else {
+      return a - b;
+    }
+  }
+
+  public static dynamic Mul(dynamic a, dynamic b) {
+    if (IsNumeric(a) && IsNumeric(b)) {
+      return Double(a) * Double(b);
+    } else {
+      return a * b;
+    }
+  }
+  public static dynamic Div(dynamic a, dynamic b) {
+    if (IsNumeric(a) && IsNumeric(b)) {
+      return Double(a) / Double(b);
+    } else {
+      return a / b;
+    }
+  }
+
+  public static bool IsNumeric(object o) {   
+    switch (Type.GetTypeCode(o.GetType())) {
+      case TypeCode.Byte:
+      case TypeCode.SByte:
+      case TypeCode.UInt16:
+      case TypeCode.UInt32:
+      case TypeCode.UInt64:
+      case TypeCode.Int16:
+      case TypeCode.Int32:
+      case TypeCode.Int64:
+      case TypeCode.Decimal:
+      case TypeCode.Double:
+      case TypeCode.Single:
+        return true;
+      case TypeCode.String:
+        double discard;
+        return double.TryParse(o.ToString(), out discard);
+      default:
+        return false;
+    }
+  }
+}
