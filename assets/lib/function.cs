@@ -147,7 +147,7 @@ public static class C {
     }
   }
 
-  public static double Double(object src) {
+  public static double Dbl(object src) {
     try {
       return Convert.ToDouble(src);
     } catch (FormatException ex) {
@@ -183,7 +183,7 @@ public static class C {
 
   public static dynamic Add(dynamic a, dynamic b) {
     if (IsNumeric(a) && IsNumeric(b)) {
-      return Double(a) + Double(b);
+      return Dbl(a) + Dbl(b);
     } else {
       return a + b;
     }
@@ -191,7 +191,7 @@ public static class C {
   
   public static dynamic Sub(dynamic a, dynamic b) {
     if (IsNumeric(a) && IsNumeric(b)) {
-      return Double(a) - Double(b);
+      return Dbl(a) - Dbl(b);
     } else {
       return a - b;
     }
@@ -199,14 +199,14 @@ public static class C {
 
   public static dynamic Mul(dynamic a, dynamic b) {
     if (IsNumeric(a) && IsNumeric(b)) {
-      return Double(a) * Double(b);
+      return Dbl(a) * Dbl(b);
     } else {
       return a * b;
     }
   }
   public static dynamic Div(dynamic a, dynamic b) {
     if (IsNumeric(a) && IsNumeric(b)) {
-      return Double(a) / Double(b);
+      return Dbl(a) / Dbl(b);
     } else {
       return a / b;
     }

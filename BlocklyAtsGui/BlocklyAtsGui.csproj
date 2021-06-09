@@ -98,6 +98,12 @@
     <Compile Include="UserInterface\FormBugReport.Designer.cs">
       <DependentUpon>FormBugReport.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserInterface\FormCompileError.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterface\FormCompileError.Designer.cs">
+      <DependentUpon>FormCompileError.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserInterface\FormUserConfig.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -151,6 +157,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserInterface\FormBuildRunConfig.resx">
       <DependentUpon>FormBuildRunConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\FormCompileError.resx">
+      <DependentUpon>FormCompileError.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserInterface\FormDebug.resx">
       <DependentUpon>FormDebug.cs</DependentUpon>

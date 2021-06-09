@@ -16,16 +16,26 @@ namespace BlocklyAts.UserInterface {
         private FastColoredTextBoxNS.FastColoredTextBox tbCode;
         private TextBox fallbackTbCode;
 
-        public readonly string codeCSharp;
+        public readonly string codeOpenBve, codeBve456;
 
         public FormDebug(string codeCSharp) {
             InitializeComponent();
-            this.codeCSharp = CompilerFunction.CombineCodeForCSharp(codeCSharp, true);
-            this.codeCSharp = this.codeCSharp.Replace("\n", Environment.NewLine);
-            ResetTextbox();
+            this.codeOpenBve = CompilerFunction.CombineCode(codeCSharp, CompilerFunction.Platform.OpenBve);
+            this.codeOpenBve = this.codeOpenBve.Replace("\n", Environment.NewLine);
+            this.codeBve456 = CompilerFunction.CombineCode(codeCSharp, CompilerFunction.Platform.WinDll32);
+            this.codeBve456 = this.codeBve456.Replace("\n", Environment.NewLine);
+            ResetTextbox(codeBve456);
         }
 
-        private void ResetTextbox() {
+        private void rbCheckedChanged(object sender, EventArgs e) {
+            if (sender == rbBve456) {
+                ResetTextbox(codeBve456);
+            } else {
+                ResetTextbox(codeOpenBve);
+            }
+        }
+
+        private void ResetTextbox(string text) {
             SuspendLayout();
             pnlMain.Controls.Clear();
             if (!PlatformFunction.IsMono) {
@@ -49,7 +59,7 @@ namespace BlocklyAts.UserInterface {
                 tbCode.TabIndex = 2;
                 tbCode.Zoom = 100;
                 tbCode.Language = FastColoredTextBoxNS.Language.CSharp;
-                tbCode.Text = codeCSharp;
+                tbCode.Text = text;
                 pnlMain.Controls.Add(tbCode);
                 ((ISupportInitialize)(tbCode)).EndInit();
             } else {
@@ -64,7 +74,7 @@ namespace BlocklyAts.UserInterface {
                 fallbackTbCode.ScrollBars = ScrollBars.Both;
                 fallbackTbCode.Dock = DockStyle.Fill;
                 fallbackTbCode.TabIndex = 2;
-                fallbackTbCode.Text = codeCSharp;
+                fallbackTbCode.Text = text;
                 pnlMain.Controls.Add(fallbackTbCode);
             }
             ResumeLayout(false);

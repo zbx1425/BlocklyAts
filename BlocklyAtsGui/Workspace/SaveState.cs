@@ -20,6 +20,9 @@ namespace BlocklyAts.Workspace {
         [XmlIgnore()]
         public string SaveFilePath { get; set; }
 
+        [XmlIgnore()]
+        public bool IsDirty { get; set; } = false;
+
         public string EditorVersion { get; set; }
 
         [XmlElement("config")]
@@ -47,6 +50,7 @@ namespace BlocklyAts.Workspace {
             using (XmlWriter xmlWriter = XmlWriter.Create(writer, new XmlWriterSettings { Indent = false }))
                 new XmlSerializer(typeof(SaveState)).Serialize(xmlWriter, this);
             }
+            IsDirty = false;
         }
 
         public static SaveState LoadFromFile(string path) {

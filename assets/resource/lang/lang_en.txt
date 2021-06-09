@@ -48,4 +48,5 @@ Msg.DiscardChange = All unsaved changes will be discarded. Confirm?
 Msg.LoadHigherVersion = This savestate is created by a higher version of BlocklyAts. In order to open it, you should upgrade BlocklyAts.\nOpen anyway? It might not load properly.
 Msg.NeedRestart = Restart the program to apply your change.
 Msg.UpgradeAvailable = New version {0} has been released.\nUsing the latest version is recommended, to avoid bugs.\nDownload link: {1} (Press "OK" to open)\n\n{2}
-Msg.BugReport = BlocklyAts is currently in Beta.\nPlease report any bug you encountered to the developer, so that we can fix them.
+Msg.BugReport = Please report any bug you encountered to the developer, so that we can fix them.\nThank you for your help.
+Msg.ClosingNotSaved = The workspace has unsaved changes. Do you want to discard them?

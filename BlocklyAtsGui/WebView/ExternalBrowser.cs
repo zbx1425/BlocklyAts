@@ -13,6 +13,7 @@ namespace BlocklyAts.WebView {
 #pragma warning disable CS0067
         public override event EventHandler PageFinished;
         public override event PreviewKeyDownEventHandler KeyDown;
+        public override event EventHandler<InteropReceivedEventArgs> InteropReceived;
 
         private const long HeartbeatTimeout = 2000;
         private const int JavascriptTimeout = 10000;
@@ -39,7 +40,7 @@ namespace BlocklyAts.WebView {
                 20, System.Drawing.GraphicsUnit.Pixel);
             infoLabel.Click += InfoLabel_LinkClicked;
 
-            server = new HttpServer() { InteropReceived = InteropReceived };
+            server = new HttpServer() { InteropReceived = HttpInteropReceived };
             try {
                 if (!server.Start()) {
                     SetMessage("Failed to start HTTP server. Make sure you have a port available above 33033!");
@@ -91,7 +92,7 @@ namespace BlocklyAts.WebView {
             return tcs.Task.IsCompleted ? tcs.Task.Result : null;
         }
 
-        private string InteropReceived(string endpoint, string requestBody) {
+        private string HttpInteropReceived(string endpoint, string requestBody) {
             if (endpoint == "meta") {
                 int browserID;
                 do { browserID = random.Next(100000, 1000000); } while (heartbeat.ContainsKey(browserID));
@@ -115,6 +116,8 @@ namespace BlocklyAts.WebView {
                 } else {
                     return "<xml></xml>";
                 }
+            } else if (endpoint == "external") {
+                InteropReceived?.Invoke(this, new InteropReceivedEventArgs(requestBody));
             } else if (int.TryParse(endpoint, out int jsQueueID)) {
                 var queueItem = jsQueue.First(t => t.Item1 == jsQueueID);
                 if (queueItem == null) return null;
@@ -176,7 +179,7 @@ namespace BlocklyAts.WebView {
         }
 
         private void InfoLabel_LinkClicked(object sender, EventArgs e) {
-            if (TargetUrl != null) PlatformFunction.CallBrowser(TargetUrl);
+            if (TargetUrl != null && !browserReady) PlatformFunction.CallBrowser(TargetUrl);
         }
 
         private string TargetUrl {

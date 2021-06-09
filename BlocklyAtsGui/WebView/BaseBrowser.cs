@@ -14,11 +14,18 @@ using System.Xml.Linq;
 namespace BlocklyAts.WebView {
 
     public abstract class BaseBrowser : IDisposable {
+
+        public class InteropReceivedEventArgs : EventArgs {
+            public string Message { get; set; }
+            public InteropReceivedEventArgs(string msg) : base() { Message = msg; }
+        }
+
         public abstract Control GetControl();
         public abstract void Reload();
         public abstract void Navigate(string url);
         public abstract event EventHandler PageFinished;
         public abstract event PreviewKeyDownEventHandler KeyDown;
+        public abstract event EventHandler<InteropReceivedEventArgs> InteropReceived;
         public abstract Task<object> InvokeScript(string script);
         public abstract void ShowDevTools();
         public abstract void Dispose();
@@ -85,6 +92,10 @@ namespace BlocklyAts.WebView {
         
         public async Task<string> BkyExportCSharp() {
             return (await InvokeScript("batsWkspExportCSharp();"))?.ToString();
+        }
+
+        public async Task BkyInformWorkspaceSaved() {
+            await InvokeScript("batsOnWorkspaceSaved();");
         }
     }
 }

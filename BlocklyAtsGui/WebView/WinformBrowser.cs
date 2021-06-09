@@ -14,8 +14,8 @@ namespace BlocklyAts.WebView {
         private WebBrowser browser;
 
         public override event EventHandler PageFinished;
-
         public override event PreviewKeyDownEventHandler KeyDown;
+        public override event EventHandler<InteropReceivedEventArgs> InteropReceived;
 
         private const int FEATURE_LOCALMACHINE_LOCKDOWN = 8;
         private const int SET_FEATURE_ON_PROCESS = 0x00000002;
@@ -24,6 +24,21 @@ namespace BlocklyAts.WebView {
         [PreserveSig]
         [return: MarshalAs(UnmanagedType.Error)]
         static extern int CoInternetSetFeatureEnabled(int FeatureEntry, [MarshalAs(UnmanagedType.U4)] int dwFlags, bool fEnable);
+
+        [ComVisible(true)]
+        public class ScriptManager {
+
+            public WinformBrowser Browser;
+
+            public ScriptManager(WinformBrowser browser) {
+                this.Browser = browser;
+            }
+
+            // This method can also be called from JavaScript.
+            public void SendInterop(string message) {
+                Browser.InteropReceived?.Invoke(Browser, new InteropReceivedEventArgs(message));
+            }
+        }
 
         public WinformBrowser(string url = "about:blank") {
             if (!PlatformFunction.IsMono) {
@@ -42,6 +57,7 @@ namespace BlocklyAts.WebView {
             };
             browser.DocumentCompleted += Browser_DocumentCompleted;
             browser.PreviewKeyDown += Browser_PreviewKeyDown;
+            browser.ObjectForScripting = new ScriptManager(this);
             if (url != "about:blank") browser.Navigate(new Uri(url));
         }
 

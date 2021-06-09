@@ -35,7 +35,7 @@ namespace BlocklyAts.UserInterface {
             try {
                 currentWorkspace = SaveState.LoadFromFile(workspacePath);
                 if (currentWorkspace == null) currentWorkspace = new SaveState();
-                updateSaveFileState();
+                updateTitleAndSaveBtn();
             } catch {
                 // Give up, if it is not possible to load the workspace.
             }
@@ -90,7 +90,7 @@ namespace BlocklyAts.UserInterface {
                     item.Text = I18n.Translate("FormMain." + item.Name);
                 }
             }
-            updateSaveFileState();
+            updateTitleAndSaveBtn();
 #if DEBUG
             string webDirectory = Path.Combine(Path.GetDirectoryName(PlatformFunction.AppDir), "www");
             if (!Directory.Exists(webDirectory)) webDirectory = Path.Combine(PlatformFunction.AppDir, "www");
@@ -143,10 +143,18 @@ namespace BlocklyAts.UserInterface {
                 mainWebBrowser.KeyDown += mainWebBrowser_PreviewKeyDown;
                 this.PreviewKeyDown += mainWebBrowser_PreviewKeyDown;
                 mainWebBrowser.PageFinished += mainWebBrowser_PageFinished;
+                mainWebBrowser.InteropReceived += MainWebBrowser_InteropReceived;
                 mainWebBrowser.BindTo(this);
             } else {
                 MessageBox.Show(I18n.Translate("Msg.NeedRestart"));
                 return;
+            }
+        }
+
+        private void MainWebBrowser_InteropReceived(object sender, BaseBrowser.InteropReceivedEventArgs e) {
+            if (e.Message.Trim() == "WorkspaceDirty") {
+                currentWorkspace.IsDirty = true;
+                this.Invoke((Action)updateTitleAndSaveBtn);
             }
         }
 
@@ -189,12 +197,16 @@ namespace BlocklyAts.UserInterface {
             await mainWebBrowser.BkyLoadInitWorkspace(currentWorkspace.BlocklyXml);
         }
 
-        private void updateSaveFileState() {
+        private void updateTitleAndSaveBtn() {
             if (string.IsNullOrEmpty(currentWorkspace.SaveFilePath)) {
                 this.Text = "BlocklyAts: " + I18n.Translate("Text.NotSaved");
                 tsbtnSave.Enabled = false;
             } else {
-                this.Text = "BlocklyAts: " + currentWorkspace.SaveFilePath;
+                if (currentWorkspace.IsDirty) {
+                    this.Text = "BlocklyAts: " + Path.GetFileName(currentWorkspace.SaveFilePath) + "*";
+                } else {
+                    this.Text = "BlocklyAts: " + Path.GetFileName(currentWorkspace.SaveFilePath);
+                }
                 tsbtnSave.Enabled = true;
                 PreferenceManager.Current.RecentFiles?.AddRecentFile(currentWorkspace.SaveFilePath);
             }
@@ -215,7 +227,7 @@ namespace BlocklyAts.UserInterface {
                 == DialogResult.Yes) {
                 currentWorkspace = new SaveState();
                 await mainWebBrowser.BkyResetWorkspace();
-                updateSaveFileState();
+                updateTitleAndSaveBtn();
             }
         }
 
@@ -244,7 +256,7 @@ namespace BlocklyAts.UserInterface {
                 if (newWorkspace != null) {
                     currentWorkspace = newWorkspace;
                     await mainWebBrowser.BkyLoadWorkspace(currentWorkspace.BlocklyXml);
-                    updateSaveFileState();
+                    updateTitleAndSaveBtn();
                 }
             } catch (Exception ex) {
                 MessageBox.Show("This workspace savestate is malformed:\n" + ex.ToString());
@@ -257,33 +269,29 @@ namespace BlocklyAts.UserInterface {
             if (workspaceState == null) return;
             currentWorkspace.BlocklyXml = new FPXElement(workspaceState);
             currentWorkspace.SaveToFile(path);
-            updateSaveFileState();
+            await mainWebBrowser.BkyInformWorkspaceSaved();
+            updateTitleAndSaveBtn();
         }
 
         private async Task<string> buildAllPlatforms() {
             var cSharpCode = await mainWebBrowser.BkyExportCSharp();
-            var outputList = new List<Tuple<string, string>>();
+            var outputList = new List<Tuple<CompilerFunction.Platform, string>>();
             if (currentWorkspace.Config.ShouldCompilex86) {
-                outputList.Add(new Tuple<string, string>("x86", currentWorkspace.GetCompilePathx86()));
+                outputList.Add(new Tuple<CompilerFunction.Platform, string>
+                    (CompilerFunction.Platform.WinDll32, currentWorkspace.GetCompilePathx86()));
             }
             if (currentWorkspace.Config.ShouldCompilex64) {
-                outputList.Add(new Tuple<string, string>("x64", currentWorkspace.GetCompilePathx64()));
+                outputList.Add(new Tuple<CompilerFunction.Platform, string>
+                    (CompilerFunction.Platform.WinDll64, currentWorkspace.GetCompilePathx64()));
             }
             if (currentWorkspace.Config.ShouldCompileAnyCpu) {
-                outputList.Add(new Tuple<string, string>("net", currentWorkspace.GetCompilePathAnyCpu()));
+                outputList.Add(new Tuple<CompilerFunction.Platform, string>
+                    (CompilerFunction.Platform.OpenBve, currentWorkspace.GetCompilePathAnyCpu()));
             }
             var notifText = "";
             foreach (var pair in outputList) {
-                notifText += "\n" + pair.Item1 + ": " + pair.Item2;
-                if (pair.Item1 == "net") {
-                    CompilerFunction.CompileCSharpOpenBve(
-                        cSharpCode, pair.Item2, currentWorkspace.Config.IncludeDebugInfo
-                    );
-                } else {
-                    CompilerFunction.CompileCSharpUnmanaged(
-                        cSharpCode, pair.Item2, pair.Item1, currentWorkspace.Config.IncludeDebugInfo
-                    );
-                }
+                notifText += "\n" + pair.Item1.ToString() + ": " + pair.Item2;
+                CompilerFunction.Compile(cSharpCode, pair.Item2, pair.Item1, currentWorkspace.Config.IncludeDebugInfo);
             }
             return notifText;
         }
@@ -306,6 +314,9 @@ namespace BlocklyAts.UserInterface {
                 } else {
                     MessageBox.Show(I18n.Translate("Msg.CompileFinish") + buildResult);
                 }
+            } catch (CompilerFunction.CompileException ex) {
+                var ced = new FormCompileError(ex);
+                ced.ShowDialog();
             } catch (Exception ex) {
                 MessageBox.Show(I18n.Translate("Msg.CompileFail") + ex.Message);
             }
@@ -364,6 +375,9 @@ namespace BlocklyAts.UserInterface {
                         await gameProcess.WaitForExitAsync();
                     }
                 }
+            } catch (CompilerFunction.CompileException ex) {
+                var ced = new FormCompileError(ex);
+                ced.ShowDialog();
             } catch (Exception ex) {
                 MessageBox.Show(I18n.Translate("Msg.CompileFail") + ex.Message);
             }
@@ -426,7 +440,16 @@ namespace BlocklyAts.UserInterface {
                 PreferenceManager.Current = null;
                 Application.Exit();
             }
-            if (PreferenceManager.Current != null) updateSaveFileState();
+            if (PreferenceManager.Current != null) updateTitleAndSaveBtn();
+        }
+
+        private void FormMain_FormClosing(object sender, FormClosingEventArgs e) {
+            if (currentWorkspace != null && currentWorkspace.IsDirty) {
+                if (MessageBox.Show(I18n.Translate("Msg.ClosingNotSaved"), "Warning: Unsaved", 
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.No) {
+                    e.Cancel = true;
+                }
+            }
         }
     }
 }

@@ -91,7 +91,7 @@ public class ApiProxy : IRuntime {
       EData_Handles_Reverser = value.Handles.Reverser;
       EData_Handles_PowerNotch = value.Handles.PowerNotch;
       EData_Handles_BrakeNotch = value.Handles.BrakeNotch;
-      EData_Handles_ConstSpeed = value.Handles.ConstSpeed ? 1 : 0;
+      EData_Handles_ConstSpeed = value.Handles.ConstSpeed ? 1 : 2;
       EData_Vehicle_Location = value.Vehicle.Location;
       EData_Vehicle_Speed = value.Vehicle.Speed.KilometersPerHour;
       EData_TotalTime = value.TotalTime.Milliseconds;
@@ -143,7 +143,7 @@ public class ApiProxy : IRuntime {
       EData.Handles.Reverser = pos;
       break;
     case 3:
-      if (pos == 2) return;
+      if (pos == 0) return;
       EData.Handles.ConstSpeed = (pos == 1);
       break;
     }

@@ -14,6 +14,7 @@ namespace BlocklyAts.WebView {
     partial class WebView2Browser : BaseBrowser {
         public override event EventHandler PageFinished;
         public override event PreviewKeyDownEventHandler KeyDown;
+        public override event EventHandler<InteropReceivedEventArgs> InteropReceived;
 
         private CoreWebView2Environment environment;
         private WebView2 browser;
@@ -44,8 +45,13 @@ namespace BlocklyAts.WebView {
                 controller.AcceleratorKeyPressed += Controller_AcceleratorKeyPressed;
             };
             browser.KeyDown += Browser_KeyDown;
+            browser.WebMessageReceived += Browser_WebMessageReceived;
             browser.EnsureCoreWebView2Async(environment);
             Navigate(url);
+        }
+
+        private void Browser_WebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e) {
+            InteropReceived?.Invoke(this, new InteropReceivedEventArgs(UnescapeJsString(e.WebMessageAsJson)));
         }
 
         private void Controller_AcceleratorKeyPressed(object sender, CoreWebView2AcceleratorKeyPressedEventArgs e) {

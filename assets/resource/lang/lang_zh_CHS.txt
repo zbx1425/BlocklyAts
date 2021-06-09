@@ -48,4 +48,5 @@ Msg.DiscardChange = 未保存的更改将被放弃。确认？
 Msg.LoadHigherVersion = 这一存档是由更高版本的 BlocklyAts 制作的。如要打开它，您需要升级 BlocklyAts。\n仍然要打开吗？可能无法正确加载。
 Msg.NeedRestart = 重新启动程序以应用更改。 
 Msg.UpgradeAvailable = 新版本 {0} 已推出。\n建议您使用新版本，以避免问题。\n下载链接: {1} (按确认键打开)\n\n{2}
-Msg.BugReport = BlocklyAts 现仍处于开发测试阶段。\n请将使用过程中遇到的问题向开发者汇报，以便做出相应修复。
+Msg.BugReport = 请将使用过程中遇到的问题向开发者汇报，以便做出相应修复。\n感谢您对改善本软件做出的帮助。
+Msg.ClosingNotSaved = 工程中的一些更改尚未保存。要放弃这些更改吗？

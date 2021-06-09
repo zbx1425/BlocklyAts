@@ -189,7 +189,7 @@ Blockly.CSharp.bve_sound_play_once=function(block){
   return "_c.SetLegacySound(C.Int(" + Blockly.CSharp.valueToCode(block, "ID", Blockly.CSharp.ORDER_NONE) + "), 1);\n";
 }
 Blockly.CSharp.bve_sound_play_loop=function(block){
-  return "_c.SetLegacySoundLV(C.Int(" + Blockly.CSharp.valueToCode(block, "ID", Blockly.CSharp.ORDER_NONE) + "), C.Double(" + 
+  return "_c.SetLegacySoundLV(C.Int(" + Blockly.CSharp.valueToCode(block, "ID", Blockly.CSharp.ORDER_NONE) + "), C.Dbl(" + 
     Blockly.CSharp.valueToCode(block, "VOLUME", Blockly.CSharp.ORDER_NONE) + "));\n";
 }
 Blockly.CSharp.bve_get_sound_internal=function(block){
@@ -292,7 +292,7 @@ Blockly.CSharp.bve_timer_modify=function(block){
   }
 }
 Blockly.CSharp.bve_convert_to_double=function(block) {
-  return ["C.Double(" + Blockly.CSharp.valueToCode(block, "SOURCE", Blockly.CSharp.ORDER_NONE) + ")", 
+  return ["C.Dbl(" + Blockly.CSharp.valueToCode(block, "SOURCE", Blockly.CSharp.ORDER_NONE) + ")", 
     Blockly.CSharp.ORDER_FUNCTION_CALL];
 }
 Blockly.CSharp.bve_convert_to_boolean=function(block) {

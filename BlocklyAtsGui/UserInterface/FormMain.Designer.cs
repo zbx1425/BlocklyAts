@@ -38,10 +38,10 @@ namespace BlocklyAts.UserInterface {
             this.tsbtnBugReport = new System.Windows.Forms.ToolStripMenuItem();
             this.tssm1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbtnAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbtnUserConfig = new System.Windows.Forms.ToolStripButton();
             this.tsbtnDebugWindow = new System.Windows.Forms.ToolStripButton();
             this.tss2 = new System.Windows.Forms.ToolStripSeparator();
             this.tscbLanguage = new System.Windows.Forms.ToolStripComboBox();
-            this.tsbtnUserConfig = new System.Windows.Forms.ToolStripButton();
             this.mainToolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -81,10 +81,10 @@ namespace BlocklyAts.UserInterface {
             this.tsbtnNew.Text = "New";
             this.tsbtnNew.Click += new System.EventHandler(this.tsbtnNew_Click);
             // 
-            // tsbtnOpen
+            // tsddbOpen
             // 
             this.tsddbOpen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsddbOpen.Image = ((System.Drawing.Image)(resources.GetObject("tsbtnOpen.Image")));
+            this.tsddbOpen.Image = ((System.Drawing.Image)(resources.GetObject("tsddbOpen.Image")));
             this.tsddbOpen.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsddbOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsddbOpen.Name = "tsddbOpen";
@@ -211,6 +211,18 @@ namespace BlocklyAts.UserInterface {
             this.tsbtnAbout.Text = "About BlocklyAts";
             this.tsbtnAbout.Click += new System.EventHandler(this.tsbtnAbout_Click);
             // 
+            // tsbtnUserConfig
+            // 
+            this.tsbtnUserConfig.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tsbtnUserConfig.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbtnUserConfig.Image = ((System.Drawing.Image)(resources.GetObject("tsbtnUserConfig.Image")));
+            this.tsbtnUserConfig.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbtnUserConfig.Margin = new System.Windows.Forms.Padding(0, 1, 1, 2);
+            this.tsbtnUserConfig.Name = "tsbtnUserConfig";
+            this.tsbtnUserConfig.Size = new System.Drawing.Size(23, 22);
+            this.tsbtnUserConfig.Text = "User Settings";
+            this.tsbtnUserConfig.Click += new System.EventHandler(this.tsbtnUserConfig_Click);
+            // 
             // tsbtnDebugWindow
             // 
             this.tsbtnDebugWindow.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
@@ -240,18 +252,6 @@ namespace BlocklyAts.UserInterface {
             this.tscbLanguage.Size = new System.Drawing.Size(121, 25);
             this.tscbLanguage.SelectedIndexChanged += new System.EventHandler(this.tscbLanguage_SelectedIndexChanged);
             // 
-            // tsbtnUserConfig
-            // 
-            this.tsbtnUserConfig.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.tsbtnUserConfig.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbtnUserConfig.Image = ((System.Drawing.Image)(resources.GetObject("tsbtnUserConfig.Image")));
-            this.tsbtnUserConfig.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbtnUserConfig.Margin = new System.Windows.Forms.Padding(0, 1, 1, 2);
-            this.tsbtnUserConfig.Name = "tsbtnUserConfig";
-            this.tsbtnUserConfig.Size = new System.Drawing.Size(23, 22);
-            this.tsbtnUserConfig.Text = "User Settings";
-            this.tsbtnUserConfig.Click += new System.EventHandler(this.tsbtnUserConfig_Click);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -262,6 +262,7 @@ namespace BlocklyAts.UserInterface {
             this.MinimumSize = new System.Drawing.Size(800, 480);
             this.Name = "FormMain";
             this.Text = "BlocklyAts";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.mainWebBrowser_PreviewKeyDown);
             this.mainToolStrip.ResumeLayout(false);

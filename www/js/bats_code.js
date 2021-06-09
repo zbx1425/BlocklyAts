@@ -1,4 +1,6 @@
 var workspace = null;
+var isWorkspaceDirty = false;
+var isWorkspaceLoading = false;
 
 var blockStylesLight = {
   bve_blocks: {
@@ -67,6 +69,32 @@ var hIntervalInit;
 
 var shortcutKeyMap = ["Q", "W", "E", "R", "", "A", "S", "D", "F", "Z", "", "X", "", "C", "V"];
 
+function batsOnWorkspaceChange(e) {
+  if (e.type == Blockly.Events.FINISHED_LOADING) {
+    isWorkspaceLoading = false;
+    return;
+  }
+  if (e.isUiEvent) return;
+  if (isWorkspaceLoading) return;
+  if (!isWorkspaceDirty) {
+    isWorkspaceDirty = true;
+    if (typeof chrome != 'undefined' && window.chrome.webview != null && window.chrome.webview.postMessage != null) {
+      window.chrome.webview.postMessage("WorkspaceDirty");
+    } else if (typeof external != "undefined" && window.isIE) {
+      window.external.SendInterop("WorkspaceDirty");
+    } else if (getQueryVariable("ver") == null) {
+      var xhr1 = new XMLHttpRequest();
+      xhr1.open("POST", "interop/external");
+      xhr1.responseType = "document";
+      xhr1.send("WorkspaceDirty");
+    }
+  }
+}
+
+function batsOnWorkspaceSaved() {
+  isWorkspaceDirty = false;
+}
+
 function batsInit(toolboxNode) {
   Blockly.prompt = function(msg, defaultValue, callback) {
     alertify.prompt(msg, defaultValue, function(evt, value){callback(value)});
@@ -112,6 +140,7 @@ function batsInit(toolboxNode) {
   workspace.setTheme(themeWithHat);
   var onresize = function(e) { Blockly.svgResize(workspace); };
   window.addEventListener('resize', onresize, false);
+  workspace.addChangeListener(batsOnWorkspaceChange);
   Blockly.svgResize(workspace);
 
   var onkeydown = function(e) {
@@ -161,6 +190,13 @@ function batsRemoteInit() {
       clearInterval(hIntervalInit);
       batsInit(document.getElementById("toolbox"));
       setInterval(batsRemoteHeartbeat, 500);
+      window.onbeforeunload = function(e) {
+        e = e || window.event;
+        if (isWorkspaceDirty) {
+          if (e) e.returnValue = 'Warning: Unsaved';
+          return 'Warning: Unsaved';
+        }
+      }
     } else {
       document.getElementById("page-overlay").innerHTML = "Please keep the BlocklyAts main program running!";
       document.getElementById("page-overlay").style.display = "block";
@@ -238,11 +274,14 @@ function batsPageSwitchTo(newPage) {
 }
 
 function batsWkspReset() {
+  isWorkspaceLoading = true;
   pageSeq = ["Main"];
   pageMap = {"Main": null};
   pageCurrent = "Main";
   shareVariables = [];
   workspace.clear();
+  isWorkspaceLoading = false;
+  isWorkspaceDirty = false;
 }
 
 function batsWkspSave() {
@@ -250,8 +289,10 @@ function batsWkspSave() {
 }
 
 function batsWkspLoad(xmlstr) {
+  isWorkspaceLoading = true;
   workspace.clear();
   Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xmlstr),workspace);
+  isWorkspaceDirty = false;
 }
 
 function batsWkspExportCSharp() {
