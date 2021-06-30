@@ -6,7 +6,7 @@ var blockStylesLight = {
   bve_blocks: {
     colourPrimary: "#37474f",
     colourSecondary: "#90a4ae",
-    colourTertiary: "#263238",
+    colourTertiary: "#a0c4ce",
     hat: "cap",
   },
   comment_block: {
@@ -25,7 +25,7 @@ var blockStylesDark = {
   bve_blocks: {
     colourPrimary: "#546e7a",
     colourSecondary: "#b0bec5",
-    colourTertiary: "#263238",
+    colourTertiary: "#a0c4ce",
     hat: "cap",
   },
   comment_block: {

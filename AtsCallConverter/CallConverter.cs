@@ -12,7 +12,7 @@ namespace BlocklyAts {
         public Type ImplType, FuncType;
         public object ImplInstance, FuncInstance;
         private MethodInfo MLoad, MElapse, MInitialize, MKeyDown, MKeyUp, MHornBlow, 
-            MDoorChange, MSetSignal, MSetBeacon, MUnload, MUpdateTimer;
+            MDoorChange, MDoorChangeAny, MSetSignal, MSetBeacon, MUnload, MUpdateTimer;
 
         public CallConverter(Type ImplType, Type FuncType, ApiProxy c) {
             try {
@@ -27,6 +27,7 @@ namespace BlocklyAts {
                 MKeyUp = ImplType.GetMethod("KeyUp");
                 MHornBlow = ImplType.GetMethod("HornBlow");
                 MDoorChange = ImplType.GetMethod("DoorChange");
+                MDoorChangeAny = ImplType.GetMethod("DoorChangeAny");
                 MSetSignal = ImplType.GetMethod("SetSignal");
                 MSetBeacon = ImplType.GetMethod("SetBeacon");
                 MUnload = ImplType.GetMethod("Unload");
@@ -62,6 +63,9 @@ namespace BlocklyAts {
         }
         public void DoorChange() {
             MDoorChange.Invoke(ImplInstance, null);
+        }
+        public void DoorChangeAny() {
+            MDoorChangeAny.Invoke(ImplInstance, null);
         }
         public void SetSignal(int _psignal) {
             MSetSignal.Invoke(ImplInstance, new object[] { _psignal });

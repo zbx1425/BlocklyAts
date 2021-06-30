@@ -65,8 +65,9 @@ namespace BlocklyAts.Workspace {
                         return null;
                     }
                 }
+
+                // 1.0.6.0+: Sound and Panel ID from field to block
                 if (new Version(wksp.EditorVersion) <= new Version(1, 0, 6, 0)) {
-                    // Upgrade ID from field to block
                     string[] upgradeList = {
                         "bve_sound_stop", "bve_sound_play_once", "bve_sound_play_loop",
                         "bve_get_sound_internal", "bve_set_sound_internal",
@@ -92,6 +93,44 @@ namespace BlocklyAts.Workspace {
                             )
                         );
                         valueBlock.Remove();
+                    }
+                }
+
+                // 1.1.0.0+: updown_key and horn_blew to updown_key_check and horn_blew_check
+                if (new Version(wksp.EditorVersion) <= new Version(1, 1, 0, 0)) {
+                    string[] upgradeList = { "bve_updown_key", "bve_horn_blew" };
+                    var targetBlocks = wksp.BlocklyXml.Descendants()
+                        .Where(e => e.Name.LocalName == "block")
+                        .Where(e => upgradeList.Contains(e.Attribute("type").Value))
+                        .ToList();
+                    foreach (var block in targetBlocks) {
+                        var valueElem = block.Parent;
+                        if (valueElem == null || valueElem.Name.LocalName != "value") continue;
+                        var compareElem = valueElem.Parent;
+                        if (compareElem == null || compareElem.Name.LocalName != "block" 
+                            || compareElem.Attribute("type").Value != "logic_compare") continue;
+                        var fieldElem = compareElem.Nodes()
+                            .Where(e => (e as XElement).Name.LocalName == "value")
+                            .Select(e => (e as XElement).FirstNode as XElement)
+                            .Where(e => !upgradeList.Contains(e.Attribute("type").Value))
+                            .Select(e => e.FirstNode as XElement)
+                            .FirstOrDefault();
+                        if (fieldElem == null || fieldElem.Name.LocalName != "field") continue;
+                        if (fieldElem.Attribute("name").Value == "KEY_TYPE") {
+                            var bveKeyBlock = fieldElem.Parent;
+                            bveKeyBlock.Name = "shadow";
+                            fieldElem = new XElement("value", new XAttribute("name", "KEY_TYPE"), bveKeyBlock);
+                        } else if (fieldElem.Attribute("name").Value != "HORN_TYPE") {
+                            continue;
+                        }
+
+                        compareElem.AddAfterSelf(
+                            new XElement("block", new XAttribute("type", block.Attribute("type").Value + "_check"),
+                                new XAttribute("id", GenerateBlocklyUid()),
+                                fieldElem
+                            )
+                        );
+                        compareElem.Remove();
                     }
                 }
                 return wksp;

@@ -104,7 +104,8 @@ function batsExportCSharp(workspace) {
   Blockly.CSharp.init(workspace);
 
   var allHats = ["bve_hat_elapse", "bve_hat_initialize", "bve_hat_keydown_any", "bve_hat_keyup_any", "bve_hat_horn_blow", 
-    "bve_hat_door_change", "bve_hat_set_signal", "bve_hat_set_beacon", "bve_hat_load", "bve_hat_dispose"];
+    "bve_hat_door_change", "bve_hat_door_change_any", "bve_hat_set_signal", "bve_hat_set_beacon", 
+    "bve_hat_load", "bve_hat_dispose"];
   var code = "  private dynamic _c;\n  private FunctionCompanion _f;\n" + 
     "  public AtsProgram(object c, FunctionCompanion f) { _c = c; _f = f; }\n\n";
   var blocks = workspace.getTopBlocks(false);
@@ -145,6 +146,9 @@ Blockly.CSharp.bve_hat_horn_blow=function(block){
 }
 Blockly.CSharp.bve_hat_door_change=function(block){
   return "public void DoorChange() {\n";
+}
+Blockly.CSharp.bve_hat_door_change_any=function(block){
+  return "public void DoorChangeAny() {\n";
 }
 Blockly.CSharp.bve_hat_set_signal=function(block){
   return "public void SetSignal(int _psignal) {\n";
@@ -216,20 +220,19 @@ Blockly.CSharp.bve_get_key=function(block){
   return ["_c.KeyState[C.Int(" + Blockly.CSharp.valueToCode(block, "KEY_TYPE", Blockly.CSharp.ORDER_NONE) + ")]",
     Blockly.CSharp.ORDER_MEMBER];
 }
-Blockly.CSharp.bve_horn=function(block){
-  return [["Primary", "Secondary", "Music"].indexOf(block.getFieldValue("KEY_TYPE")), Blockly.CSharp.ORDER_ATOMIC];
-}
 Blockly.CSharp.bve_get_door=function(block){
   return ["_c.LegacyDoorState", Blockly.CSharp.ORDER_ATOMIC];
 }
 Blockly.CSharp.bve_init_mode=function(block){
   return ["_pinitindex", Blockly.CSharp.ORDER_ATOMIC];
 }
-Blockly.CSharp.bve_updown_key=function(block){
-  return ["_pkey", Blockly.CSharp.ORDER_ATOMIC];
+Blockly.CSharp.bve_updown_key_check=function(block){
+  return ["_pkey == C.Int(" + Blockly.CSharp.valueToCode(block, "KEY_TYPE", Blockly.CSharp.ORDER_NONE) 
+    + ")", Blockly.CSharp.ORDER_EQUALITY];
 }
-Blockly.CSharp.bve_horn_blew=function(block){
-  return ["_phorntype", Blockly.CSharp.ORDER_ATOMIC];
+Blockly.CSharp.bve_horn_blew_check=function(block){
+  var hornType = ["Primary", "Secondary", "Music"].indexOf(block.getFieldValue("HORN_TYPE"));
+  return ["_phorntype == " + hornType, Blockly.CSharp.ORDER_EQUALITY];
 }
 Blockly.CSharp.bve_signal_aspect=function(block){
   return ["_psignal", Blockly.CSharp.ORDER_ATOMIC];

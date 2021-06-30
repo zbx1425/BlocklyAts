@@ -58,7 +58,9 @@ public class ApiProxy : IRuntime {
   }
   public void HornBlow(HornTypes _p1) { try { Impl.HornBlow((int)_p1); } catch (Exception ex) { RuntimeException(ex); } }
   public void DoorChange(DoorStates _p1, DoorStates _p2) { 
-    _doorState = _p2; if ((_p1 == DoorStates.None) == (_p2 == DoorStates.None)) return; 
+    _doorState = _p2; 
+    try { Impl.DoorChangeAny(); } catch (Exception ex) { RuntimeException(ex); }
+    if ((_p1 == DoorStates.None) == (_p2 == DoorStates.None)) return; 
     try { Impl.DoorChange(); } catch (Exception ex) { RuntimeException(ex); }
   }
   public void SetSignal(SignalData[] _p1) { try { Impl.SetSignal(_p1[0].Aspect); } catch (Exception ex) { RuntimeException(ex); } }

@@ -152,6 +152,7 @@ namespace BlocklyAts {
                 try {
                     switch (type) {
                         case 0:
+                            Impl.DoorChangeAny();
                             Impl.DoorChange();
                             break;
                         case 1:

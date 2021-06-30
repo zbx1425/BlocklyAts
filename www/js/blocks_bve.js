@@ -36,6 +36,12 @@ Blockly.defineBlocksWithJsonArray([
     nextStatement: null,
   },
   {
+    type: "bve_hat_door_change_any",
+    style: "bve_blocks",
+    message0: "%{BKY_BVE_DOOR_CHANGE_ANY}",
+    nextStatement: null,
+  },
+  {
     type: "bve_hat_set_signal",
     style: "bve_blocks",
     message0: "%{BKY_BVE_SET_SIGNAL}",
@@ -313,23 +319,6 @@ Blockly.defineBlocksWithJsonArray([
     output: "Boolean",
   },
   {
-    type: "bve_horn",
-    style: "bve_blocks",
-    message0: "%1",
-    args0: [
-      {
-        type: "field_dropdown",
-        name: "HORN_TYPE",
-        options: [
-          ["%{BKY_BVE_HORN_PRIMARY}", "Primary"],
-          ["%{BKY_BVE_HORN_SECONDARY}", "Secondary"],
-          ["%{BKY_BVE_HORN_MUSIC}", "Music"],
-        ],
-      },
-    ],
-    output: "Number",
-  },
-  {
     type: "bve_get_door",
     style: "bve_blocks",
     message0: "%{BKY_BVE_GET_DOOR}",
@@ -342,16 +331,34 @@ Blockly.defineBlocksWithJsonArray([
     output: "Number",
   },
   {
-    type: "bve_updown_key",
+    type: "bve_updown_key_check",
     style: "bve_blocks",
-    message0: "%{BKY_BVE_UPDOWN_KEY}",
-    output: "Number",
+    message0: "%{BKY_BVE_UPDOWN_KEY_CHECK}",
+    args0: [
+      {
+        type: "input_value",
+        name: "KEY_TYPE",
+        check: "Number"
+      }
+    ],
+    output: "Boolean",
   },
   {
-    type: "bve_horn_blew",
+    type: "bve_horn_blew_check",
     style: "bve_blocks",
-    message0: "%{BKY_BVE_HORN_BLEW}",
-    output: "Number",
+    message0: "%{BKY_BVE_HORN_BLEW_CHECK}",
+    args0: [
+      {
+        type: "field_dropdown",
+        name: "HORN_TYPE",
+        options: [
+          ["%{BKY_BVE_HORN_PRIMARY}", "Primary"],
+          ["%{BKY_BVE_HORN_SECONDARY}", "Secondary"],
+          ["%{BKY_BVE_HORN_MUSIC}", "Music"],
+        ],
+      },
+    ],
+    output: "Boolean",
   },
   {
     type: "bve_signal_aspect",
