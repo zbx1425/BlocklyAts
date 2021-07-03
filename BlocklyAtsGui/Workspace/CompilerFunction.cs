@@ -61,7 +61,8 @@ namespace BlocklyAts.Workspace {
         public static string CombineCode(string script, Platform platform) {
             var guid = Guid.NewGuid();
             var sb = new StringBuilder();
-            sb.Append("using System; using System.IO; using System.Collections.Generic; using System.Windows.Forms; ");
+            sb.Append("using System; using System.IO; using System.Collections.Generic; using System.Linq;");
+            sb.Append("using System.Windows.Forms; ");
             if (platform == Platform.OpenBve) {
                 sb.Append("using OpenBveApi.Runtime; using OpenBveApi.Colors;");
             }
@@ -90,7 +91,6 @@ namespace BlocklyAts.Workspace {
                 GenerateExecutable = false,
                 OutputAssembly = outputPath,
             };
-            if (platform == Platform.WinDll32 || platform == Platform.WinDll64) parameters.CompilerOptions += "/unsafe ";
             if (!includePDB) parameters.CompilerOptions += "/optimize ";
 
             string[] commonReferences = new string[] {

@@ -42,6 +42,9 @@ namespace BlocklyAts.Host {
                     }
                     versionString = version.ToString() + "-rc" + rcNum;
                 }
+#if DEBUG
+                versionString += " (DEBUG)";
+#endif
                 return versionString;
             }
         }

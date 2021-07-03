@@ -171,6 +171,10 @@ public static class C {
       throw new FormatException("\"" + src.ToString() + "\" cannot be represented by Boolean; " + ex.ToString());
     }
   }
+  
+  public static IEnumerable<double> EDbl(IEnumerable<object> src) {
+    return src.Select(e => Dbl(e));
+  }
 
   public static bool CanConvertToBool(object src) {
     try {
