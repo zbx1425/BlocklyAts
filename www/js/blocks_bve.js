@@ -1,4 +1,6 @@
 Blockly.defineBlocksWithJsonArray([
+
+  // Category: BVE Hats
   {
     type: "bve_hat_elapse",
     style: "bve_blocks",
@@ -36,12 +38,6 @@ Blockly.defineBlocksWithJsonArray([
     nextStatement: null,
   },
   {
-    type: "bve_hat_door_change_any",
-    style: "bve_blocks",
-    message0: "%{BKY_BVE_DOOR_CHANGE_ANY}",
-    nextStatement: null,
-  },
-  {
     type: "bve_hat_set_signal",
     style: "bve_blocks",
     message0: "%{BKY_BVE_SET_SIGNAL}",
@@ -65,6 +61,8 @@ Blockly.defineBlocksWithJsonArray([
     message0: "%{BKY_BVE_DISPOSE}",
     nextStatement: null,
   },
+
+  // Category: BVE General
   {
     type: "bve_vehicle_spec",
     style: "bve_blocks",
@@ -384,6 +382,8 @@ Blockly.defineBlocksWithJsonArray([
     ],
     output: "Number",
   },
+
+  // Category: Utilities
   {
     type: "bve_config_load",
     style: "bve_blocks",
@@ -493,7 +493,7 @@ Blockly.defineBlocksWithJsonArray([
   },
   {
     type: "bve_exception",
-    style: "raw_code_block",
+    style: "bve_blocks",
     message0: "%{BKY_BVE_EXCEPTION}",
     args0: [
       {
@@ -569,6 +569,203 @@ Blockly.defineBlocksWithJsonArray([
     previousStatement: null,
     nextStatement: null,
   },
+
+  // Category: OpenBVE
+  {
+    type: "obve_preceding_vehicle",
+    style: "openbve_blocks",
+    message0: "%{BKY_OBVE_PRECEDING_VEHICLE}",
+    args0: [
+      {
+        type: "field_dropdown",
+        name: "FIELD",
+        options: [
+          ["%{BKY_OBVE_PRETRAIN_EXIST}", "Exists"],
+          ["%{BKY_OBVE_PRETRAIN_LOCATION}", "Location"],
+          ["%{BKY_OBVE_PRETRAIN_DISTANCE}", "Distance"],
+          ["%{BKY_OBVE_PRETRAIN_SPEED}", "Speed"],
+        ]
+      }
+    ],
+    output: "Number",
+  },
+  {
+    type: "obve_next_station",
+    style: "openbve_blocks",
+    message0: "%{BKY_OBVE_NEXT_STATION}",
+    args0: [
+      {
+        type: "field_dropdown",
+        name: "STOP",
+        options: [
+          ["%{BKY_OBVE_NEXTSTA_ANY}", "false"],
+          ["%{BKY_OBVE_NEXTSTA_STOP}", "true"],
+        ]
+      },
+      {
+        type: "field_dropdown",
+        name: "FIELD",
+        options: [
+          ["%{BKY_OBVE_NEXTSTA_EXIST}", "Exists"],
+          ["%{BKY_OBVE_NEXTSTA_TYPE}", "Type"],
+          ["%{BKY_OBVE_NEXTSTA_STARTPOS}", "DefaultTrackPosition"],
+          ["%{BKY_OBVE_NEXTSTA_STOPPOS}", "StopPosition"],
+          ["%{BKY_OBVE_NEXTSTA_ARRTIME}", "ArrivalTime"],
+          ["%{BKY_OBVE_NEXTSTA_DEPTIME}", "DepartureTime"],
+          ["%{BKY_OBVE_NEXTSTA_STOPTIME}", "StopTime"],
+          ["%{BKY_OBVE_NEXTSTA_OPENLEFT}", "OpenLeftDoors"],
+          ["%{BKY_OBVE_NEXTSTA_OPENRIGHT}", "OpenRightDoors"],
+          ["%{BKY_OBVE_NEXTSTA_FORCESTOP}", "ForceStopSignal"],
+        ]
+      }
+    ],
+    output: "Number",
+  },
+  {
+    type: "obve_destination",
+    style: "openbve_blocks",
+    message0: "%{BKY_OBVE_DESTINATION}",
+    output: "Number",
+  },
+  {
+    type: "obve_langcode",
+    style: "openbve_blocks",
+    message0: "%{BKY_OBVE_LANGCODE}",
+    output: "String",
+  },
+  {
+    type: "obve_get_door",
+    style: "openbve_blocks",
+    message0: "%{BKY_OBVE_GET_DOOR}",
+    args0: [
+      {
+        type: "field_dropdown",
+        name: "DOOR",
+        options: [
+          ["%{BKY_OBVE_DOOR_LEFT}", "Left"],
+          ["%{BKY_OBVE_DOOR_RIGHT}", "Right"],
+          ["%{BKY_OBVE_DOOR_BOTH}", "Both"],
+          ["%{BKY_OBVE_DOOR_ANY}", "Any"],
+        ]
+      },
+    ],
+    output: "Boolean",
+  },
+  {
+    type: "obve_set_door_interlock",
+    style: "openbve_blocks",
+    message0: "%{BKY_OBVE_SET_DOOR_INTERLOCK}",
+    args0: [
+      {
+        type: "field_dropdown",
+        name: "DOOR",
+        options: [
+          ["%{BKY_OBVE_DOOR_LEFT}", "Left"],
+          ["%{BKY_OBVE_DOOR_RIGHT}", "Right"],
+          ["%{BKY_OBVE_DOOR_BOTH}", "Both"],
+        ]
+      },
+      {
+        type: "field_dropdown",
+        name: "ACTION",
+        options: [
+          ["%{BKY_OBVE_DOORIXL_LOCK}", "Lock"],
+          ["%{BKY_OBVE_DOORIXL_UNLOCK}", "Unlock"],
+        ]
+      }
+    ],
+    previousStatement: null,
+    nextStatement: null,
+  },
+  {
+    type: "obve_sound_play",
+    style: "openbve_blocks",
+    message0: "%{BKY_OBVE_SOUND_PLAY}",
+    args0: [
+      {
+        type: "input_value",
+        name: "ID",
+        check: "Number",
+      },
+      {
+        type: "input_value",
+        name: "VOLUME",
+        check: "Number"
+      },
+      {
+        type: "input_value",
+        name: "PITCH",
+        check: "Number"
+      },
+      {
+        type: "input_value",
+        name: "LOOP",
+        check: "Boolean"
+      }
+    ],
+    previousStatement: null,
+    nextStatement: null,
+  },
+  {
+    type: "obve_set_debug_message",
+    style: "openbve_blocks",
+    message0: "%{BKY_OBVE_SET_DEBUG_MESSAGE}",
+    args0: [
+      {
+        type: "input_value",
+        name: "MESSAGE",
+        check: "String"
+      }
+    ],
+    previousStatement: null,
+    nextStatement: null,
+  },
+  {
+    type: "obve_show_message",
+    style: "openbve_blocks",
+    message0: "%{BKY_OBVE_SHOW_MESSAGE}",
+    args0: [
+      {
+        type: "input_value",
+        name: "MESSAGE",
+        check: "String"
+      },
+      {
+        type: "field_dropdown",
+        name: "COLOR",
+        options: [
+          ["%{BKY_OBVE_COLOR_BLACK}", "Black"],
+          ["%{BKY_OBVE_COLOR_GRAY}", "Gray"],
+          ["%{BKY_OBVE_COLOR_WHITE}", "White"],
+          ["%{BKY_OBVE_COLOR_RED}", "Red"],
+          ["%{BKY_OBVE_COLOR_ORANGE}", "Orange"],
+          ["%{BKY_OBVE_COLOR_GREEN}", "Green"],
+          ["%{BKY_OBVE_COLOR_BLUE}", "Blue"],
+          ["%{BKY_OBVE_COLOR_MAGENTA}", "Magenta"],
+        ]
+      },
+      {
+        type: "field_number",
+        name: "DURATION",
+      },
+    ],
+    previousStatement: null,
+    nextStatement: null,
+  },
+  {
+    type: "bve_hat_door_change_any",
+    style: "openbve_blocks",
+    message0: "%{BKY_OBVE_DOOR_CHANGE_ANY}",
+    nextStatement: null,
+  },
+  {
+    type: "bve_hat_perform_ai",
+    style: "openbve_blocks",
+    message0: "%{BKY_OBVE_PERFORM_AI}",
+    nextStatement: null,
+  },
+
+  // Category: Conversions & Misc
   {
     type: "bve_convert_to_double",
     style: "math_blocks",
@@ -641,7 +838,7 @@ Blockly.defineBlocksWithJsonArray([
   },
   {
     type: "bve_rawcode_statement",
-    style: "raw_code_block",
+    style: "openbve_blocks",
     message0: "C# %1",
     args0: [
       {
@@ -655,7 +852,7 @@ Blockly.defineBlocksWithJsonArray([
   },
   {
     type: "bve_rawcode_value",
-    style: "raw_code_block",
+    style: "openbve_blocks",
     message0: "C# %1",
     args0: [
       {

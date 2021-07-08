@@ -93,6 +93,36 @@ if (!String.prototype.repeat) {
   }
 }
 
+if (!Array.prototype.includes) {
+  Object.defineProperty(Array.prototype, 'includes', {
+      value: function(searchElement, fromIndex) {
+
+          if (this == null) {
+              throw new TypeError('"this" is null or not defined');
+          }
+
+          const o = Object(this);
+          // tslint:disable-next-line:no-bitwise
+          const len = o.length >>> 0;
+
+          if (len === 0) {
+              return false;
+          }
+          // tslint:disable-next-line:no-bitwise
+          const n = fromIndex | 0;
+          let k = Math.max(n >= 0 ? n : len - Math.abs(n), 0);
+
+          while (k < len) {
+              if (o[k] === searchElement) {
+                  return true;
+              }
+              k++;
+          }
+          return false;
+      }
+  });
+}
+
 function indentString(str, count, shorterfirst) {
   if (!count) count = 1;
   var result = str.replace(/^/gm, " ".repeat(count));
@@ -104,17 +134,24 @@ function batsExportCSharp(workspace) {
   Blockly.CSharp.init(workspace);
 
   var allHats = ["bve_hat_elapse", "bve_hat_initialize", "bve_hat_keydown_any", "bve_hat_keyup_any", "bve_hat_horn_blow", 
-    "bve_hat_door_change", "bve_hat_door_change_any", "bve_hat_set_signal", "bve_hat_set_beacon", 
+    "bve_hat_door_change", "bve_hat_door_change_any", "bve_hat_set_signal", "bve_hat_set_beacon", "bve_hat_perform_ai",
     "bve_hat_load", "bve_hat_dispose"];
-  var code = "  private dynamic _c;\n  private FunctionCompanion _f;\n" + 
-    "  public AtsProgram(object c, FunctionCompanion f) { _c = c; _f = f; }\n\n";
+  var code = "  private BlocklyAts.ApiProxy _c;\n  private FunctionCompanion _f;\n" + 
+    "  public AtsProgram(BlocklyAts.ApiProxy c, FunctionCompanion f) { _c = c; _f = f; }\n\n";
   var blocks = workspace.getTopBlocks(false);
   for (var i = 0, block; block = blocks[i]; i++) {
     if (block.type.startsWith("bve_hat")) {
       removeItemOnce(allHats, block.type);
+    }
+  }
+  for (var i = 0, block; block = blocks[i]; i++) {
+    if (block.type.startsWith("bve_hat")) {
       code += indentString(Blockly.CSharp.blockToCode(block, true).trim(), 4, true);
-      //var nextBlock = block.getNextBlock();
-      //if (nextBlock) code += Blockly.CSharp.blockToCode(nextBlock);
+      
+      if (block.type == "bve_hat_load" && !allHats.includes("bve_hat_perform_ai")) {
+        code += "_c.LProp.AISupport = AISupport.Basic;\n";
+      }
+
       code += "\n  }\n\n";
     } else if (block.type == "procedures_defnoreturn" || block.type == "procedures_defreturn") {
       code += indentString(Blockly.CSharp.blockToCode(block), 2);
@@ -146,9 +183,6 @@ Blockly.CSharp.bve_hat_horn_blow=function(block){
 }
 Blockly.CSharp.bve_hat_door_change=function(block){
   return "public void DoorChange() {\n";
-}
-Blockly.CSharp.bve_hat_door_change_any=function(block){
-  return "public void DoorChangeAny() {\n";
 }
 Blockly.CSharp.bve_hat_set_signal=function(block){
   return "public void SetSignal(int _psignal) {\n";
@@ -251,7 +285,7 @@ Blockly.CSharp.bve_get_config=function(block){
   return ["_f.GetConfig(" + Blockly.CSharp.quote_(block.getFieldValue("PART")) + ", " 
     + Blockly.CSharp.quote_(block.getFieldValue("KEY")) + ")", Blockly.CSharp.ORDER_ATOMIC];
 }
-Blockly.CSharp.bve_get_config_default=function(block){ // TODO
+Blockly.CSharp.bve_get_config_default=function(block){
   return [
     "_f.GetConfig(" + Blockly.CSharp.quote_(block.getFieldValue("PART")) + ", " 
     + Blockly.CSharp.quote_(block.getFieldValue("KEY")) + ", ("
@@ -311,6 +345,81 @@ Blockly.CSharp.bve_can_convert_to=function(block) {
     Blockly.CSharp.valueToCode(block, "SOURCE", Blockly.CSharp.ORDER_NONE) + ")",
     Blockly.CSharp.ORDER_FUNCTION_CALL];
 }
+
+Blockly.CSharp.obve_preceding_vehicle=function(block){
+  if (block.getFieldValue("FIELD") == "Exists") {
+    return ["C.Int(_c.EData.PrecedingVehicle != null)", Blockly.CSharp.ORDER_FUNCTION_CALL];
+  } else {
+    return ["_c.EData.PrecedingVehicle." + 
+      (block.getFieldValue("FIELD") == "Speed" ? "Speed.KilometersPerHour" : block.getFieldValue("FIELD")),
+      Blockly.CSharp.ORDER_MEMBER];
+  }
+}
+Blockly.CSharp.obve_next_station=function(block){
+  var func = "_c.GetNextStation(" + block.getFieldValue("STOP") + ")";
+  var field = block.getFieldValue("FIELD");
+  if (field == "Exists") {
+    return ["C.Int(" + func + " != null)", Blockly.CSharp.ORDER_FUNCTION_CALL];
+  } else if (field == "OpenLeftDoors" || field == "OpenRightDoors"
+    || field == "ForceStopSignal" || field == "Type") {
+    return ["C.Int(" + func + "." + block.getFieldValue("FIELD") + ")", Blockly.CSharp.ORDER_FUNCTION_CALL];
+  } else {
+    return [func + "." + block.getFieldValue("FIELD"), Blockly.CSharp.ORDER_MEMBER];
+  }
+}
+Blockly.CSharp.obve_destination=function(block){
+  return ["_c.EData.Destination", Blockly.CSharp.ORDER_MEMBER];
+}
+Blockly.CSharp.obve_langcode=function(block){
+  return ["_c.EData.CurrentLanguageCode", Blockly.CSharp.ORDER_MEMBER];
+}
+Blockly.CSharp.obve_get_door=function(block){
+  switch (block.getFieldValue("DOOR")) {
+    case "Left":
+      return ["(_c.DoorState & 1) != 0", Blockly.CSharp.ORDER_EQUALITY];
+    case "Right":
+      return ["(_c.DoorState & 2) != 0", Blockly.CSharp.ORDER_EQUALITY];
+    case "Both":
+      return ["_c.DoorState == 3", Blockly.CSharp.ORDER_EQUALITY];
+    case "Any":
+      return ["_c.DoorState != 0", Blockly.CSharp.ORDER_EQUALITY];
+  }
+}
+Blockly.CSharp.obve_set_door_interlock=function(block){
+  switch (block.getFieldValue("DOOR")) {
+    case "Left":
+      return "_c.EData.DoorInterlockState " 
+        + (block.getFieldValue("ACTION") == "Lock" ? "|= " : "&= ~") + "DoorInterlockStates.Left;\n";
+    case "Right":
+      return "_c.EData.DoorInterlockState " 
+        + (block.getFieldValue("ACTION") == "Lock" ? "|= " : "&= ~") + "DoorInterlockStates.Right;\n";
+    case "Both":
+      return "_c.EData.DoorInterlockState = " + 
+        (block.getFieldValue("ACTION") == "Lock" ? "DoorInterlockStates.Locked" : "DoorInterlockStates.Unlocked") + ";\n";
+  }
+}
+Blockly.CSharp.obve_sound_play=function(block){
+  return "_c.SetSoundVPL(" +
+    "C.Int(" + Blockly.CSharp.valueToCode(block, "ID", Blockly.CSharp.ORDER_NONE) + "), " +
+    "C.Dbl(" + Blockly.CSharp.valueToCode(block, "VOLUME", Blockly.CSharp.ORDER_NONE) + "), " +
+    "C.Dbl(" + Blockly.CSharp.valueToCode(block, "PITCH", Blockly.CSharp.ORDER_NONE) + "), " +
+    "C.Bool(" + Blockly.CSharp.valueToCode(block, "LOOP", Blockly.CSharp.ORDER_NONE) + "));\n";
+}
+Blockly.CSharp.obve_set_debug_message=function(block){
+  return "_c.EData.DebugMessage = C.Str(" + Blockly.CSharp.valueToCode(block, "MESSAGE", Blockly.CSharp.ORDER_NONE) + ");\n";
+}
+Blockly.CSharp.obve_show_message=function(block){
+  return "_c.LProp.AddMessage(C.Str(" + Blockly.CSharp.valueToCode(block, "MESSAGE", Blockly.CSharp.ORDER_NONE) +
+    "), MessageColor." + block.getFieldValue("COLOR") + ", " + block.getFieldValue("DURATION") + ");\n";
+}
+Blockly.CSharp.bve_hat_door_change_any=function(block){
+  return "public void DoorChangeAny() {\n";
+}
+Blockly.CSharp.bve_hat_perform_ai=function(block){
+  return "public void PerformAI() {\n";
+}
+
+
 Blockly.CSharp.bve_comment = function(block) { return ""; }
 Blockly.CSharp.bve_rawcode_statement = function(block) { return block.getFieldValue("CODE") + "\n"; }
 Blockly.CSharp.bve_rawcode_value = function(block) { return block.getFieldValue("CODE"); }

@@ -9,16 +9,17 @@ var blockStylesLight = {
     colourTertiary: "#a0c4ce",
     hat: "cap",
   },
+  openbve_blocks: {
+    colourPrimary: "#a06000",
+    colourSecondary: "#ff9800",
+    colourTertiary: "#ffe0b2",
+    hat: "cap",
+  },
   comment_block: {
     colourPrimary: "#cccccc",
     colourSecondary: "#cccccc",
     colourTertiary: "#cccccc",
-  },
-  raw_code_block: {
-    colourPrimary: "#a06000",
-    colourSecondary: "#e09000",
-    colourTertiary: "#804000",
-  },
+  }
 };
 
 var blockStylesDark = {
@@ -28,16 +29,17 @@ var blockStylesDark = {
     colourTertiary: "#a0c4ce",
     hat: "cap",
   },
+  openbve_blocks: {
+    colourPrimary: "#a06000",
+    colourSecondary: "#ff9800",
+    colourTertiary: "#ffe0b2",
+    hat: "cap",
+  },
   comment_block: {
     colourPrimary: "#cccccc",
     colourSecondary: "#cccccc",
     colourTertiary: "#cccccc",
-  },
-  raw_code_block: {
-    colourPrimary: "#a06000",
-    colourSecondary: "#e09000",
-    colourTertiary: "#804000",
-  },
+  }
 };
 
 var themeWithHat;

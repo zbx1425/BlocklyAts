@@ -116,12 +116,21 @@ namespace BlocklyAts.Workspace {
                             .Select(e => e.FirstNode as XElement)
                             .FirstOrDefault();
                         if (fieldElem == null || fieldElem.Name.LocalName != "field") continue;
-                        if (fieldElem.Attribute("name").Value == "KEY_TYPE") {
+                        if (block.Attribute("type").Value == "bve_updown_key") {
                             var bveKeyBlock = fieldElem.Parent;
                             bveKeyBlock.Name = "shadow";
                             fieldElem = new XElement("value", new XAttribute("name", "KEY_TYPE"), bveKeyBlock);
-                        } else if (fieldElem.Attribute("name").Value != "HORN_TYPE") {
-                            continue;
+                        } else if (block.Attribute("type").Value == "bve_horn_blew") {
+                            if (fieldElem.Attribute("name").Value == "HORN_TYPE") {
+
+                            } else if (fieldElem.Attribute("name").Value == "NUM") {
+                                string[] hornTypes = { "Primary", "Secondary", "Music" };
+                                int numValue = -1;
+                                int.TryParse(fieldElem.Value, out numValue);
+                                string hornType = (numValue >= 0 && numValue <= 2) ? hornTypes[numValue] 
+                                    : hornTypes[0];
+                                fieldElem = new XElement("field", new XAttribute("name", "HORN_TYPE"), hornType);
+                            }
                         }
 
                         compareElem.AddAfterSelf(

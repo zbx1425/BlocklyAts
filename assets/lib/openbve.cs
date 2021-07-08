@@ -44,7 +44,7 @@ public class ApiProxy : IRuntime {
   public void SetReverser(int _p1) { EData_Handles_Reverser = _p1; }
   public void SetPower(int _p1) { EData_Handles_PowerNotch = _p1; }
   public void SetBrake(int _p1) { EData_Handles_BrakeNotch = _p1; }
-  public void PerformAI(AIData _p1) { }
+  public void PerformAI(AIData _p1) { AIHandles = _p1.Handles; try { Impl.PerformAI(); } catch (Exception ex) { RuntimeException(ex); } AIHandles = null; }
   
   public void Elapse(ElapseData _p1) { EData = _p1; try { Func.UpdateTimer(); Impl.Elapse(); } catch (Exception ex) { RuntimeExceptionBlocking(ex); } }
   public void Initialize(InitializationModes _p1) { try { Impl.Initialize((int)_p1); } catch (Exception ex) { RuntimeExceptionBlocking(ex); } }
@@ -133,20 +133,23 @@ public class ApiProxy : IRuntime {
   // To achieve the same behavior as Win32 plugin interface at bve_get_sound_internal
   private int[] emulatedSoundState = new int[MAX_SOUND_INDEX + 1];
   
+  private Handles AIHandles = null;
+  
   public void SetHandle(int type, int pos) {
+    Handles handles = AIHandles == null ? EData.Handles : AIHandles;
     switch (type) {
     case 0:
-      EData.Handles.BrakeNotch = pos;
+      handles.BrakeNotch = pos;
       break;
     case 1:
-      EData.Handles.PowerNotch = pos;
+      handles.PowerNotch = pos;
       break;
     case 2:
-      EData.Handles.Reverser = pos;
+      handles.Reverser = pos;
       break;
     case 3:
       if (pos == 0) return;
-      EData.Handles.ConstSpeed = (pos == 1);
+      handles.ConstSpeed = (pos == 1);
       break;
     }
   }
@@ -197,6 +200,17 @@ public class ApiProxy : IRuntime {
     SetLegacySound(id, state);
   }
   
+  public void SetSoundVPL(int id, double volume, double pitch, bool loop) {
+    if (id < 0 || id > MAX_SOUND_INDEX) throw new IndexOutOfRangeException(MAX_SOUND_ERROR_MSG);
+    if (soundHandles[id] != null && soundHandles[id].Playing) {
+      soundHandles[id].Volume = volume / 100;
+      soundHandles[id].Pitch = pitch / 100;
+    } else {
+      soundHandles[id] = playSoundDelegate(id, volume / 100, pitch / 100, loop);
+    }
+    emulatedSoundState[id] = 10000;
+  }
+  
   public int GetPanel(int id) { 
     if (id < 0 || id > MAX_PANEL_INDEX) throw new IndexOutOfRangeException(MAX_PANEL_ERROR_MSG);
     return Panel[id]; 
@@ -210,5 +224,17 @@ public class ApiProxy : IRuntime {
   public void CallImplFunc(string name) {
     var methodInfo = Impl.GetType().GetMethod("_etimertick_" + name);
     if (methodInfo != null) methodInfo.Invoke(Impl, new object[] { });
+  }
+  
+  
+  public Station GetNextStation(bool stopOnly) {
+    int stapointer = 0;
+    while ((EData.Stations[stapointer].StopPosition + 50 < EData.Vehicle.Location || (stopOnly && !EData.Stations[stapointer].PlayerStops())) 
+      && stapointer < EData.Stations.Count) stapointer++;
+    if (stapointer >= EData.Stations.Count) {
+        return null;
+    } else {
+        return EData.Stations[stapointer];
+    }
   }
 }
