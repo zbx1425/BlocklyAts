@@ -622,9 +622,24 @@ Blockly.defineBlocksWithJsonArray([
     output: "Number",
   },
   {
-    type: "obve_destination",
+    type: "obve_vehicle_state",
     style: "openbve_blocks",
-    message0: "%{BKY_OBVE_DESTINATION}",
+    message0: "%{BKY_BVE_VEHICLE_STATE}",
+    args0: [
+      {
+        type: "field_dropdown",
+        name: "FIELD_SEL",
+        options: [
+          ["%{BKY_OBVE_VSTATE_RADIUS}", "Radius"],
+          ["%{BKY_OBVE_VSTATE_CANT}", "Cant"],
+          ["%{BKY_OBVE_VSTATE_PITCH}", "Pitch"],
+          /* ["%{BKY_OBVE_VSTATE_ADHESION}", "Adhesion"],
+          ["%{BKY_OBVE_VSTATE_RAININTENSITY}", "RainIntensity"], */
+          ["%{BKY_OBVE_STATE_CAMERAVIEWMODE}", "CameraViewMode"],
+          ["%{BKY_OBVE_STATE_DESTINATION}", "Destination"],
+        ],
+      },
+    ],
     output: "Number",
   },
   {

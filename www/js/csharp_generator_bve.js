@@ -149,7 +149,7 @@ function batsExportCSharp(workspace) {
       code += indentString(Blockly.CSharp.blockToCode(block, true).trim(), 4, true);
       
       if (block.type == "bve_hat_load" && !allHats.includes("bve_hat_perform_ai")) {
-        code += "_c.LProp.AISupport = AISupport.Basic;\n";
+        code += "\n    _c.LProp.AISupport = AISupport.Basic;\n";
       }
 
       code += "\n  }\n\n";
@@ -159,7 +159,11 @@ function batsExportCSharp(workspace) {
   }
   code += "\n";
   for (var i = 0, hatName; hatName = allHats[i]; i++) {
-    code += "  " + Blockly.CSharp[hatName]().trim() + " }\n";
+    code += "  " + Blockly.CSharp[hatName]().trim();
+    if (hatName == "bve_hat_load" && !allHats.includes("bve_hat_perform_ai")) {
+      code += " _c.LProp.AISupport = AISupport.Basic;";
+    }
+    code += " }\n";
   }
 
   code = Blockly.CSharp.finish(code);
@@ -367,8 +371,13 @@ Blockly.CSharp.obve_next_station=function(block){
     return [func + "." + block.getFieldValue("FIELD"), Blockly.CSharp.ORDER_MEMBER];
   }
 }
-Blockly.CSharp.obve_destination=function(block){
-  return ["_c.EData.Destination", Blockly.CSharp.ORDER_MEMBER];
+Blockly.CSharp.obve_vehicle_state=function(block){
+  var field = block.getFieldValue("FIELD_SEL");
+  if (field == "CameraViewMode" || field == "Destination") {
+    return ["_c.EData." + field, Blockly.CSharp.ORDER_MEMBER];
+  } else {
+    return ["_c.EData.Vehicle." + field, Blockly.CSharp.ORDER_MEMBER];
+  }
 }
 Blockly.CSharp.obve_langcode=function(block){
   return ["_c.EData.CurrentLanguageCode", Blockly.CSharp.ORDER_MEMBER];

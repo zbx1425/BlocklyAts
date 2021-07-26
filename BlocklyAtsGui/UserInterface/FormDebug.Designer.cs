@@ -24,9 +24,10 @@ namespace BlocklyAts.UserInterface {
         /// </summary>
         private void InitializeComponent() {
             this.flpMain = new System.Windows.Forms.FlowLayoutPanel();
-            this.pnlMain = new System.Windows.Forms.Panel();
             this.rbBve456 = new System.Windows.Forms.RadioButton();
             this.rbOpenBve = new System.Windows.Forms.RadioButton();
+            this.pnlMain = new System.Windows.Forms.Panel();
+            this.lblCursorPos = new System.Windows.Forms.Label();
             this.flpMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -36,20 +37,13 @@ namespace BlocklyAts.UserInterface {
             this.flpMain.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flpMain.Controls.Add(this.rbBve456);
             this.flpMain.Controls.Add(this.rbOpenBve);
+            this.flpMain.Controls.Add(this.lblCursorPos);
             this.flpMain.Dock = System.Windows.Forms.DockStyle.Top;
             this.flpMain.Location = new System.Drawing.Point(0, 0);
             this.flpMain.Name = "flpMain";
             this.flpMain.Padding = new System.Windows.Forms.Padding(10);
             this.flpMain.Size = new System.Drawing.Size(784, 42);
             this.flpMain.TabIndex = 2;
-            // 
-            // pnlMain
-            // 
-            this.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlMain.Location = new System.Drawing.Point(0, 42);
-            this.pnlMain.Name = "pnlMain";
-            this.pnlMain.Size = new System.Drawing.Size(784, 419);
-            this.pnlMain.TabIndex = 3;
             // 
             // rbBve456
             // 
@@ -76,6 +70,25 @@ namespace BlocklyAts.UserInterface {
             this.rbOpenBve.UseVisualStyleBackColor = true;
             this.rbOpenBve.CheckedChanged += new System.EventHandler(this.rbCheckedChanged);
             // 
+            // pnlMain
+            // 
+            this.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlMain.Location = new System.Drawing.Point(0, 42);
+            this.pnlMain.Name = "pnlMain";
+            this.pnlMain.Size = new System.Drawing.Size(784, 419);
+            this.pnlMain.TabIndex = 3;
+            // 
+            // lblCursorPos
+            // 
+            this.lblCursorPos.AutoSize = true;
+            this.lblCursorPos.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblCursorPos.Location = new System.Drawing.Point(204, 10);
+            this.lblCursorPos.Margin = new System.Windows.Forms.Padding(40, 0, 3, 0);
+            this.lblCursorPos.Name = "lblCursorPos";
+            this.lblCursorPos.Size = new System.Drawing.Size(120, 16);
+            this.lblCursorPos.TabIndex = 2;
+            this.lblCursorPos.Text = "Row: 0; Col: 0";
+            // 
             // FormDebug
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -97,5 +110,6 @@ namespace BlocklyAts.UserInterface {
         private System.Windows.Forms.Panel pnlMain;
         private System.Windows.Forms.RadioButton rbBve456;
         private System.Windows.Forms.RadioButton rbOpenBve;
+        private System.Windows.Forms.Label lblCursorPos;
     }
 }

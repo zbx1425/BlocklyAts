@@ -14,9 +14,6 @@ namespace BlocklyAts.Host {
     static class PlatformFunction {
         
         public static readonly string AppDir = Path.GetDirectoryName(Application.ExecutablePath);
-
-        public static readonly string AppName = Path.GetFileName(Process.GetCurrentProcess().MainModule.FileName);
-
         static readonly string featureControlRegKey = @"Software\Microsoft\Internet Explorer\Main\FeatureControl\";
 
         public static bool IsMono { get; } = Type.GetType("Mono.Runtime") != null;
@@ -66,6 +63,7 @@ namespace BlocklyAts.Host {
             if (IsMono) return;
             // don't change the registry if running in-proc inside Visual Studio
             if (LicenseManager.UsageMode != LicenseUsageMode.Runtime) return;
+            var AppName = Path.GetFileName(Process.GetCurrentProcess().MainModule.FileName);
 
             Registry.CurrentUser.CreateSubKey(featureControlRegKey + "FEATURE_BROWSER_EMULATION", true)
                 .SetValue(AppName, GetBrowserEmulationMode(), RegistryValueKind.DWord);
@@ -88,6 +86,7 @@ namespace BlocklyAts.Host {
             // don't change the registry if running in-proc inside Visual Studio
             if (LicenseManager.UsageMode != LicenseUsageMode.Runtime) return;
 
+            var AppName = Path.GetFileName(Process.GetCurrentProcess().MainModule.FileName);
             Registry.CurrentUser.OpenSubKey(featureControlRegKey + "FEATURE_BROWSER_EMULATION", true)
                 ?.DeleteValue(AppName);
 

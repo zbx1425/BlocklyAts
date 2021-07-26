@@ -162,7 +162,11 @@ namespace BlocklyAts.Workspace {
                     Path.GetFileNameWithoutExtension(SaveFilePath) + suffix
                 );
             } else {
-                return compilePath;
+                if (Path.IsPathRooted(compilePath)) {
+                    return compilePath;
+                } else {
+                    return Path.GetFullPath(Path.Combine(Path.GetDirectoryName(SaveFilePath), compilePath));
+                }
             }
         }
 

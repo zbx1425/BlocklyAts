@@ -99,21 +99,14 @@ namespace BlocklyAts.Workspace {
             const string defaultModuleName = "AtsCallConverter00000000000000000000000000000000";
             var randomModuleName = "AtsCallConverter" + Guid.NewGuid().ToString("N");
             // Prevent module name conflicts
-            var tempOutputPath = Path.Combine(Path.GetDirectoryName(outputPath), 
+            var tempOutputPath = Path.Combine(Path.GetDirectoryName(outputPath),
                 "BlocklyAtsGenerated-" + Guid.NewGuid() + ".dll");
+            var modifiedProxyDllPath = Path.Combine(Path.GetDirectoryName(outputPath), randomModuleName + ".dll");
             var sourceCode = CombineCode(script, platform);
 
             var settings = new Dictionary<string, string>() {
                 { "CompilerVersion", "v4.0" }
             };
-            CSharpCodeProvider codeProvider = new CSharpCodeProvider(settings);
-            CompilerParameters parameters = new CompilerParameters() {
-                IncludeDebugInformation = includePDB,
-                GenerateExecutable = false,
-                OutputAssembly = tempOutputPath,
-            };
-            if (!includePDB) parameters.CompilerOptions += "/optimize";
-
             string[] commonReferences = new string[] {
                 "mscorlib.dll",
                 "System.Core.dll",
@@ -121,72 +114,81 @@ namespace BlocklyAts.Workspace {
                 "Microsoft.CSharp.dll",
                 "System.Windows.Forms.dll"
             };
-            foreach (string a in commonReferences) parameters.ReferencedAssemblies.Add(a);
-            string modifiedProxyDllPath = null;
-            if (platform == Platform.OpenBve) {
-                parameters.ReferencedAssemblies.Add(Path.Combine(PlatformFunction.AppDir, "lib", "OpenBveApi.dll"));
-            } else if (platform == Platform.WinDll32 || platform == Platform.WinDll64) {
-                var boilerplateFile = Path.Combine(
-                    PlatformFunction.AppDir,
-                    "lib",
-                    platform == Platform.WinDll32 ? "AtsCallConverter_x86.dll" : "AtsCallConverter_x64.dll"
-                );
-                modifiedProxyDllPath = Path.Combine(Path.GetDirectoryName(outputPath), randomModuleName + ".dll");
-                byte[] srcBytes = File.ReadAllBytes(boilerplateFile);
-                byte[] classNameBytes = Encoding.ASCII.GetBytes(randomModuleName);
 
-                // You need to use different module names for each plugin.
-                // Otherwise, the type references will mess up when multiple plugins are loaded by DetailManager.
-                ReplaceBytes(ref srcBytes, Encoding.ASCII.GetBytes(defaultModuleName), 
-                    Encoding.ASCII.GetBytes(randomModuleName));
-                ReplaceBytes(ref srcBytes, Encoding.Unicode.GetBytes(defaultModuleName),
-                    Encoding.Unicode.GetBytes(randomModuleName));
-                File.WriteAllBytes(modifiedProxyDllPath, srcBytes);
-                parameters.ReferencedAssemblies.Add(modifiedProxyDllPath);
-            }
+            try {
+                CSharpCodeProvider codeProvider = new CSharpCodeProvider(settings);
+                CompilerParameters parameters = new CompilerParameters() {
+                    IncludeDebugInformation = includePDB,
+                    GenerateExecutable = false,
+                    OutputAssembly = tempOutputPath,
+                };
+                if (!includePDB) parameters.CompilerOptions += "/optimize";
 
-            CompilerResults results = codeProvider.CompileAssemblyFromSource(parameters, sourceCode);
-            if (results.Errors.HasErrors) {
+                foreach (string a in commonReferences) parameters.ReferencedAssemblies.Add(a);
+                if (platform == Platform.OpenBve) {
+                    parameters.ReferencedAssemblies.Add(Path.Combine(PlatformFunction.AppDir, "lib", "OpenBveApi.dll"));
+                } else if (platform == Platform.WinDll32 || platform == Platform.WinDll64) {
+                    var boilerplateFile = Path.Combine(
+                        PlatformFunction.AppDir,
+                        "lib",
+                        platform == Platform.WinDll32 ? "AtsCallConverter_x86.dll" : "AtsCallConverter_x64.dll"
+                    );
+                    byte[] srcBytes = File.ReadAllBytes(boilerplateFile);
+                    byte[] classNameBytes = Encoding.ASCII.GetBytes(randomModuleName);
+
+                    // You need to use different module names for each plugin.
+                    // Otherwise, the type references will mess up when multiple plugins are loaded by DetailManager.
+                    ReplaceBytes(ref srcBytes, Encoding.ASCII.GetBytes(defaultModuleName),
+                        Encoding.ASCII.GetBytes(randomModuleName));
+                    ReplaceBytes(ref srcBytes, Encoding.Unicode.GetBytes(defaultModuleName),
+                        Encoding.Unicode.GetBytes(randomModuleName));
+                    File.WriteAllBytes(modifiedProxyDllPath, srcBytes);
+                    parameters.ReferencedAssemblies.Add(modifiedProxyDllPath);
+                }
+
+                CompilerResults results = codeProvider.CompileAssemblyFromSource(parameters, sourceCode);
+                if (results.Errors.HasErrors) {
+                    throw new CompileException(results.Errors);
+                }
+
+                if (File.Exists(outputPath)) File.Delete(outputPath);
+                if (platform == Platform.OpenBve) {
+                    File.Copy(tempOutputPath, outputPath);
+                    if (includePDB) {
+                        var targetPdbFile = Path.ChangeExtension(outputPath, ".pdb");
+                        if (File.Exists(targetPdbFile)) File.Delete(targetPdbFile);
+                        File.Move(Path.ChangeExtension(tempOutputPath, ".pdb"), targetPdbFile);
+                    }
+                } else if (platform == Platform.WinDll32 || platform == Platform.WinDll64) {
+                    var programData = new FileStream(tempOutputPath, FileMode.Open, FileAccess.Read);
+                    var proxyStream = new FileStream(modifiedProxyDllPath, FileMode.Open, FileAccess.Read);
+                    var outStream = new FileStream(outputPath, FileMode.Create, FileAccess.Write);
+
+                    // Write Identifier and PE length to DOS stub
+                    byte[] identifier = Encoding.UTF8.GetBytes("BATSNET1");
+                    proxyStream.CopySectionTo(outStream, 0x6C - identifier.Length);
+                    outStream.Write(identifier, 0, identifier.Length);
+                    outStream.Write(BitConverter.GetBytes(proxyStream.Length), 0, 4);
+                    outStream.Write(BitConverter.GetBytes(programData.Length), 0, 4);
+                    proxyStream.Seek(8 + identifier.Length, SeekOrigin.Current);
+                    proxyStream.CopyTo(outStream);
+                    proxyStream.Close();
+
+                    programData.CopyTo(outStream);
+                    programData.Close();
+                    if (includePDB) {
+                        var pdbFilePath = Path.ChangeExtension(tempOutputPath, ".pdb");
+                        var pdbStream = new FileStream(pdbFilePath, FileMode.Open, FileAccess.Read);
+                        pdbStream.CopyTo(outStream);
+                        pdbStream.Close();
+                        File.Delete(pdbFilePath);
+                    }
+                    outStream.Close();
+                }
+            } finally {
                 if (modifiedProxyDllPath != null) File.Delete(modifiedProxyDllPath);
                 if (tempOutputPath != null) File.Delete(tempOutputPath);
-                throw new CompileException(results.Errors);
             }
-
-            if (File.Exists(outputPath)) File.Delete(outputPath);
-            if (platform == Platform.OpenBve) {
-                File.Copy(tempOutputPath, outputPath);
-                var targetPdbFile = Path.ChangeExtension(outputPath, ".pdb");
-                if (File.Exists(targetPdbFile)) File.Delete(targetPdbFile);
-                File.Move(Path.ChangeExtension(tempOutputPath, ".pdb"), targetPdbFile);
-            } else if (platform == Platform.WinDll32 || platform == Platform.WinDll64) {
-                var programData = new FileStream(tempOutputPath, FileMode.Open, FileAccess.Read);
-                var proxyStream = new FileStream(modifiedProxyDllPath, FileMode.Open, FileAccess.Read);
-                var outStream = new FileStream(outputPath, FileMode.Create, FileAccess.Write);
-
-                // Write Identifier and PE length to DOS stub
-                byte[] identifier = Encoding.UTF8.GetBytes("BATSNET1");
-                proxyStream.CopySectionTo(outStream, 0x6C - identifier.Length);
-                outStream.Write(identifier, 0, identifier.Length);
-                outStream.Write(BitConverter.GetBytes(proxyStream.Length), 0, 4);
-                outStream.Write(BitConverter.GetBytes(programData.Length), 0, 4);
-                proxyStream.Seek(8 + identifier.Length, SeekOrigin.Current);
-                proxyStream.CopyTo(outStream);
-                proxyStream.Close();
-
-                programData.CopyTo(outStream);
-                programData.Close();
-                if (includePDB) {
-                    var pdbFilePath = Path.ChangeExtension(tempOutputPath, ".pdb");
-                    var pdbStream = new FileStream(pdbFilePath, FileMode.Open, FileAccess.Read);
-                    pdbStream.CopyTo(outStream);
-                    pdbStream.Close();
-                    File.Delete(pdbFilePath);
-                }
-                outStream.Close();
-            }
-
-            if (modifiedProxyDllPath != null) File.Delete(modifiedProxyDllPath);
-            if (tempOutputPath != null) File.Delete(tempOutputPath);
         }
     }
 }

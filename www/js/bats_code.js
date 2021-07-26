@@ -137,6 +137,8 @@ function batsInit(toolboxNode) {
       bve_hat_set_beacon: 1,
       bve_hat_load: 1,
       bve_hat_dispose: 1,
+      bve_hat_door_change_any: 1,
+      bve_hat_perform_ai: 1
     },
   });
   workspace.setTheme(themeWithHat);

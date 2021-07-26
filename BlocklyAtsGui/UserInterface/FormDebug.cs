@@ -60,6 +60,15 @@ namespace BlocklyAts.UserInterface {
                 tbCode.Zoom = 100;
                 tbCode.Language = FastColoredTextBoxNS.Language.CSharp;
                 tbCode.Text = text;
+                tbCode.SelectionChanged += (object sender, EventArgs e) => {
+                    var selection = tbCode.Selection.Start;
+                    if (selection == null) {
+                        selection = new FastColoredTextBoxNS.Place(0, 0);
+                    }
+                    lblCursorPos.Text = string.Format("Row: {0}; Col: {1}", 
+                        selection.iLine + 1, selection.iChar + 1);
+                };
+                lblCursorPos.Text = "Row: 0; Col: 0";
                 pnlMain.Controls.Add(tbCode);
                 ((ISupportInitialize)(tbCode)).EndInit();
             } else {
@@ -75,6 +84,7 @@ namespace BlocklyAts.UserInterface {
                 fallbackTbCode.Dock = DockStyle.Fill;
                 fallbackTbCode.TabIndex = 2;
                 fallbackTbCode.Text = text;
+                lblCursorPos.Text = "";
                 pnlMain.Controls.Add(fallbackTbCode);
             }
             ResumeLayout(false);
