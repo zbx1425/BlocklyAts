@@ -111,6 +111,7 @@
       <DependentUpon>FormUserConfig.cs</DependentUpon>
     </Compile>
     <Compile Include="WebView\HttpServer.cs" />
+    <Compile Include="WebView\JsStringEscaper.cs" />
     <Compile Include="Workspace\CompilerFunction.cs" />
     <Compile Include="Workspace\BuildRunConfig.cs" />
     <Compile Include="WebView\ExternalBrowser.cs" />

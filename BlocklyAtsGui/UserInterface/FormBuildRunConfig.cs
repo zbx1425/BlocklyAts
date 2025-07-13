@@ -72,25 +72,25 @@ namespace BlocklyAts.UserInterface {
         private void cbCustom_CheckedChanged(object sender, EventArgs e) {
             var sendercb = sender as CheckBox;
             var arch = sendercb.Name.Replace("cbCustom", "");
-            tlpMain.Controls["btnBrowse" + arch].Enabled = sendercb.Checked;
-            tlpMain.Controls["tb" + arch].Enabled = sendercb.Checked;
+            tlpOutput.Controls["btnBrowse" + arch].Enabled = sendercb.Checked;
+            tlpOutput.Controls["tb" + arch].Enabled = sendercb.Checked;
             var notifText = "Default: <FileName>_" + arch.ToLowerInvariant() + ".dll";
             if (sendercb.Checked) {
-                if (tlpMain.Controls["tb" + arch].Text == notifText) {
-                    tlpMain.Controls["tb" + arch].Text = "";
+                if (tlpOutput.Controls["tb" + arch].Text == notifText) {
+                    tlpOutput.Controls["tb" + arch].Text = "";
                 }
             } else {
-                tlpMain.Controls["tb" + arch].Text = notifText;
+                tlpOutput.Controls["tb" + arch].Text = notifText;
             }
         }
 
         private void cbShould_CheckedChanged(object sender, EventArgs e) {
             var sendercb = sender as CheckBox;
             var arch = sendercb.Name.Replace("cbShould", "");
-            tlpMain.Controls["cbCustom" + arch].Enabled = sendercb.Checked;
+            tlpOutput.Controls["cbCustom" + arch].Enabled = sendercb.Checked;
             if (!sendercb.Checked) {
-                (tlpMain.Controls["cbCustom" + arch] as CheckBox).Checked = false;
-                cbCustom_CheckedChanged(tlpMain.Controls["cbCustom" + arch], null);
+                (tlpOutput.Controls["cbCustom" + arch] as CheckBox).Checked = false;
+                cbCustom_CheckedChanged(tlpOutput.Controls["cbCustom" + arch], null);
             }
         }
 
@@ -102,7 +102,7 @@ namespace BlocklyAts.UserInterface {
                 Filter = sender.Equals(btnBrowseGamePath) ? "Executable|*.exe" : "Dynamic-link library|*.dll"
             };
             if (sfd.ShowDialog() != DialogResult.OK) return;
-            tlpMain.Controls["tb" + arch].Text = sfd.FileName;
+            tlpOutput.Controls["tb" + arch].Text = sfd.FileName;
         }
 
         private void btnOK_Click(object sender, EventArgs e) {
@@ -116,12 +116,26 @@ namespace BlocklyAts.UserInterface {
         }
 
         private void FormCompilerConfig_Load(object sender, EventArgs e) {
-            foreach (Control ctrl in tlpMain.Controls) {
+            foreach (Control ctrl in tlpOutput.Controls) {
                 if (ctrl.Name.StartsWith("cbCustom")) {
                     ctrl.Text = I18n.Translate("FormCompilerConfig.cbCustom");
                 } else if (ctrl.Name.StartsWith("btnBrowse")) {
                     ctrl.Text = I18n.Translate("FormCompilerConfig.btnBrowse");
                 } else if (I18n.CanTranslate("FormCompilerConfig." + ctrl.Name)) {
+                    ctrl.Text = I18n.Translate("FormCompilerConfig." + ctrl.Name);
+                }
+            }
+            foreach (Control ctrl in tlpRun.Controls) {
+                if (ctrl.Name.StartsWith("cbCustom")) {
+                    ctrl.Text = I18n.Translate("FormCompilerConfig.cbCustom");
+                } else if (ctrl.Name.StartsWith("btnBrowse")) {
+                    ctrl.Text = I18n.Translate("FormCompilerConfig.btnBrowse");
+                } else if (I18n.CanTranslate("FormCompilerConfig." + ctrl.Name)) {
+                    ctrl.Text = I18n.Translate("FormCompilerConfig." + ctrl.Name);
+                }
+            }
+            foreach (Control ctrl in groupBox2.Controls) {
+                if (I18n.CanTranslate("FormCompilerConfig." + ctrl.Name)) {
                     ctrl.Text = I18n.Translate("FormCompilerConfig." + ctrl.Name);
                 }
             }

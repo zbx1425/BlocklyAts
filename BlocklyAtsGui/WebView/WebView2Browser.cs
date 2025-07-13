@@ -51,7 +51,7 @@ namespace BlocklyAts.WebView {
         }
 
         private void Browser_WebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e) {
-            InteropReceived?.Invoke(this, new InteropReceivedEventArgs(UnescapeJsString(e.WebMessageAsJson)));
+            InteropReceived?.Invoke(this, new InteropReceivedEventArgs(JsStringEscaper.UnescapeJsString(e.WebMessageAsJson)));
         }
 
         private void Controller_AcceleratorKeyPressed(object sender, CoreWebView2AcceleratorKeyPressedEventArgs e) {
@@ -125,7 +125,7 @@ namespace BlocklyAts.WebView {
             var resultString = await browser.ExecuteScriptAsync(script);
             if (resultString == null) return null;
             if (resultString == "undefined" || resultString == "null") return null;
-            return UnescapeJsString(resultString);
+            return JsStringEscaper.UnescapeJsString(resultString);
         }
 
         public override void Navigate(string url) {

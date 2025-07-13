@@ -55,16 +55,6 @@ namespace BlocklyAts.WebView {
             }
         }
 
-        private static JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
-
-        public static string EscapeJsString(string s) {
-            return jsSerializer.Serialize(s);
-        }
-
-        public static string UnescapeJsString(string s) {
-            return (string)jsSerializer.Deserialize(s, typeof(string));
-        }
-
         public async Task BkyResetWorkspace() {
             await InvokeScript("batsWkspReset();");
         }
@@ -78,12 +68,12 @@ namespace BlocklyAts.WebView {
         }
 
         public async Task BkyLoadWorkspace(XElement bkyxml) {
-            var arg = EscapeJsString(bkyxml.ToString(SaveOptions.DisableFormatting));
+            var arg = JsStringEscaper.EscapeJsString(bkyxml.ToString(SaveOptions.DisableFormatting));
             await InvokeScript(string.Format("batsWkspLoad({0});", arg));
         }
 
         public async Task BkyLoadInitWorkspace(XElement bkyxml) {
-            var arg = EscapeJsString(bkyxml.ToString(SaveOptions.DisableFormatting));
+            var arg = JsStringEscaper.EscapeJsString(bkyxml.ToString(SaveOptions.DisableFormatting));
             await InvokeScript(string.Format(
                 "if (workspace == null) window.onBlocklyLoad = function() {{batsWkspLoad({0});}}; else batsWkspLoad({0});", 
                 arg

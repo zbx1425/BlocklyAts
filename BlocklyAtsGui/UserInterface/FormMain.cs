@@ -74,9 +74,9 @@ namespace BlocklyAts.UserInterface {
             public override Color ToolStripGradientEnd { get { return Color.FromArgb(0xee, 0xee, 0xee); } }
         }
         class DarkTspProfessionalColors : ProfessionalColorTable {
-            public override Color ToolStripGradientBegin { get { return Color.FromArgb(0x26, 0x32, 0x38); } }
-            public override Color ToolStripGradientMiddle { get { return Color.FromArgb(0x37, 0x47, 0x4f); } }
-            public override Color ToolStripGradientEnd { get { return Color.FromArgb(0x1e, 0x1e, 0x1e); } }
+            public override Color ToolStripGradientBegin { get { return Color.FromArgb(0x33, 0x33, 0x33); } }
+            public override Color ToolStripGradientMiddle { get { return Color.FromArgb(0x33, 0x33, 0x33); } }
+            public override Color ToolStripGradientEnd { get { return Color.FromArgb(0x33, 0x33, 0x33); } }
         }
 
         private void ApplyLanguage() {
