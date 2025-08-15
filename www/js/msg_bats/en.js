@@ -45,7 +45,8 @@ Blockly.Msg["BVE_VSPEC_CAR"]="consist length";
 
 Blockly.Msg["BVE_LOCATION"]="location/m";
 Blockly.Msg["BVE_SPEED"]="speed/kmph"
-Blockly.Msg["BVE_TIME"]="time/00:00+ms";
+Blockly.Msg["BVE_TOTALTIME"]="time/00:00+ms";
+Blockly.Msg["BVE_ELAPSEDTIME"]="elapsed time";
 
 Blockly.Msg["BVE_VEHICLE_STATE"]="current %1";
 Blockly.Msg["BVE_VSTATE_BC"]="brake cylinder press/pa";
@@ -117,7 +118,10 @@ Blockly.Msg["OBVE_DOOR_ANY"]="any";
 Blockly.Msg["OBVE_SET_DOOR_INTERLOCK"]="%2 %1 door interlock";
 Blockly.Msg["OBVE_DOORIXL_LOCK"]="lock";
 Blockly.Msg["OBVE_DOORIXL_UNLOCK"]="unlock";
-Blockly.Msg["OBVE_SOUND_PLAY"]="play sound #%1 volume%%:%2 pitch%%:%3 looping?:%4";
+Blockly.Msg["OBVE_SOUND_PLAY"]="sound #%1 volume%%:%2 pitch%%:%3 looping?:%4";
+Blockly.Msg["OBVE_SOUND_BASIC"]="basic";
+Blockly.Msg["OBVE_SOUND_CAR_INDEX"]="car";
+Blockly.Msg["OBVE_SOUND_CAR_LIST"]="multiple";
 Blockly.Msg["OBVE_SET_DEBUG_MESSAGE"]="set debug message to %1";
 Blockly.Msg["OBVE_SHOW_MESSAGE"]="show message %1 color:%2 duration/s:%3";
 Blockly.Msg["OBVE_COLOR_BLACK"]="black";
@@ -131,6 +135,17 @@ Blockly.Msg["OBVE_COLOR_MAGENTA"]="magenta";
 Blockly.Msg["OBVE_DOOR_CHANGE_ANY"]="when any side door changed";
 Blockly.Msg["OBVE_PERFORM_AI"]="when requested to perform ai action";
 Blockly.Msg["OBVE_MSG_AI_WARN"]="Adding this block can remove a warning when entering the game.";
+
+Blockly.Msg["OBVE_MSG_PERFORM_AI_ONLY"]="Only use when 'perform ai':";
+Blockly.Msg["OBVE_AI_UPDOWN_KEY"]="be %1 key is %2";
+Blockly.Msg["OBVE_AI_UPDOWN_KEY_DOWN"]="pressed";
+Blockly.Msg["OBVE_AI_UPDOWN_KEY_UP"]="lifted";
+Blockly.Msg["OBVE_AI_RESPONSE"]="the duration of the ai action need %1";
+Blockly.Msg["OBVE_AI_RESPONSE_TIME"]="%1 time";
+Blockly.Msg["OBVE_AI_RESPONSE_TIME_NONE"]="instant";
+Blockly.Msg["OBVE_AI_RESPONSE_TIME_SHORT"]="very short";
+Blockly.Msg["OBVE_AI_RESPONSE_TIME_MEDIUM"]="moderate";
+Blockly.Msg["OBVE_AI_RESPONSE_TIME_LONG"]="long";
 
 Blockly.Msg["BVE_TIMER_SET"]="start timer %1 %4 interval(ms) %2 repeat? %3"
 Blockly.Msg["BVE_TIMER_MODIFY"]="%2 timer %1";
@@ -173,6 +188,26 @@ Blockly.Msg["BVE_PLACEHOLDER_COMMENT"]="Comment block. Have no effect.\nInsert a
 
 Blockly.Msg["BVE_MSGBOX"]="msgbox %1";
 Blockly.Msg["BVE_EXCEPTION"]="show error %1";
+
+Blockly.Msg["MISC_VARIABLES"]="to";
+Blockly.Msg["MISC_VARIABLES_SET"]="set";
+Blockly.Msg["MISC_VARIABLES_ADDSET"]="add set";
+Blockly.Msg["MISC_VARIABLES_SUBTRACTSET"]="subtract set";
+Blockly.Msg["MISC_VARIABLES_MULTIPAYSET"]="multipay set";
+Blockly.Msg["MISC_VARIABLES_DIVIDESET"]="divide set";
+Blockly.Msg["MISC_VARIABLES_MODULOSET"]="modulo set";
+Blockly.Msg["MISC_VARIABLES_PRE_INCREMENT"]="before increment";
+Blockly.Msg["MISC_VARIABLES_PRE_DECREMENT"]="before decrement";
+Blockly.Msg["MISC_VARIABLES_POST_INCREMENT"]="after increment";
+Blockly.Msg["MISC_VARIABLES_POST_DECREMENT"]="after decrement";
+Blockly.Msg["MISC_VARIABLES_INCREMENT"]="increment";
+Blockly.Msg["MISC_VARIABLES_DECREMENT"]="decrement";
+Blockly.Msg["MISC_MATH_MININUM"]="get smaller";
+Blockly.Msg["MISC_MATH_MAXINUM"]="get larger";
+Blockly.Msg["MISC_LOGIC_SWITCH"]="judgment %1";
+Blockly.Msg["MISC_LOGIC_SWITCH_CASE"]="case is %1 ";
+Blockly.Msg["MISC_LOGIC_SWITCH_DEFAULT"]="else default ";
+Blockly.Msg["MISC_LOGIC_SWITCH_BREAK"]="end judgment %1";
 
 Blockly.Msg["CAT_LOGIC"]="Logics";
 Blockly.Msg["CAT_LOOP"]="Loops";

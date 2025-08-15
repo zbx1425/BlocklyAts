@@ -95,9 +95,15 @@ Blockly.defineBlocksWithJsonArray([
     output: "Number",
   },
   {
-    type: "bve_time",
+    type: "bve_totaltime",
     style: "bve_blocks",
-    message0: "%{BKY_BVE_TIME}",
+    message0: "%{BKY_BVE_TOTALTIME}",
+    output: "Number",
+  },
+  {
+    type: "bve_elapsedtime",
+    style: "bve_blocks",
+    message0: "%{BKY_BVE_ELAPSEDTIME}",
     output: "Number",
   },
   {
@@ -722,6 +728,48 @@ Blockly.defineBlocksWithJsonArray([
     nextStatement: null,
   },
   {
+    type: "obve_car_sound_play",
+    style: "openbve_blocks",
+    message0: "%{BKY_OBVE_SOUND_PLAY} %5 %6",
+    args0: [
+      {
+        type: "input_value",
+        name: "ID",
+        check: "Number",
+      },
+      {
+        type: "input_value",
+        name: "VOLUME",
+        check: "Number"
+      },
+      {
+        type: "input_value",
+        name: "PITCH",
+        check: "Number"
+      },
+      {
+        type: "input_value",
+        name: "LOOP",
+        check: "Boolean"
+      },
+      {
+        type: "field_dropdown",
+        name: "FIELD",
+        options: [
+          ["%{BKY_OBVE_SOUND_BASIC}", "Basic"],
+          ["%{BKY_OBVE_SOUND_CAR_INDEX}", "Index"],
+        ]
+      },
+      {
+        type: "input_value",
+        name: "CAR",
+        check: "Number"
+      },
+    ],
+    previousStatement: null,
+    nextStatement: null,
+  },
+  {
     type: "obve_set_debug_message",
     style: "openbve_blocks",
     message0: "%{BKY_OBVE_SET_DEBUG_MESSAGE}",
@@ -778,6 +826,60 @@ Blockly.defineBlocksWithJsonArray([
     style: "openbve_blocks",
     message0: "%{BKY_OBVE_PERFORM_AI}",
     nextStatement: null,
+  },
+  {
+    type: "obve_ai_updown_key",
+    style: "comment_block",
+    message0: "%{BKY_OBVE_AI_UPDOWN_KEY}",
+    args0: [
+      {
+        type: "field_dropdown",
+        name: "TYPE",
+        options: [
+          ["%{BKY_OBVE_AI_UPDOWN_KEY_DOWN}", "Down"],
+          ["%{BKY_OBVE_AI_UPDOWN_KEY_UP}", "Up"],
+        ]
+      },
+      {
+        type: "input_value",
+        name: "KEY_TYPE",
+        check: "Number"
+      }
+    ],
+    previousStatement: null,
+    nextStatement: null,
+  },
+  {
+    type: "obve_ai_response",
+    style: "comment_block",
+    message0: "%{BKY_OBVE_AI_RESPONSE}",
+    args0: [
+      {
+        type: "input_value",
+        name: "VALUE",
+        check: "Number",
+      }
+    ],
+    previousStatement: null,
+    nextStatement: null,
+  },
+  {
+    type: "obve_ai_response_time",
+    style: "comment_block",
+    message0: "%{BKY_OBVE_AI_RESPONSE_TIME}",
+    args0: [
+      {
+        type: "field_dropdown",
+        name: "TIME",
+        options: [
+          ["%{BKY_OBVE_AI_RESPONSE_TIME_NONE}", "None"],
+          ["%{BKY_OBVE_AI_RESPONSE_TIME_SHORT}", "Short"],
+          ["%{BKY_OBVE_AI_RESPONSE_TIME_MEDIUM}", "Medium"],
+          ["%{BKY_OBVE_AI_RESPONSE_TIME_LONG}", "Long"],
+        ],
+      },
+    ],
+    output: "Number",
   },
 
   // Category: Conversions & Misc
@@ -877,5 +979,265 @@ Blockly.defineBlocksWithJsonArray([
       }
     ],
     output: null
+  },
+  {
+    type: "misc_variables_set_calculation",
+    style: "math_blocks",
+    message0: "%1 %2 %{BKY_MISC_VARIABLES} %3",
+    args0: [
+      {
+        type: "field_dropdown",
+        name: "TYPE",
+        options: [
+          ["%{BKY_MISC_VARIABLES_SET}", "Set"],
+          ["%{BKY_MISC_VARIABLES_ADDSET}", "Add"],
+          ["%{BKY_MISC_VARIABLES_SUBTRACTSET}", "Subtract"],
+          ["%{BKY_MISC_VARIABLES_MULTIPAYSET}", "Multipay"],
+          ["%{BKY_MISC_VARIABLES_DIVIDESET}", "Divide"],
+          ["%{BKY_MISC_VARIABLES_MODULOSET}", "Modulo"],
+        ]
+      },
+      {
+        type: "field_variable",
+        name: "VAR",
+      },
+      {
+        type: "input_value",
+        name: "VALUE",
+      },
+    ],
+    previousStatement: null,
+    nextStatement: null,
+  },
+  {
+    type: "misc_variables_value_crement",
+    style: "math_blocks",
+    message0: "%1 %2",
+    args0: [
+      {
+        type: "field_variable",
+        name: "VAR",
+      },
+      {
+        type: "field_dropdown",
+        name: "CREMENT",
+        options: [
+          ["%{BKY_MISC_VARIABLES_PRE_INCREMENT}", "PreIncrement"],
+          ["%{BKY_MISC_VARIABLES_PRE_DECREMENT}", "PreDecrement"],
+          ["%{BKY_MISC_VARIABLES_POST_INCREMENT}", "PostIncrement"],
+          ["%{BKY_MISC_VARIABLES_POST_DECREMENT}", "PostDecrement"],
+        ]
+      },
+    ],
+    output: "Number",
+  },
+  {
+    type: "misc_variables_crement",
+    style: "math_blocks",
+    message0: "%1 %2",
+    args0: [
+      {
+        type: "field_variable",
+        name: "VAR",
+      },
+      {
+        type: "field_dropdown",
+        name: "TYPE",
+        options: [
+          ["%{BKY_MISC_VARIABLES_INCREMENT}", "Increment"],
+          ["%{BKY_MISC_VARIABLES_DECREMENT}", "Decrement"],
+        ]
+      },
+    ],
+    previousStatement: null,
+    nextStatement: null,
+  },
+  {
+    type: "misc_math_minmax",
+    style: "math_blocks",
+    message0: "%1 %2 %3",
+    args0: [
+      {
+        type: "input_value",
+        name: "A",
+      },
+      {
+        type: "input_value",
+        name: "B",
+      },
+      {
+        type: "field_dropdown",
+        name: "TYPE",
+        options: [
+          ["%{BKY_MISC_MATH_MININUM}", "Mininum"],
+          ["%{BKY_MISC_MATH_MAXINUM}", "Maxinum"],
+        ],
+      },
+    ],
+    output: "Number",
+  },
+  {
+    type: "misc_logic_switch",
+    style: "comment_block",
+    message0: "%{BKY_MISC_LOGIC_SWITCH} %2",
+    args0: [
+      {
+        type: "input_value",
+        name: "VAR",
+      },
+      {
+        type: "input_statement",
+        name: "STATEMENT",
+        check: "Logic_Switch"
+      },
+    ],
+    previousStatement: null,
+    nextStatement: null,
+  },
+  {
+    type: "misc_logic_switch_case",
+    style: "comment_block",
+    message0: "%{BKY_MISC_LOGIC_SWITCH_CASE} %2",
+    args0: [
+      {
+        type: "input_value",
+        name: "VALUE",
+      },
+      {
+        type: "input_statement",
+        name: "DO",
+      },
+    ],
+    message1: "%{BKY_MISC_LOGIC_SWITCH_BREAK}",
+    args1: [
+      {
+        type: "field_checkbox",
+        name: "BREAK",
+        checked: true
+      },
+    ],
+    previousStatement: "Logic_Switch",
+    nextStatement: "Logic_Switch",
+  },
+  {
+    type: "misc_logic_switch_default",
+    style: "comment_block",
+    message0: "%{BKY_MISC_LOGIC_SWITCH_DEFAULT} %1 %2",
+    args0: [
+      {
+        type: "input_dummy"
+      },
+      {
+        type: "input_statement",
+        name: "DO",
+      },
+    ],
+    message1: "%{BKY_MISC_LOGIC_SWITCH_BREAK}",
+    args1: [
+      {
+        type: "field_checkbox",
+        name: "BREAK",
+        checked: true
+      },
+    ],
+    previousStatement: "Logic_Switch",
+  },
+  {
+    type: "bve_config_block_load",
+    style: "bve_blocks",
+    message0: "%{BKY_BVE_CONFIG_LOAD}",
+    args0: [
+      {
+        type: "input_value",
+        name: "PATH",
+        check: "String"
+      }
+    ],
+    previousStatement: null,
+    nextStatement: null,
+    inputsInline: true,
+  },
+  {
+    type: "bve_config_block_save",
+    style: "bve_blocks",
+    message0: "%{BKY_BVE_CONFIG_SAVE}",
+    args0: [
+      {
+        type: "input_value",
+        name: "PATH",
+        check: "String"
+      }
+    ],
+    previousStatement: null,
+    nextStatement: null,
+    inputsInline: true,
+  },
+  {
+    type: "bve_get_config_block",
+    style: "bve_blocks",
+    message0: "%{BKY_BVE_GET_CONFIG}",
+    args0: [
+      {
+        type: "input_value",
+        name: "PART",
+        check: "String"
+      },
+      {
+        type: "input_value",
+        name: "KEY",
+        check: "String"
+      }
+    ],
+    output: [ "String", "Number" ],
+    inputsInline: true,
+  },
+  {
+    type: "bve_get_config_block_default",
+    style: "bve_blocks",
+    message0: "%{BKY_BVE_GET_CONFIG_DEFAULT}",
+    args0: [
+      {
+        type: "input_value",
+        name: "PART",
+        check: "String"
+      },
+      {
+        type: "input_value",
+        name: "KEY",
+        check: "String"
+      },
+      {
+        type: "input_value",
+        name: "DEFAULT_VAL",
+        check: [ "String", "Number" ],
+      }
+    ],
+    output: [ "String", "Number" ],
+    inputsInline: true,
+  },
+  {
+    type: "bve_set_config_block",
+    style: "bve_blocks",
+    message0: "%{BKY_BVE_SET_CONFIG}",
+    args0: [
+      {
+        type: "input_value",
+        name: "PART",
+        check: "String"
+      },
+      {
+        type: "input_value",
+        name: "KEY",
+        check: "String"
+      },
+      {
+        type: "input_value",
+        name: "VALUE",
+        check: [ "String", "Number" ]
+      }
+    ],
+    previousStatement: null,
+    nextStatement: null,
+    inputsInline: true,
   }
 ]);

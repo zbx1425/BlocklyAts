@@ -153,7 +153,8 @@
       <sep gap="8"></sep>
       <block type="bve_location"></block>
       <block type="bve_speed"></block>
-      <block type="bve_time"></block>
+      <block type="bve_totaltime"></block>
+      <block type="bve_elapsedtime"></block>
       <block type="bve_vehicle_state"></block>
       <block type="bve_get_handle"></block>
       <block type="bve_get_key">
@@ -251,6 +252,57 @@
       <block type="bve_get_config_default"></block>
       <block type="bve_set_config"></block>
       <block type="bve_config_save"></block>
+      <sep gap="40"></sep>
+      <block type="bve_config_block_load">
+        <value name="PATH">
+          <shadow type="text">
+            <field name="TEXT">config.ini</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="bve_get_config_block">
+        <value name="PART">
+          <shadow type="text">
+            <field name="TEXT">Section</field>
+          </shadow>
+        </value>
+        <value name="KEY">
+          <shadow type="text">
+            <field name="TEXT">KeyValue</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="bve_get_config_block_default">
+        <value name="PART">
+          <shadow type="text">
+            <field name="TEXT">Section</field>
+          </shadow>
+        </value>
+        <value name="KEY">
+          <shadow type="text">
+            <field name="TEXT">KeyValue</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="bve_set_config_block">
+        <value name="PART">
+          <shadow type="text">
+            <field name="TEXT">Section</field>
+          </shadow>
+        </value>
+        <value name="KEY">
+          <shadow type="text">
+            <field name="TEXT">KeyValue</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="bve_config_block_save">
+        <value name="PATH">
+          <shadow type="text">
+            <field name="TEXT">config.ini</field>
+          </shadow>
+        </value>
+      </block>
     </category>
     <sep></sep>
     <category id="catLogic" colour="210" name="%{BKY_CAT_LOGIC}">
@@ -506,6 +558,27 @@
       <block type="bve_convert_to_string"></block>
       <block type="bve_convert_to_boolean"></block>
       <block type="bve_can_convert_to"></block>
+      <block type="misc_variables_set_calculation">
+        <value name="VALUE">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="misc_variables_value_crement"></block>
+      <block type="misc_variables_crement"></block>
+      <block type="misc_math_minmax">
+        <value name="A">
+          <shadow type="math_number">
+            <field name="NUM">50</field>
+          </shadow>
+        </value>
+        <value name="B">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+      </block>
       <sep gap="40"></sep>
       <block type="bve_msgbox">
         <value name="MSG">
@@ -529,11 +602,39 @@
       <block type="obve_get_door"></block>
       <block type="obve_set_door_interlock"></block>
       <block type="obve_sound_play"></block>
+      <block type="obve_car_sound_play">
+        <value name="ID">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+        <value name="VOLUME">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+        <value name="PITCH">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+        <value name="LOOP">
+          <shadow type="logic_boolean">
+            <field name="BOOL">FALSE</field>
+          </shadow>
+        </value>
+      </block>
       <block type="obve_preceding_vehicle"></block>
       <block type="obve_next_station"></block>
       <block type="obve_vehicle_state"></block>
       <block type="obve_langcode"></block>
-      <block type="obve_show_message"></block>
+      <block type="obve_show_message">
+        <value name="MESSAGE">
+          <shadow type="text">
+            <field name="TEXT">Hello World!</field>
+          </shadow>
+        </value>
+      </block>
       <block type="obve_set_debug_message"></block>
       <label text="%{BKY_OBVE_MSG_AI_WARN}"></label>
       <block type="bve_hat_perform_ai"></block>
@@ -557,6 +658,16 @@
       <sep gap="40"></sep>
       <block type="bve_rawcode_statement"></block>
       <block type="bve_rawcode_value"></block>
+      <sep gap="40"></sep>
+      <label text="WIP functions"></label>
+      <block type="misc_logic_switch"></block>
+      <block type="misc_logic_switch_case"></block>
+      <block type="misc_logic_switch_default"></block>
+      <sep gap="40"></sep>
+      <label text="%{BKY_OBVE_MSG_PERFORM_AI_ONLY}"></label>
+      <block type="obve_ai_updown_key"></block>
+      <block type="obve_ai_response"></block>
+      <block type="obve_ai_response_time"></block>
     </category>
     <sep></sep>
     <category id="catVariables" colour="330" custom="VARIABLE" name="%{BKY_CAT_VARIABLE}"></category>

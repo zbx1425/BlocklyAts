@@ -45,7 +45,8 @@ Blockly.Msg["BVE_VSPEC_CAR"]="编组长度";
 
 Blockly.Msg["BVE_LOCATION"]="位置/m";
 Blockly.Msg["BVE_SPEED"]="速度/kmph"
-Blockly.Msg["BVE_TIME"]="时间/ms";
+Blockly.Msg["BVE_TOTALTIME"]="时间/ms";
+Blockly.Msg["BVE_ELAPSEDTIME"]="每帧时间差";
 
 Blockly.Msg["BVE_VEHICLE_STATE"]="当前 %1";
 Blockly.Msg["BVE_VSTATE_BC"]="制动风缸压力/Pa";
@@ -117,7 +118,10 @@ Blockly.Msg["OBVE_DOOR_ANY"]="任一侧";
 Blockly.Msg["OBVE_SET_DOOR_INTERLOCK"]="%2 %1 车门联锁";
 Blockly.Msg["OBVE_DOORIXL_LOCK"]="锁定";
 Blockly.Msg["OBVE_DOORIXL_UNLOCK"]="解锁";
-Blockly.Msg["OBVE_SOUND_PLAY"]="播放 #%1 声音 音量%%:%2 音高%%:%3 循环?:%4";
+Blockly.Msg["OBVE_SOUND_PLAY"]="声音 #%1 音量%%:%2 音高%%:%3 循环?:%4";
+Blockly.Msg["OBVE_SOUND_BASIC"]="基本";
+Blockly.Msg["OBVE_SOUND_CAR_INDEX"]="车辆";
+Blockly.Msg["OBVE_SOUND_CAR_LIST"]="车组";
 Blockly.Msg["OBVE_SET_DEBUG_MESSAGE"]="设置调试信息为 %1";
 Blockly.Msg["OBVE_SHOW_MESSAGE"]="显示消息 %1 颜色:%2 时长/s:%3";
 Blockly.Msg["OBVE_COLOR_BLACK"]="黑色";
@@ -131,6 +135,17 @@ Blockly.Msg["OBVE_COLOR_MAGENTA"]="洋红";
 Blockly.Msg["OBVE_DOOR_CHANGE_ANY"]="当任一侧车门状态改变";
 Blockly.Msg["OBVE_PERFORM_AI"]="当要求执行AI动作";
 Blockly.Msg["OBVE_MSG_AI_WARN"]="添加这一积木块可移除OpenBVE进入游戏时的一个警告。";
+
+Blockly.Msg["OBVE_MSG_PERFORM_AI_ONLY"]="以下只可在'执行AI动作'时使用。";
+Blockly.Msg["OBVE_AI_UPDOWN_KEY"]="要 %1 的按键是 %2";
+Blockly.Msg["OBVE_AI_UPDOWN_KEY_DOWN"]="按下";
+Blockly.Msg["OBVE_AI_UPDOWN_KEY_UP"]="抬起";
+Blockly.Msg["OBVE_AI_RESPONSE"]="AI多久做这个动作 %1";
+Blockly.Msg["OBVE_AI_RESPONSE_TIME"]="%1 的时间";
+Blockly.Msg["OBVE_AI_RESPONSE_TIME_NONE"]="瞬间";
+Blockly.Msg["OBVE_AI_RESPONSE_TIME_SHORT"]="很短";
+Blockly.Msg["OBVE_AI_RESPONSE_TIME_MEDIUM"]="不长";
+Blockly.Msg["OBVE_AI_RESPONSE_TIME_LONG"]="长";
 
 Blockly.Msg["BVE_TIMER_SET"]="启动定时器 %1 %4 间隔(ms) %2 循环触发? %3"
 Blockly.Msg["BVE_TIMER_MODIFY"]="让定时器 %1 %2";
@@ -173,6 +188,26 @@ Blockly.Msg["BVE_PLACEHOLDER_COMMENT"]="注释块。无任何效果。\n放在�
 
 Blockly.Msg["BVE_MSGBOX"]="弹窗 %1";
 Blockly.Msg["BVE_EXCEPTION"]="显示错误 %1";
+
+Blockly.Msg["MISC_VARIABLES"]="为";
+Blockly.Msg["MISC_VARIABLES_SET"]="赋值";
+Blockly.Msg["MISC_VARIABLES_ADDSET"]="加赋值";
+Blockly.Msg["MISC_VARIABLES_SUBTRACTSET"]="减赋值";
+Blockly.Msg["MISC_VARIABLES_MULTIPAYSET"]="乘赋值";
+Blockly.Msg["MISC_VARIABLES_DIVIDESET"]="除赋值";
+Blockly.Msg["MISC_VARIABLES_MODULOSET"]="取模赋值";
+Blockly.Msg["MISC_VARIABLES_PRE_INCREMENT"]="前自增";
+Blockly.Msg["MISC_VARIABLES_PRE_DECREMENT"]="前自减";
+Blockly.Msg["MISC_VARIABLES_POST_INCREMENT"]="后自增";
+Blockly.Msg["MISC_VARIABLES_POST_DECREMENT"]="后自减";
+Blockly.Msg["MISC_VARIABLES_INCREMENT"]="自增";
+Blockly.Msg["MISC_VARIABLES_DECREMENT"]="自减";
+Blockly.Msg["MISC_MATH_MININUM"]="取较小值";
+Blockly.Msg["MISC_MATH_MAXINUM"]="取较大值";
+Blockly.Msg["MISC_LOGIC_SWITCH"]="判断 %1";
+Blockly.Msg["MISC_LOGIC_SWITCH_CASE"]="当匹配到 %1";
+Blockly.Msg["MISC_LOGIC_SWITCH_DEFAULT"]="否则默认";
+Blockly.Msg["MISC_LOGIC_SWITCH_BREAK"]="完成跳出 %1";
 
 Blockly.Msg["CAT_LOGIC"]="逻辑";
 Blockly.Msg["CAT_LOOP"]="循环";

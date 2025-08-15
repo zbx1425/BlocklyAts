@@ -16,6 +16,8 @@ public class ApiProxy : IRuntime {
   public bool Load(LoadProperties _p1) {
     LProp = _p1;
     playSoundDelegate = _p1.PlaySound;
+    playCarSoundDelegate = _p1.PlayCarSound;
+    // playMultipleCarSoundDelegate = _p1.PlayMultipleCarSound;
     _p1.Panel = Panel;
     for (int i = 0; i < 256; i++) emulatedSoundState[i] = -10000;
     
@@ -69,7 +71,7 @@ public class ApiProxy : IRuntime {
   
   public int VSpec_PowerNotches, VSpec_BrakeNotches, VSpec_AtsNotch, VSpec_B67Notch, VSpec_Cars;
   public int EData_Handles_Reverser, EData_Handles_PowerNotch, EData_Handles_BrakeNotch, EData_Handles_ConstSpeed;
-  public double EData_Vehicle_Location, EData_Vehicle_Speed, EData_TotalTime;
+  public double EData_Vehicle_Location, EData_Vehicle_Speed, EData_TotalTime, EData_ElapsedTime;
   public double EData_Vehicle_BcPressure, EData_Vehicle_MrPressure, EData_Vehicle_ErPressure, EData_Vehicle_BpPressure, EData_Vehicle_SapPressure, EData_Vehicle_Current;
   
   public LoadProperties LProp;
@@ -97,6 +99,7 @@ public class ApiProxy : IRuntime {
       EData_Vehicle_Location = value.Vehicle.Location;
       EData_Vehicle_Speed = value.Vehicle.Speed.KilometersPerHour;
       EData_TotalTime = value.TotalTime.Milliseconds;
+      EData_ElapsedTime = value.ElapsedTime.Seconds;
       EData_Vehicle_BcPressure = value.Vehicle.BcPressure;
       EData_Vehicle_MrPressure = value.Vehicle.MrPressure;
       EData_Vehicle_ErPressure = value.Vehicle.ErPressure;
@@ -129,6 +132,8 @@ public class ApiProxy : IRuntime {
   public string PluginDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location).TrimEnd('\\', '/');
   
   private PlaySoundDelegate playSoundDelegate;
+  private PlayCarSoundDelegate playCarSoundDelegate;
+  // private PlayMultipleCarSoundDelegate playMultipleCarSoundDelegate;
   private SoundHandle[] soundHandles = new SoundHandle[MAX_SOUND_INDEX + 1];
   // To achieve the same behavior as Win32 plugin interface at bve_get_sound_internal
   private int[] emulatedSoundState = new int[MAX_SOUND_INDEX + 1];
@@ -207,6 +212,17 @@ public class ApiProxy : IRuntime {
       soundHandles[id].Pitch = pitch / 100;
     } else {
       soundHandles[id] = playSoundDelegate(id, volume / 100, pitch / 100, loop);
+    }
+    emulatedSoundState[id] = 10000;
+  }
+  
+  public void SetCarSoundVPL(int id, double volume, double pitch, bool loop, int car) {
+    if (id < 0 || id > MAX_SOUND_INDEX) throw new IndexOutOfRangeException(MAX_SOUND_ERROR_MSG);
+    if (soundHandles[id] != null && soundHandles[id].Playing) {
+      soundHandles[id].Volume = volume / 100;
+      soundHandles[id].Pitch = pitch / 100;
+    } else {
+        soundHandles[id] = playCarSoundDelegate(id, volume / 100, pitch / 100, loop, car);
     }
     emulatedSoundState[id] = 10000;
   }
